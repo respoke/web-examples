@@ -1,0 +1,14 @@
+{
+    "excludeFiles": [
+        "node_modules/**",
+        ".tmp/**",
+        "assets/js/dependencies/**"
+    ],
+    "validateIndentation": 4,
+    "requireSpaceBeforeBlockStatements": true,
+    "requireSpacesInAnonymousFunctionExpression": {
+        "beforeOpeningRoundBrace": true,
+        "beforeOpeningCurlyBrace": true
+    }
+}
+

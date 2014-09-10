@@ -34,7 +34,7 @@ module.exports = function (grunt) {
                     'app/js/**/*.js',
                     'test/**/*.js'
                 ],
-                tasks: ['test', 'injector']
+                tasks: ['test', 'injector', 'jscs']
             },
             templates: {
                 files: [
@@ -86,6 +86,13 @@ module.exports = function (grunt) {
                     watchTask: true
                 }
             }
+        },
+
+        jscs: {
+            src: 'app/js/**/*.js',
+            options: {
+                config: '.jscsrc'
+            }
         }
 
     });
@@ -95,6 +102,7 @@ module.exports = function (grunt) {
     grunt.loadNpmTasks('grunt-mocha');
     grunt.loadNpmTasks('grunt-contrib-jshint');
     grunt.loadNpmTasks('grunt-browser-sync');
+    grunt.loadNpmTasks('grunt-jscs');
 
     grunt.registerTask('server', ['injector', 'express', 'browserSync', 'watch']);
     grunt.registerTask('test', ['jshint', 'mocha']);

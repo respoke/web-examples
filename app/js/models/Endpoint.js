@@ -1,4 +1,6 @@
-(function($, Respoke) {
+(function ($, Respoke) {
+
+    'use strict';
     
     Respoke.models.Endpoint = new $.Model({
 
