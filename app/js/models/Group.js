@@ -1,8 +1,7 @@
-define([
-    'jquery'
-], function ($) {
-    var Group = $.Model.extend({
+(function($, Respoke) {
+    
+    Respoke.models.Group = new $.Model({
 
     });
-    return Group;
-});
+
+}(jQuery, Respoke));

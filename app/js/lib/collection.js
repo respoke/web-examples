@@ -1,0 +1,7 @@
+(function($) {
+
+    $.Collection = function () {
+
+    };
+
+}(jQuery));

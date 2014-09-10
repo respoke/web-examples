@@ -1,8 +1,7 @@
-define([
-    'jquery'
-], function ($) {
-    var Messages = $.Collection.extend({
+(function($, Respoke) {
+    
+    Respoke.collections.messages = new $.Collection({
 
     });
-    return Messages;
-});
+
+}(jQuery, Respoke));

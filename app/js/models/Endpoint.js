@@ -1,8 +1,7 @@
-define([
-    'jquery'
-], function ($) {
-    var Endpoint = $.Model.extend({
+(function($, Respoke) {
+    
+    Respoke.models.Endpoint = new $.Model({
 
     });
-    return Endpoint;
-});
+
+}(jQuery, Respoke));

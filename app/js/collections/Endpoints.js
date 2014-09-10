@@ -1,8 +1,7 @@
-define([
-    'jquery'
-], function ($) {
-    var Endpoints = $.Collection.extend({
+(function($, Respoke) {
+    
+    Respoke.collections.endpoints = new $.Collection({
 
     });
-    return Endpoints;
-});
+
+}(jQuery, Respoke));

@@ -1,8 +1,7 @@
-define([
-    'jquery'
-], function ($) {
-    var Message = $.Model.extend({
+(function($, Respoke) {
+    
+    Respoke.models.Message = new $.Model({
 
     });
-    return Message;
-});
+
+}(jQuery, Respoke));

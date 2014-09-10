@@ -20,7 +20,9 @@
   ],
   "dependencies": {
     "jquery": "~2.1.1",
-    "requirejs": "~2.1.15",
-    "backbone": "~1.1.2"
+    "chai": "~1.9.1",
+    "grunt-blanket-mocha": "~0.4.1",
+    "blanket": "~1.1.5",
+    "mocha": "~1.21.4"
   }
 }

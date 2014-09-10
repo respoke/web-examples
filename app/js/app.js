@@ -1,13 +1,9 @@
-define(['jquery'], function ($) {
+(function ($, w) {
 
-    var App = function () {};
+    w.Respoke = {
+        models: {},
+        collections: {},
+        views: {}
+    };
 
-    $.extend(App.prototype, {
-        collections: [],
-        models: [],
-        views: []
-    });
-
-    return App;
-
-});
+}(jQuery, window));
