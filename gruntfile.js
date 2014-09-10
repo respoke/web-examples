@@ -2,6 +2,11 @@ var path = require('path');
 
 module.exports = function (grunt) {
 
+    var files = ['app/vendor/jquery/dist/jquery.min.js', 'app/js/app.js', 'app/js/lib/**/*.js', 'app/js/models/**/*.js', 'app/js/**/*.js', 'app/css/**/*.css'];
+    
+    var testFiles = files.slice();
+        testFiles.push('test/specs/**/*.js');
+
     grunt.initConfig({
 
         jshint: {
@@ -65,13 +70,13 @@ module.exports = function (grunt) {
             index: {
                 template: 'app/index.html',
                 files: {
-                    'app/index.html': ['app/vendor/jquery/dist/jquery.min.js', 'app/js/app.js', 'app/js/lib/**/*.js', 'app/js/models/**/*.js', 'app/js/**/*.js', 'app/css/**/*.css']
+                    'app/index.html': files
                 }
             },
             test: {
                 template: 'test/index.html',
                 files: {
-                    'test/index.html': ['app/vendor/jquery/dist/jquery.min.js', 'app/js/app.js', 'app/js/lib/**/*.js', 'app/js/models/**/*.js', 'app/js/**/*.js', 'test/specs/**/*.js']
+                    'test/index.html': testFiles
                 }
             }
 
@@ -93,6 +98,14 @@ module.exports = function (grunt) {
             options: {
                 config: '.jscsrc'
             }
+        },
+
+        uglify: {
+            app: {
+                files: {
+                    'app/dist/app.min.js': files
+                }
+            }
         }
 
     });
@@ -103,9 +116,10 @@ module.exports = function (grunt) {
     grunt.loadNpmTasks('grunt-contrib-jshint');
     grunt.loadNpmTasks('grunt-browser-sync');
     grunt.loadNpmTasks('grunt-jscs');
+    grunt.loadNpmTasks('grunt-contrib-uglify');
 
     grunt.registerTask('server', ['injector', 'express', 'browserSync', 'watch']);
     grunt.registerTask('test', ['jshint', 'mocha']);
-    grunt.registerTask('default', ['jshint', 'injector']);
+    grunt.registerTask('default', ['jshint', 'injector', 'uglify', 'cssmin']);
 
 };
