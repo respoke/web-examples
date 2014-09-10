@@ -2,8 +2,8 @@
 
     'use strict';
     
-    Respoke.collections.groups = new $.Collection({
-
+    Respoke.collections.Groups = $.Collection.extend({
+        model: Respoke.models.Group
     });
 
 }(jQuery, Respoke));

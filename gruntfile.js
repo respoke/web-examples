@@ -65,13 +65,13 @@ module.exports = function (grunt) {
             index: {
                 template: 'app/index.html',
                 files: {
-                    'app/index.html': ['app/vendor/jquery/dist/jquery.min.js', 'app/js/app.js', 'app/js/lib/**/*.js', 'app/js/**/*.js', 'app/css/**/*.css']
+                    'app/index.html': ['app/vendor/jquery/dist/jquery.min.js', 'app/js/app.js', 'app/js/lib/**/*.js', 'app/js/models/**/*.js', 'app/js/**/*.js', 'app/css/**/*.css']
                 }
             },
             test: {
                 template: 'test/index.html',
                 files: {
-                    'test/index.html': ['app/vendor/jquery/dist/jquery.min.js', 'app/js/app.js', 'app/js/lib/**/*.js', 'app/js/**/*.js', 'test/specs/**/*.js']
+                    'test/index.html': ['app/vendor/jquery/dist/jquery.min.js', 'app/js/app.js', 'app/js/lib/**/*.js', 'app/js/models/**/*.js', 'app/js/**/*.js', 'test/specs/**/*.js']
                 }
             }
 

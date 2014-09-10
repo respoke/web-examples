@@ -2,7 +2,7 @@
 
     'use strict';
     
-    Respoke.models.Message = new $.Model({
+    Respoke.models.Message = new $.Model.extend({
 
     });
 

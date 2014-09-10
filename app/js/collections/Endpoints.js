@@ -2,8 +2,8 @@
 
     'use strict';
     
-    Respoke.collections.endpoints = new $.Collection({
-
+    Respoke.collections.Endpoints = $.Collection.extend({
+        model: Respoke.models.Endpoint
     });
 
 }(jQuery, Respoke));

@@ -2,8 +2,8 @@
 
     'use strict';
     
-    Respoke.collections.messages = new $.Collection({
-
+    Respoke.collections.Messages = $.Collection.extend({
+        model: Respoke.models.Message
     });
 
 }(jQuery, Respoke));

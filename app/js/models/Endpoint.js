@@ -2,7 +2,7 @@
 
     'use strict';
     
-    Respoke.models.Endpoint = new $.Model({
+    Respoke.models.Endpoint = new $.Model.extend({
 
     });
 
