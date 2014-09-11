@@ -1,9 +1,13 @@
-(function ($, Respoke) {
+(function ($, App) {
 
     'use strict';
     
-    Respoke.models.Message = new $.Model.extend({
+    App.models.Message = new $.Model.extend({
+
+        send: function () {
+            
+        }
 
     });
 
-}(jQuery, Respoke));
+}(jQuery, App));

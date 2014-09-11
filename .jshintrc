@@ -114,7 +114,8 @@
         "should": true,
         "helpers": true, // custom helpers written by us for karma tests
 	"jQuery": true, // Global jQuery var
-	"Respoke": true // The Respoke namespace
+	"respoke": true, // Global respoke namespace
+	"App": true // The Respoke App namespace
     },
     "indent"        : 4         // Specify indentation spacing
 }

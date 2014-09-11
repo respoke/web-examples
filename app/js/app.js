@@ -2,7 +2,7 @@
 
     'use strict';
 
-    w.Respoke = {
+    w.App = {
         models: {},
         collections: {},
         views: {}

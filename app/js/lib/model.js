@@ -9,9 +9,12 @@
         var Model = function (val) {
             this._data = {};
             this.set(val || {});
+            this.init(val);
         };
 
         $.extend(Model.prototype, {
+
+            init: function () {},
 
             get: function () {
                 return this._data;
