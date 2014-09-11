@@ -1,0 +1,282 @@
+$accentColor = #3577b4;
+$accentHoverColor = darken($accentColor, 10%);
+$availableColor = #00d76b;
+$awayColor = #ff9100;
+$busyColor = #da0326;
+$dndColor = #666;
+$brbColor = #da0461;
+$fonts = "Open Sans", Helvetica, Arial, sans-serif;
+
+$clearfix {
+	&:before,
+	&:after {
+		content: " ";
+		display: table;
+	}
+	&:after {
+		clear: both;
+	}
+}
+
+$inlineForm {
+	display: flex;
+	margin: 2rem 0 0 0;
+
+	&__text,
+	&__submit {
+		border: none;
+		font-family: $fonts;
+		font-size: .875rem;
+		margin: 0;
+		padding: 1rem;
+
+		@media (min-width: 40em) {
+			font-size: 1rem;
+		}
+
+		&:focus,
+		&:active {
+			outline: none;
+		}
+	}
+
+	&__text {
+		border-radius: .5rem 0 0 .5rem;
+		box-shadow: inset 0 0 2px rgba(0, 0, 0, .3);
+		flex: 1 auto;
+	}
+
+	&__submit {
+		background-color: $accentColor;
+		border-radius: 0 .5rem .5rem 0;
+		color: #fff;
+		cursor: pointer;
+		flex: 0 5rem;
+		transition: background-color .2s;
+
+		&:hover {
+			background-color: $accentHoverColor;
+		}
+	}
+}
+
+body {
+	background: #f9fafc;
+	box-sizing: border-box;
+	color: #444;
+	font-family: $fonts;
+}
+
+/*
+ * User handle
+ */
+.user-handle {
+	font-size: 1.5rem;
+	font-weight: normal;
+}
+
+/*
+ * User status dropdown
+ */
+.user-status-dropdown {
+	position: relative;
+
+	&:hover {
+		.user-status-dropdown__status--available,
+		.user-status-dropdown__status--away,
+		.user-status-dropdown__status--busy,
+		.user-status-dropdown__status--dnd,
+		.user-status-dropdown__status--brb {
+			opacity: 1;
+		}
+	}
+
+	&__status--available,
+	&__status--away,
+	&__status--busy,
+	&__status--dnd,
+	&__status--brb,
+	&__status__select {
+		height: 3rem;
+		line-height: 3rem;
+	}
+
+	&__status--available,
+	&__status--away,
+	&__status--busy,
+	&__status--dnd,
+	&__status--brb {
+		background-color: #fff;
+		border-radius: 1rem;
+		box-shadow: 0 1px 2px rgba(0, 0, 0, .2);
+		opacity: .7;
+		padding: 0 1rem;
+		position: relative;
+		transition: opacity .1s;
+		z-index: 1;
+
+		&:after {
+			border-radius: .75rem;
+			content: "";
+			display: inline-block;
+			height: .75rem;
+			margin-left: .5rem;
+			width: .75rem;
+		}
+
+		&:before {
+			border-left: .6rem solid transparent;
+			border-right: .6rem solid transparent;
+			border-top: .6rem solid #323232;
+			content: "";
+			display: block;
+			height: 0;
+			position: absolute;
+			right: 1rem;
+			top: 1.25rem;
+			width: 0;
+		}
+	}
+
+	&__status--available:after {
+		background-color: $availableColor;
+	}
+
+	&__status--away:after {
+		background-color: $awayColor;
+	}
+
+	&__status--busy:after {
+		background-color: $busyColor;
+	}
+
+	&__status--dnd:after {
+		background-color: $dndColor;
+	}
+
+	&__status--brb:after {
+		background-color: $brbColor;
+	}
+
+	&__status__select {
+		border: none;
+		cursor: pointer;
+		display: block;
+		left: 0;
+		opacity: 0;
+		position: absolute;
+		top: 0;
+		width: 100%;
+		z-index: 2;
+	}
+}
+
+/*
+ * Buddy list
+ */
+.buddy-list {
+	list-style: none;
+	margin: 0;
+	padding: 0;
+
+	li {
+		&:first-child {
+			border-radius: 1rem 1rem 0 0;
+		}
+
+		&:last-child {
+			border-radius: 0 0 1rem 1rem;
+			border-bottom: none;
+		}
+	}
+
+	&__title,
+	&__user {
+		background-color: #fff;
+		border-bottom: 1px solid #dfdfdf;
+		box-shadow: 1px 1px 2px rgba(0, 0, 0, .2), 0 0 1px rgba(0, 0, 0, .1);
+		padding: 1rem;
+	}
+
+	&__title {
+		color: $accentColor;
+		font-size: 1.5rem;
+	}
+
+	&__user {
+		min-height: 3.1875rem;
+		padding-left: 5rem;
+		position: relative;
+	}
+
+	/*
+	&__user {
+		background-color: #fff;
+		border-bottom: 1px solid #dfdfdf;
+		box-shadow: 1px 1px 2px rgba(0, 0, 0, .2);
+		min-height: 3.1875rem;
+		padding: 1rem 1rem 1rem 5rem;
+		position: relative;
+
+		&:first-child {
+			border-radius: .5rem .5rem 0 0;
+		}
+
+		&:last-child {
+			border-radius: 0 0 .5rem .5rem;
+			border-bottom: none;
+		}
+	}
+	*/
+
+	&__user__avatar {
+		left: 1rem;
+		position: absolute;
+		top: 1rem;
+	}
+
+	&__user__name {
+		font-size: 1.35rem;
+	}
+
+	&__user__status--available,
+	&__user__status--away,
+	&__user__status--busy,
+	&__user__status--dnd,
+	&__user__status--brb {
+		color: #999;
+		font-size: .875rem;
+		margin-top: .15rem;
+
+		&:after {
+			border-radius: .75rem;
+			content: "";
+			display: inline-block;
+			height: .75rem;
+			margin-left: .35rem;
+			position: relative;
+			top: .1rem;
+			width: .75rem;
+		}
+	}
+
+	&__user__status--available:after {
+		background-color: $availableColor;
+	}
+
+	&__user__status--away:after {
+		background-color: $awayColor;
+	}
+
+	&__user__status--busy:after {
+		background-color: $busyColor;
+	}
+
+	&__user__status--dnd:after {
+		background-color: $dndColor;
+	}
+
+	&__user__status--brb:after {
+		background-color: $brbColor;
+	}
+}
