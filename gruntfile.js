@@ -3,11 +3,28 @@ var path = require('path');
 module.exports = function (grunt) {
 
     var files = ['app/vendor/jquery/dist/jquery.min.js', 'app/js/app.js', 'app/js/lib/**/*.js', 'app/js/models/**/*.js', 'app/js/**/*.js', 'app/css/**/*.css'];
-    
+
     var testFiles = files.slice();
         testFiles.push('test/specs/**/*.js');
 
     grunt.initConfig({
+
+        stylus: {
+            compile: {
+                files: {
+                    'app/css/endpoint-messaging.css': 'app/css/endpoint-messaging.styl'
+                }
+            }
+        },
+
+        autoprefixer: {
+            styles: {
+                expand: true,
+                flatten: true,
+                src: 'app/css/*.css',
+                dest: 'app/css/'
+            }
+        },
 
         jshint: {
             files: ['app/js/**/*.js'],
@@ -47,8 +64,8 @@ module.exports = function (grunt) {
                 ]
             },
             css: {
-              files: ['app/scss/**/*.scss', 'app/scss/**/**/*.scss'],
-              tasks: ['compass', 'injector']
+              files: ['app/css/*.styl'],
+              tasks: ['stylus', 'autoprefixer']
             }
         },
 
@@ -116,7 +133,9 @@ module.exports = function (grunt) {
     grunt.loadNpmTasks('grunt-contrib-jshint');
     grunt.loadNpmTasks('grunt-browser-sync');
     grunt.loadNpmTasks('grunt-jscs');
+    grunt.loadNpmTasks('grunt-contrib-stylus');
     grunt.loadNpmTasks('grunt-contrib-uglify');
+    grunt.loadNpmTasks('grunt-autoprefixer');
 
     grunt.registerTask('server', ['injector', 'express', 'browserSync', 'watch']);
     grunt.registerTask('test', ['jshint', 'mocha']);

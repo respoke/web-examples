@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Endpoint Messaging</title>
+	<link rel="stylesheet" href="/css/endpoint-messaging.css">
+</head>
+<body>
+	<div class="em-col">
+		<h1 class="em-avatar">
+			<img src="http://dummyimage.com/55x55/000000/ffffff&text=×" alt="Avatar"> Alice
+		</h1>
+		<ul class="em-thread">
+			<li class="em-thread__message">
+				<div class="em-thread__message__content">
+					<img src="http://dummyimage.com/135x75/000000/ffffff&text=×" alt="Gangnam Style">
+					GANGHAM STYLE<br>
+					www.youtube.com
+				</div>
+			</li>
+			<li class="em-thread__message--reply">
+				<div class="em-thread__message--reply__content">
+					Lorem ipsum dolor sit amet, consectetur adipisicing elit. Dolorum ratione nam assumenda, magnam magni.
+				</div>
+				<img class="em-thread__message--reply__avatar" src="http://dummyimage.com/34x34/000000/ffffff&text=×" alt="Jeff">
+			</li>
+		</ul>
+		<form class="em-message">
+			<input type="text" class="em-message__text" placeholder="Enter your message here">
+			<input type="submit" value="Send" class="em-message__send">
+		</form>
+	</div>
+	<div class="em-col">
+		<h1 class="em-avatar--right">
+			Jeff <img src="http://dummyimage.com/55x55/000000/ffffff&text=×" alt="Avatar">
+		</h1>
+		<ul class="em-thread">
+			<li class="em-thread__message--reply--left">
+				<img class="em-thread__message--reply--left__avatar" src="http://dummyimage.com/34x34/000000/ffffff&text=×" alt="Alice">
+				<div class="em-thread__message--reply--left__content">
+					<img src="http://dummyimage.com/135x75/000000/ffffff&text=×" alt="Gangnam Style">
+					GANGHAM STYLE<br>
+					www.youtube.com
+				</div>
+			</li>
+			<li class="em-thread__message--right">
+				<div class="em-thread__message--right__content">
+					Lorem ipsum dolor sit amet, consectetur adipisicing elit. Dolorum ratione nam assumenda, magnam magni.
+				</div>
+			</li>
+		</ul>
+		<form class="em-message">
+			<input type="text" class="em-message__text" placeholder="Enter your message here">
+			<input type="submit" value="Send" class="em-message__send">
+		</form>
+	</div>
+</body>
+</html>
