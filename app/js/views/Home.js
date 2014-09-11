@@ -1,11 +1,10 @@
-(function (App) {
+(function ($, App) {
 
     'use strict';
 
-    App.views.Home = function () {
+    App.views.Home = $.View.extend({
+        el: 'body',
+        template: 'home'
+    });
 
-        console.log('home view');
-
-    };
-
-}(App));
+}(jQuery, App));

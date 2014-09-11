@@ -1,11 +1,10 @@
-(function (App) {
+(function ($, App) {
 
     'use strict';
 
-    App.views.EndpointMessaging = function () {
+    App.views.EndpointMessaging = $.View.extend({
+        el: 'body',
+        template: 'endpoint-messaging'
+    });
 
-        console.log('EndpointMessaging view');
-
-    };
-
-}(App));
+}(jQuery, App));

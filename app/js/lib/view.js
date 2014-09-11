@@ -6,16 +6,39 @@
 
     $.View.extend = function (options) {
 
-        var View = function (val) {
-            val = val || {};
-            this.el = $(options.el || val.el);
-            this.events = $.extend({}, this.events, val.events || {});
-
-            this.events.forEach(function (evt, i) {
+        var initView = function (fn) {
+            /*this.events.forEach(function (evt, i) {
                 console.log(evt, i);
+            });*/
+            fn();
+        };
+
+        var View = function (val) {
+            var self = this;
+            val = val || {};
+
+            $.extend(this, {
+                template: val.template || options.template,
+                el: $(options.el || val.el),
+                events: $.extend({}, this.events, val.events || {})
             });
 
-            this.init(val);
+            if (this.template) {
+                $.ajax({
+                    method: 'GET',
+                    url: '/templates/' + this.template + '.html'
+                }).done(function (html) {
+                    self.el.html(
+                        $.tmpl(html, self)
+                    );
+                    initView.call(self, function () {
+                        self.init(val);
+                    });
+                });
+            } else {
+                this.init(val);
+            }
+
         };
 
         $.extend(View.prototype, {

@@ -5,7 +5,6 @@
     App.models.client = new App.models.Client();
     App.models.client.connect('tysoncadenhead');
 
-    App.router = new $.Router();
-    App.router.route();
+    $.router.route();
 
 }(jQuery, App));
