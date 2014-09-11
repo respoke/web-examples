@@ -1,23 +1,4 @@
-$accentColor = #3577b4;
-$accentHoverColor = darken($accentColor, 10%);
-$fonts = 'Open Sans', Helvetica, Arial, sans-serif;
-
-$clearfix {
-	&:before,
-	&:after {
-		content: " ";
-		display: table;
-	}
-	&:after {
-		clear: both;
-	}
-}
-
-body {
-	background: #f9fafc;
-	box-sizing: border-box;
-	font-family: $fonts;
-}
+@import "_shared";
 
 .em-col {
 	margin-bottom: 5rem;
@@ -38,7 +19,6 @@ body {
 
 .em-avatar,
 .em-avatar--right {
-	color: #444;
 	font-size: 1.5rem;
 	font-weight: normal;
 
@@ -97,7 +77,6 @@ body {
 	&__message--right {
 		&__content {
 			background: #fff;
-			color: #444;
 		}
 	}
 
