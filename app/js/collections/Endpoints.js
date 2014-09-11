@@ -1,9 +1,9 @@
-(function ($, Respoke) {
+(function ($, App) {
 
     'use strict';
     
-    Respoke.collections.Endpoints = $.Collection.extend({
-        model: Respoke.models.Endpoint
+    App.collections.Endpoints = $.Collection.extend({
+        model: App.models.Endpoint
     });
 
-}(jQuery, Respoke));
+}(jQuery, App));

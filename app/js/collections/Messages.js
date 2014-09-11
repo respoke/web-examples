@@ -1,9 +1,18 @@
-(function ($, Respoke) {
+(function ($, App) {
 
     'use strict';
     
-    Respoke.collections.Messages = $.Collection.extend({
-        model: Respoke.models.Message
+    App.collections.Messages = $.Collection.extend({
+        model: App.models.Message,
+
+        send: function (options) {
+            var endpoint = App.client.getEndpoint({
+                id: options.id
+            });
+            endpoint.sendMessage({
+                message: options.message
+            });
+        }
     });
 
-}(jQuery, Respoke));
+}(jQuery, App));

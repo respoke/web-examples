@@ -9,9 +9,12 @@
         var Collection = function (val) {
             this._data = [];
             this.set(val || []);
+            this.init(val);
         };
 
         $.extend(Collection.prototype, {
+
+            init: function () {},
 
             length: function () {
                 return this._data.length;
