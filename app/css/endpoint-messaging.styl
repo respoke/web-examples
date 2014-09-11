@@ -1,0 +1,214 @@
+$accentColor = #3577b4;
+$accentHoverColor = darken($accentColor, 10%);
+$fonts = 'Open Sans', Helvetica, Arial, sans-serif;
+
+$clearfix {
+	&:before,
+	&:after {
+		content: " ";
+		display: table;
+	}
+	&:after {
+		clear: both;
+	}
+}
+
+body {
+	background: #f9fafc;
+	box-sizing: border-box;
+	font-family: $fonts;
+}
+
+.em-col {
+	margin-bottom: 5rem;
+
+	@media (min-width: 50em) {
+		margin-bottom: 0;
+		width: 45%;
+
+		&:nth-child(1) {
+			float: left;
+		}
+
+		&:nth-child(2) {
+			float: right;
+		}
+	}
+}
+
+.em-avatar,
+.em-avatar--right {
+	color: #444;
+	font-size: 1.5rem;
+	font-weight: normal;
+
+	@media (min-width: 40em) {
+		font-size: 2.25rem;
+	}
+}
+
+.em-avatar--right {
+	text-align: right;
+}
+
+.em-thread {
+	list-style: none;
+	margin: 0;
+	padding: 0;
+
+	&__message,
+	&__message--right,
+	&__message--reply,
+	&__message--reply--left {
+		&__content {
+			@extends $clearfix;
+			border-radius: .75rem;
+			font-size: .9rem;
+			filter: url('/images/message-bubble-ff.svg#drop-shadow');
+			filter: drop-shadow(0 1px 1px rgba(0, 0, 0, .2));
+			margin: 1rem 0;
+			padding: .5rem 1rem;
+			position: relative;
+
+			@media (min-width: 40em) {
+				font-size: 1rem;
+			}
+
+			&:before {
+				border-bottom: .75rem solid transparent;
+				border-top: .75rem solid transparent;
+				content: "";
+				display: block;
+				height: 0;
+				position: absolute;
+				top: .15rem;
+				width: 0;
+				z-index: 2;
+			}
+
+			img {
+				float: left;
+				margin: 0 1rem .5rem 0;
+			}
+		}
+	}
+
+	&__message,
+	&__message--right {
+		&__content {
+			background: #fff;
+			color: #444;
+		}
+	}
+
+	&__message {
+		&__content {
+			margin-left: .5rem;
+
+			&:before {
+				border-right: 1rem solid #fff;
+				left: -.5rem;
+			}
+		}
+	}
+
+	&__message--right {
+		&__content {
+			margin-right: .5rem;
+
+			&:before {
+				border-left: 1rem solid #fff;
+				right: -.5em;
+			}
+		}
+
+		&__avatar {
+			margin-right: .5rem;
+		}
+	}
+
+	&__message--reply {
+		&__content {
+			margin-right: .5rem;
+
+			&:before {
+				border-left: 1rem solid $accentColor;
+				right: -.5em;
+			}
+		}
+		&__avatar {
+			margin-left: .5rem;
+		}
+	}
+
+	&__message--reply--left {
+		&__content {
+			margin-left: .5rem;
+
+			&:before {
+				border-right: 1rem solid $accentColor;
+				left: -.5em;
+			}
+		}
+
+		&__avatar {
+			margin-right: .5rem;
+		}
+	}
+
+	&__message--reply,
+	&__message--reply--left {
+		display: flex;
+
+		&__content {
+			background: $accentColor;
+			color: #fff;
+			flex: 1 auto;
+		}
+
+		&__avatar {
+			flex: 0 2.125rem;
+			height: 2.125rem;
+			margin-bottom: 1rem;
+			margin-top: 1rem;
+			min-width: 2.125rem;
+		}
+	}
+}
+
+.em-message {
+	display: flex;
+	margin: 2rem 0 0 0;
+
+	&__text,
+	&__send {
+		border: none;
+		font-family: $fonts;
+		font-size: .875rem;
+		margin: 0;
+		padding: 1rem;
+
+		@media (min-width: 40em) {
+			font-size: 1rem;
+		}
+	}
+
+	&__text {
+		border-radius: .5rem 0 0 .5rem;
+		box-shadow: inset 0 0 2px rgba(0, 0, 0, .3);
+		flex: 1 auto;
+	}
+
+	&__send {
+		background-color: $accentColor;
+		border-radius: 0 .5rem .5rem 0;
+		color: #fff;
+		cursor: pointer;
+		flex: 0 5rem;
+		transition: background-color .2s;
+
+		&:hover {
+			background-color: $accentHoverColor;
+		}
+	}
+}
