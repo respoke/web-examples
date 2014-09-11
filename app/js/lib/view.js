@@ -6,37 +6,49 @@
 
     $.View.extend = function (options) {
 
-        var initView = function (fn) {
-            /*this.events.forEach(function (evt, i) {
-                console.log(evt, i);
-            });*/
-            fn();
+        var cache = {};
+
+        var getTemplate = function (fn) {
+            if (cache[this.template]) {
+                fn(cache[this.template]);
+            } else {
+                $.ajax({
+                    method: 'GET',
+                    url: '/templates/' + this.template + '.html'
+                }).done(fn);
+            }
+        };
+
+        var initView = function (fn, val) {
+            for (var i in this.events) {
+                var selector = i.split(' '),
+                    evt = selector[0];
+                selector.shift();
+                selector = selector.join(' ');
+                this.el.delegate(selector, evt, this.events[i].bind(this));
+            }
+            this.render(val);
         };
 
         var View = function (val) {
             var self = this;
             val = val || {};
 
-            $.extend(this, {
-                template: val.template || options.template,
+            this.init(val);
+
+            $.extend(this, val, {
                 el: $(options.el || val.el),
                 events: $.extend({}, this.events, val.events || {})
             });
 
             if (this.template) {
-                $.ajax({
-                    method: 'GET',
-                    url: '/templates/' + this.template + '.html'
-                }).done(function (html) {
-                    self.el.html(
-                        $.tmpl(html, self)
-                    );
-                    initView.call(self, function () {
-                        self.init(val);
-                    });
+                getTemplate.call(this, function (html) {
+                    var tmpl = $.tmpl(html, self);
+                    self.el.html('<div>' + tmpl + '</div>');
+                    initView.call(self, val);
                 });
             } else {
-                this.init(val);
+                initView.call(self, val);
             }
 
         };
@@ -45,7 +57,8 @@
 
             events: {},
 
-            init: function () {}
+            init: function () {},
+            render: function () {}
             
         }, options);
 

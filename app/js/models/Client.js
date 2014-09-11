@@ -1,3 +1,5 @@
+/*global hex_md5 */
+
 (function ($, App) {
 
     'use strict';
@@ -28,7 +30,8 @@
 
             this.client.listen('connect', function (evt) {
                 self._data = evt.target;
-                console.log('connected to Respoke!', evt);
+                self._data.gravatar = 'http://gravatar.com/avatar/' + hex_md5(self._data.endpointId);
+                $.publish('respoke.connected');
             });
 
             this.client.listen('message', function (evt) {

@@ -2,9 +2,14 @@
 
     'use strict';
 
-    App.models.client = new App.models.Client();
-    App.models.client.connect('tysoncadenhead');
+    App.models.alice = new App.models.Client();
+    App.models.alice.connect('Alice');
 
-    $.router.route();
+    App.models.bob = new App.models.Client();
+    App.models.bob.connect('Bob');
+
+    $.subscribe('respoke.connected', function () {
+        $.router.route();
+    });
 
 }(jQuery, App));

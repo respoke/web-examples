@@ -82,6 +82,7 @@ body {
 	position: relative;
 
 	&:hover {
+		.user-status-dropdown__status--unavailable,
 		.user-status-dropdown__status--available,
 		.user-status-dropdown__status--away,
 		.user-status-dropdown__status--busy,
@@ -91,6 +92,7 @@ body {
 		}
 	}
 
+	&__status--unavailable,
 	&__status--available,
 	&__status--away,
 	&__status--busy,
@@ -101,6 +103,7 @@ body {
 		line-height: 3rem;
 	}
 
+	&__status--unavailable,
 	&__status--available,
 	&__status--away,
 	&__status--busy,
@@ -136,6 +139,10 @@ body {
 			top: 1.25rem;
 			width: 0;
 		}
+	}
+
+	&__status--unavailable:after {
+		background-color: $dndColor;
 	}
 
 	&__status--available:after {

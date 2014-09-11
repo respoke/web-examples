@@ -41,7 +41,7 @@ module.exports = function (grunt) {
             options: {
                 force: true,
                 jshintrc: './.jshintrc',
-                ignores: []
+                ignores: ['app/js/lib/md5.js']
             }
         },
 
