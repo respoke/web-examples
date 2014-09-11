@@ -3,16 +3,30 @@
 <head>
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-	<title>Endpoint Presence</title>
-	<link rel="stylesheet" href="/css/endpoint-presence.css">
+	<title>Creating a Buddy List</title>
+	<link rel="stylesheet" href="/css/creating-a-buddy-list.css">
 </head>
 <body>
+	<p class="cbl-instructions">
+		Enter your name to see a buddy list of all others on this page right now.
+	</p>
+	<form class="cbl-name">
+		<input class="cbl-name__text" type="text" placeholder="Enter a name">
+		<input class="cbl-name__submit" type="submit" value="Send">
+	</form>
+
+	<br>
+	<br>
+	<br>
+	<br>
+	<br>
+
 	<h1 class="user-handle">
 		<img src="http://dummyimage.com/55x52/000000/ffffff&text=×" alt="Avatar">
 		User handle
 	</h1>
 	<form class="user-status-dropdown">
-		<div class="user-status-dropdown__status--available">Available</div>
+		<div class="user-status-dropdown__status--brb">Be right back</div>
 		<select class="user-status-dropdown__status__select">
 			<option>Available</option>
 			<option>Away</option>
@@ -26,6 +40,9 @@
 	<br>
 
 	<ul class="buddy-list">
+		<li class="buddy-list__title">
+			Buddy List
+		</li>
 		<li class="buddy-list__user">
 			<img src="http://dummyimage.com/51x51/000000/ffffff&text=×" alt="User" class="buddy-list__user__avatar">
 			<div class="buddy-list__user__name">Alice</div>
