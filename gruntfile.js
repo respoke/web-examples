@@ -12,7 +12,8 @@ module.exports = function (grunt) {
         stylus: {
             compile: {
                 files: {
-                    'app/css/endpoint-messaging.css': 'app/css/endpoint-messaging.styl'
+                    'app/css/endpoint-messaging.css': 'app/css/endpoint-messaging.styl',
+                    'app/css/endpoint-presence.css': 'app/css/endpoint-presence.styl'
                 }
             }
         },

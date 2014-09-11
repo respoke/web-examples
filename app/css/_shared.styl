@@ -1,0 +1,21 @@
+$accentColor = #3577b4;
+$accentHoverColor = darken($accentColor, 10%);
+$fonts = 'Open Sans', Helvetica, Arial, sans-serif;
+
+$clearfix {
+	&:before,
+	&:after {
+		content: " ";
+		display: table;
+	}
+	&:after {
+		clear: both;
+	}
+}
+
+body {
+	background: #f9fafc;
+	box-sizing: border-box;
+	color: #444;
+	font-family: $fonts;
+}
