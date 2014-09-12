@@ -24,6 +24,7 @@
     "grunt-blanket-mocha": "~0.4.1",
     "blanket": "~1.1.5",
     "mocha": "~1.21.4",
-    "sinon": "~1.10.3"
+    "sinon": "~1.10.3",
+    "sinonjs": "~1.10.2"
   }
 }
