@@ -13,6 +13,10 @@
 
 		&:nth-child(2) {
 			float: right;
+
+			.em-avatar {
+				text-align: right;
+			}
 		}
 	}
 }
@@ -25,10 +29,6 @@
 	@media (min-width: 40em) {
 		font-size: 2.25rem;
 	}
-}
-
-.em-avatar--right {
-	text-align: right;
 }
 
 .em-thread {
@@ -73,8 +73,7 @@
 		}
 	}
 
-	&__message,
-	&__message--right {
+	&__message {
 		&__content {
 			background: #fff;
 		}

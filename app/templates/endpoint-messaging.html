@@ -4,56 +4,68 @@
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<title>Endpoint Presence</title>
-	<link rel="stylesheet" href="/css/endpoint-presence.css">
+	<link rel="stylesheet" href="/css/endpoint-messaging.css">
 </head>
 <body>
-	<div class="em-col">
-		<h1 class="em-avatar">
-			<img src="http://dummyimage.com/55x55/000000/ffffff&amp;text=×" alt="Avatar"> Alice
-		</h1>
-		<ul class="em-thread">
-			<li class="em-thread__message">
-				<div class="em-thread__message__content">
-					<img src="http://dummyimage.com/135x75/000000/ffffff&amp;text=×" alt="Gangnam Style">
-					GANGHAM STYLE<br>
-					www.youtube.com
-				</div>
-			</li>
-			<li class="em-thread__message--reply">
-				<div class="em-thread__message--reply__content">
-					Lorem ipsum dolor sit amet, consectetur adipisicing elit. Dolorum ratione nam assumenda, magnam magni.
-				</div>
-				<img class="em-thread__message--reply__avatar" src="http://dummyimage.com/34x34/000000/ffffff&amp;text=×" alt="Jeff">
-			</li>
-		</ul>
-		<form class="em-message">
-			<input type="text" class="em-message__text" placeholder="Enter your message here">
-			<input type="submit" value="Send" class="em-message__submit">
-		</form>
-	</div>
-	<div class="em-col">
-		<h1 class="em-avatar--right">
-			Jeff <img src="http://dummyimage.com/55x55/000000/ffffff&amp;text=×" alt="Avatar">
-		</h1>
-		<ul class="em-thread">
-			<li class="em-thread__message--reply--left">
-				<img class="em-thread__message--reply--left__avatar" src="http://dummyimage.com/34x34/000000/ffffff&amp;text=×" alt="Alice">
-				<div class="em-thread__message--reply--left__content">
-					<img src="http://dummyimage.com/135x75/000000/ffffff&amp;text=×" alt="Gangnam Style">
-					GANGHAM STYLE<br>
-					www.youtube.com
-				</div>
-			</li>
-			<li class="em-thread__message--right">
-				<div class="em-thread__message--right__content">
-					Lorem ipsum dolor sit amet, consectetur adipisicing elit. Dolorum ratione nam assumenda, magnam magni.
-				</div>
-			</li>
-		</ul>
-		<form class="em-message">
-			<input type="text" class="em-message__text" placeholder="Enter your message here">
-			<input type="submit" value="Send" class="em-message__submit">
-		</form>
-	</div>
+
+	<div id="endpoint-messaging"></div>
+
+	<script type="text/tmpl" id="endpoint-thread">
+		<div class="em-col">
+			<h1 class="em-avatar">
+				<img src="/images/profile-<%= username %>.jpg" alt="<%= username %>"> <%= username %>
+			</h1>
+			<ul class="em-thread">
+			</ul>
+			<form class="em-message">
+				<input type="text" class="em-message__text" placeholder="Enter your message here">
+				<input type="submit" value="Send" class="em-message__submit">
+			</form>
+		</div>
+	</script>
+
+	<script type="text/tmpl" id="endpoint-thread-message">
+		<li class="em-thread__message">
+			<div class="em-thread__message__content">
+				<%= message %>
+			</div>
+		</li>
+	</script>
+
+	<script type="text/tmpl" id="endpoint-thread-reply">
+		<li class="em-thread__message--reply">
+			<div class="em-thread__message--reply__content">
+				<%= message %>
+			</div>
+			<img class="em-thread__message--reply__avatar" src="/images/profile-<%= username %>.jpg" alt="<%= username %>">
+		</li>
+	</script>
+
+	<script src="https://cdn.respoke.io/respoke.min.js"></script>
+
+	<!-- injector:js -->
+	<script src="/app/vendor/jquery/dist/jquery.min.js"></script>
+	<script src="/app/js/app.js"></script>
+	<script src="/app/js/lib/md5.js"></script>
+	<script src="/app/js/lib/tmpl.js"></script>
+	<script src="/app/js/models/Client.js"></script>
+	<script src="/app/js/models/Endpoint.js"></script>
+	<!-- endinjector -->
+
+	<script src="/app/js/views/EndpointMessaging.js"></script>
+	<script type="text/javascript">
+		var users = [
+	        messagingView({
+	        	username: 'bob',
+	        	connectTo: 'alice'
+	        }).init(),
+	        messagingView({
+	        	username: 'alice',
+	        	connectTo: 'bob'
+	        }).init()
+	    ];
+
+	    if (~document.location.search.indexOf('mode=d')) { document.write("<script async src='//HOST:3000/browser-sync-client.1.3.6.js'><\/script>".replace(/HOST/g, location.hostname));}
+    </script>
 </body>
 </html>

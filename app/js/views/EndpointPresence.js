@@ -2,7 +2,7 @@
 
     'use strict';
 
-    App.views.EndpointPresence = $.View.extend({
+    /*App.views.EndpointPresence = $.View.extend({
 
         el: 'body',
         template: 'endpoint-presence',
@@ -36,6 +36,6 @@
         render: function () {
         }
 
-    });
+    });*/
 
 }(jQuery, App));
