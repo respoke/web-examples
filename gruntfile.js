@@ -12,6 +12,7 @@ module.exports = function (grunt) {
     ];
 
     var testFiles = files.slice();
+        testFiles.push('app/js/views/**/*.js');
         testFiles.push('test/specs/**/*.js');
 
     grunt.initConfig({

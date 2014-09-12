@@ -14,7 +14,7 @@ var messagingView = (function ($, App) {
                 connection.sendMessage({
                     message: message
                 });
-                this.renderMessage(message)
+                this.renderMessage(message);
             },
 
             postMessage: function (e) {
@@ -43,7 +43,7 @@ var messagingView = (function ($, App) {
                 $el.find('.em-thread').append(html);
             },
 
-            onMessage: function (evt) {
+            renderReply: function (evt) {
                 var html = this.getTemplate({
                     el: '#endpoint-thread-reply',
                     data: {
@@ -68,7 +68,7 @@ var messagingView = (function ($, App) {
                 connection = App.models.endpoint({
                     id: options.connectTo,
                     client: client,
-                    onMessage: this.onMessage.bind(this)
+                    onMessage: this.renderReply.bind(this)
                 });
             },
 
