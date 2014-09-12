@@ -2,9 +2,17 @@ var path = require('path');
 
 module.exports = function (grunt) {
 
-    var files = ['app/vendor/jquery/dist/jquery.min.js', 'app/js/app.js', 'app/js/lib/**/*.js', 'app/js/models/**/*.js', 'app/js/**/*.js', 'app/css/**/*.css'];
+    var files = [
+        'app/vendor/jquery/dist/jquery.min.js',
+        'app/js/app.js',
+        'app/js/lib/**/*.js',
+        'app/js/models/**/*.js',
+        'app/js/collections/**/*.js',
+        'app/css/**/*.css'
+    ];
 
     var testFiles = files.slice();
+        testFiles.push('app/js/views/**/*.js');
         testFiles.push('test/specs/**/*.js');
 
     grunt.initConfig({
@@ -33,7 +41,7 @@ module.exports = function (grunt) {
             options: {
                 force: true,
                 jshintrc: './.jshintrc',
-                ignores: []
+                ignores: ['app/js/lib/md5.js']
             }
         },
 
@@ -86,10 +94,22 @@ module.exports = function (grunt) {
             options: {
 
             },
-            index: {
-                template: 'app/index.html',
+            creatingABuddyList: {
+                template: 'app/templates/creating-a-buddy-list.html',
                 files: {
-                    'app/index.html': files
+                    'app/templates/creating-a-buddy-list.html': files
+                }
+            },
+            endpointMessaging: {
+                template: 'app/templates/endpoint-messaging.html',
+                files: {
+                    'app/templates/endpoint-messaging.html': files
+                }
+            },
+            endpointPresence: {
+                template: 'app/templates/endpoint-presence.html',
+                files: {
+                    'app/templates/endpoint-presence.html': files
                 }
             },
             test: {

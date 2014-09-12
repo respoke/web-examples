@@ -4,7 +4,6 @@
 
     w.App = {
         models: {},
-        collections: {},
         views: {}
     };
 

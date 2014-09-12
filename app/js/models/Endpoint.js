@@ -1,9 +1,9 @@
-(function ($, App) {
+(function (App) {
 
     'use strict';
-    
-    App.models.Endpoint = new $.Model.extend({
 
-    });
+    App.models.endpoint = function (options, fn) {
+        return options.client.getEndpoint(options);
+    };
 
-}(jQuery, App));
+}(App));

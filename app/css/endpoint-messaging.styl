@@ -13,12 +13,15 @@
 
 		&:nth-child(2) {
 			float: right;
+
+			.em-avatar {
+				text-align: right;
+			}
 		}
 	}
 }
 
-.em-avatar,
-.em-avatar--right {
+.em-avatar {
 	font-size: 1.5rem;
 	font-weight: normal;
 
@@ -27,19 +30,14 @@
 	}
 }
 
-.em-avatar--right {
-	text-align: right;
-}
-
-.em-thread {
+.em-thread,
+.em-thread--reply {
 	list-style: none;
 	margin: 0;
 	padding: 0;
 
 	&__message,
-	&__message--right,
-	&__message--reply,
-	&__message--reply--left {
+	&__message--reply {
 		&__content {
 			@extends $clearfix;
 			border-radius: .75rem;
@@ -74,7 +72,7 @@
 	}
 
 	&__message,
-	&__message--right {
+	&__message--reply {
 		&__content {
 			background: #fff;
 		}
@@ -91,23 +89,13 @@
 		}
 	}
 
-	&__message--right {
-		&__content {
-			margin-right: .5rem;
-
-			&:before {
-				border-left: 1rem solid #fff;
-				right: -.5em;
-			}
-		}
-
-		&__avatar {
-			margin-right: .5rem;
-		}
-	}
-
 	&__message--reply {
+		display: flex;
+
 		&__content {
+			background: $accentColor;
+			color: #fff;
+			flex: 1 auto;
 			margin-right: .5rem;
 
 			&:before {
@@ -115,42 +103,44 @@
 				right: -.5em;
 			}
 		}
-		&__avatar {
-			margin-left: .5rem;
-		}
-	}
-
-	&__message--reply--left {
-		&__content {
-			margin-left: .5rem;
-
-			&:before {
-				border-right: 1rem solid $accentColor;
-				left: -.5em;
-			}
-		}
-
-		&__avatar {
-			margin-right: .5rem;
-		}
-	}
-
-	&__message--reply,
-	&__message--reply--left {
-		display: flex;
-
-		&__content {
-			background: $accentColor;
-			color: #fff;
-			flex: 1 auto;
-		}
 
 		&__avatar {
 			flex: 0 2.125rem;
 			height: 2.125rem;
 			margin-bottom: 1rem;
+			margin-left: .5rem;
 			margin-top: 1rem;
 			min-width: 2.125rem;
+		}
+	}
+}
+
+.em-thread--reply {
+	.em-thread__message--reply__avatar {
+		margin-left: 0;
+		margin-right: .5rem;
+	}
+
+	.em-thread__message--reply__content {
+		margin-left: .5rem;
+		margin-right: 0;
+
+		&:before {
+			border-left: none;
+			border-right: 1rem solid $accentColor;
+			left: -.5rem;
+		}
+	}
+
+	.em-thread__message__content {
+		margin-left: 0;
+		margin-right: .5rem;
+
+		&:before {
+			border-left: 1rem solid #FFF;
+			border-right: none;
+			left: auto;
+			right: -.5rem;
 		}
 	}
 }

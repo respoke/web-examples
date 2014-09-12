@@ -14,29 +14,27 @@
 
     <script src="/vendor/mocha/mocha.js"></script>
     <script src="/vendor/chai/chai.js"></script>
+    <script src="/vendor/sinonjs/sinon.js"></script>
     <script>
     assert = chai.assert;
     mocha.setup('bdd');
     </script>
 
+    <script type="text/javascript" src="/test/specs/_stubs.js"></script>
+
     <!-- injector:js -->
     <script src="/app/vendor/jquery/dist/jquery.min.js"></script>
     <script src="/app/js/app.js"></script>
-    <script src="/app/js/lib/collection.js"></script>
-    <script src="/app/js/lib/model.js"></script>
-    <script src="/app/js/lib/pubsub.js"></script>
-    <script src="/app/js/lib/view.js"></script>
-    <script src="/app/js/models/Client.js"></script>
-    <script src="/app/js/models/Endpoint.js"></script>
-    <script src="/app/js/models/Group.js"></script>
-    <script src="/app/js/models/Message.js"></script>
-    <script src="/app/js/collections/Endpoints.js"></script>
-    <script src="/app/js/collections/Groups.js"></script>
-    <script src="/app/js/collections/Messages.js"></script>
-    <script src="/app/js/init.js"></script>
-    <script src="/test/specs/lib.collection.spec.js"></script>
-    <script src="/test/specs/lib.model.spec.js"></script>
-    <script src="/test/specs/models.endpoint.spec.js"></script>
+    <script src="/app/js/lib/md5.js"></script>
+    <script src="/app/js/lib/tmpl.js"></script>
+    <script src="/app/js/models/client.js"></script>
+    <script src="/app/js/models/endpoint.js"></script>
+    <script src="/app/js/views/CreatingABuddyList.js"></script>
+    <script src="/app/js/views/EndpointMessaging.js"></script>
+    <script src="/app/js/views/EndpointPresence.js"></script>
+    <script src="/test/specs/_stubs.js"></script>
+    <script src="/test/specs/models.client.spec.js"></script>
+    <script src="/test/specs/views.endpointMessaging.spec.js"></script>
     <!-- endinjector -->
 
     <script src="/vendor/blanket/dist/qunit/blanket.js" data-cover-only="//js/app/.*/"></script>
