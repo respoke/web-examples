@@ -11,6 +11,20 @@ body {
 	padding: 0;
 }
 
+.group-list-open {
+	appearance: none;
+	background-color: #444;
+	border: none;
+	color: #fff;
+	cursor: pointer;
+	font-family: $fonts;
+	font-size: .9rem;
+	margin: 0;
+	outline: none;
+	padding: .75rem;
+	width: 100%;
+}
+
 .group-list,
 .group-list--is-open {
 	background: #fff;
@@ -44,8 +58,10 @@ body {
 	}
 }
 
-.group-chat {
+.group-chat,
+.group-chat--open-panel {
 	padding: 1rem;
+	transition: opacity .5s;
 
 	@media (min-width: 45em) {
 		flex: 1 auto;
@@ -63,6 +79,10 @@ body {
 			width: 100%;
 		}
 	}
+}
+
+.group-chat--open-panel {
+	opacity: .3;
 }
 
 .chat-window {

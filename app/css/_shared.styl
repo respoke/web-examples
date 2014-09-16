@@ -188,9 +188,21 @@ body {
 	padding: 0;
 
 	li {
+		cursor: pointer;
+
 		&:last-child {
 			border-bottom: none;
 		}
+
+		&:hover {
+			background-color: #f3f3f3;
+		}
+	}
+
+	.active {
+		background-color: $accentColor !important;
+		color: #fff;
+		cursor: default;
 	}
 
 	&__title,
@@ -297,5 +309,113 @@ body {
 	&__user__status--dnd,
 	&__user__status--brb {
 		font-size: .75rem;
+	}
+}
+
+/*
+ * Messages
+ */
+.messages {
+	margin: 0;
+	padding: 0;
+	list-style: none;
+
+	li {
+		margin: 1.3rem 0;
+
+		&:first-child {
+			margin-top: 0;
+		}
+	}
+}
+
+.message {
+	&--left__content,
+	&--right__content,
+	&--avatar-left__content,
+	&--avatar-right__content,
+	&--full-left__container__content,
+	&--full-right__container__content {
+		border-radius: .75rem;
+		filter: url('/images/message-bubble-ff.svg#drop-shadow');
+		filter: drop-shadow(0 1px 1px rgba(0, 0, 0, .2));
+		padding: .5rem 1rem;
+		position: relative;
+
+		&:before {
+			border-bottom: .75rem solid transparent;
+			border-top: .75rem solid transparent;
+			content: "";
+			display: block;
+			height: 0;
+			position: absolute;
+			top: .15rem;
+			width: 0;
+			z-index: 2;
+		}
+	}
+
+	&--left__content,
+	&--avatar-left__content,
+	&--full-left__container__content {
+		background: #fff;
+
+		&:before {
+			border-right: 1rem solid #fff;
+			left: -.5rem;
+		}
+	}
+
+	&--right__content,
+	&--avatar-right__content,
+	&--full-right__container__content {
+		background: $accentColor;
+		color: #fff;
+
+		&:before {
+			border-left: 1rem solid $accentColor;
+			right: -.5rem;
+		}
+	}
+
+	&--avatar-left,
+	&--avatar-right,
+	&--full-left,
+	&--full-right {
+		display: flex;
+	}
+
+	&--avatar-left__avatar,
+	&--avatar-right__avatar,
+	&--full-left__avatar,
+	&--full-right__avatar {
+		flex: 0 2.125rem;
+		height: 2.125rem;
+		min-width: 2.125rem;
+	}
+
+	&--avatar-left__content,
+	&--avatar-right__content,
+	&--full-left__container,
+	&--full-right__container {
+		flex: 1 auto;
+	}
+
+	&--avatar-left__avatar,
+	&--full-left__avatar {
+		margin-right: 1rem;
+	}
+
+	&--avatar-right__avatar,
+	&--full-right__avatar {
+		margin-left: 1rem;
+		order: 2;
+	}
+
+	&--full-left__meta,
+	&--full-right__meta {
+		color: #999;
+		font-size: .75em;
+		padding: .35rem 1rem 0 1rem;
 	}
 }
