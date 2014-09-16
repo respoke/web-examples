@@ -4,11 +4,14 @@
 	box-sizing: border-box;
 }
 
-html,
-body {
+html {
 	height: 100%;
+}
+
+body {
 	margin: 0;
 	padding: 0;
+	position: relative;
 }
 
 .group-list-open {
@@ -29,7 +32,7 @@ body {
 .group-list--is-open {
 	background: #fff;
 	box-shadow: 2px 0 2px rgba(0, 0, 0, .1);
-	min-height: 100%;
+	height: 100%;
 	left: -80%;
 	position: absolute;
 	transition: left .5s;
@@ -38,12 +41,8 @@ body {
 	z-index: 5;
 
 	@media (min-width: 45em) {
-		flex: 0 15rem;
 		left: 0;
-		max-height: 100%;
-		min-height: 0;
-		overflow-y: auto;
-		position: relative;
+		width: 15rem;
 	}
 }
 
@@ -64,21 +63,27 @@ body {
 	transition: opacity .5s;
 
 	@media (min-width: 45em) {
-		flex: 1 auto;
-		position: relative;
+		margin-left: 15rem;
 	}
 
 	&__form {
 		@extends $inlineForm;
+		background-color: #fff;
+		bottom: 0;
+		box-shadow: 0 -1px 2px rgba(0, 0, 0, .1);
+		padding: 1rem;
+		position: fixed;
+		width: 100%;
+		z-index: 4;
 
 		@media (min-width: 45em) {
-			bottom: 1rem;
-			margin: -1rem;
-			padding: 1rem;
-			position: absolute;
-			width: 100%;
+			padding-left: 16rem;
 		}
 	}
+}
+
+.group-chat {
+	padding-bottom: 6rem;
 }
 
 .group-chat--open-panel {
@@ -87,8 +92,6 @@ body {
 
 .chat-window {
 	@media (min-width: 45em) {
-		align-items: stretch;
-		display: flex;
 		height: 100%;
 	}
 }
