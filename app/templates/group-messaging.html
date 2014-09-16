@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Group Messaging</title>
+	<link rel="stylesheet" href="/css/group-messaging.css">
+</head>
+<body>
+
+	<header>
+		<button class="group-list-open">Nav</button>
+	</header>
+	<div class="chat-window">
+		<nav class="group-list">
+			<ul class="buddy-list--mini">
+				<li class="buddy-list--mini__user">
+					<div class="buddy-list--mini__user__name">Alice</div>
+					<div class="buddy-list--mini__user__status--available">Available</div>
+				</li>
+				<li class="buddy-list--mini__user">
+					<div class="buddy-list--mini__user__name">Daniel</div>
+					<div class="buddy-list--mini__user__status--away">Away</div>
+				</li>
+				<li class="buddy-list--mini__user">
+					<div class="buddy-list--mini__user__name">Janet</div>
+					<div class="buddy-list--mini__user__status--dnd">Do not disturb</div>
+				</li>
+				<li class="buddy-list--mini__user">
+					<div class="buddy-list--mini__user__name">Jennifer</div>
+					<div class="buddy-list--mini__user__status--busy">Busy</div>
+				</li>
+				<li class="buddy-list--mini__user">
+					<div class="buddy-list--mini__user__name">Alice</div>
+					<div class="buddy-list--mini__user__status--available">Available</div>
+				</li>
+				<li class="buddy-list--mini__user">
+					<div class="buddy-list--mini__user__name">Daniel</div>
+					<div class="buddy-list--mini__user__status--away">Away</div>
+				</li>
+				<li class="buddy-list--mini__user">
+					<div class="buddy-list--mini__user__name">Janet</div>
+					<div class="buddy-list--mini__user__status--dnd">Do not disturb</div>
+				</li>
+				<li class="buddy-list--mini__user">
+					<div class="buddy-list--mini__user__name">Jennifer</div>
+					<div class="buddy-list--mini__user__status--busy">Busy</div>
+				</li>
+				<li class="buddy-list--mini__user">
+					<div class="buddy-list--mini__user__name">Alice</div>
+					<div class="buddy-list--mini__user__status--available">Available</div>
+				</li>
+				<li class="buddy-list--mini__user">
+					<div class="buddy-list--mini__user__name">Daniel</div>
+					<div class="buddy-list--mini__user__status--away">Away</div>
+				</li>
+				<li class="buddy-list--mini__user">
+					<div class="buddy-list--mini__user__name">Janet</div>
+					<div class="buddy-list--mini__user__status--dnd">Do not disturb</div>
+				</li>
+				<li class="buddy-list--mini__user">
+					<div class="buddy-list--mini__user__name">Jennifer</div>
+					<div class="buddy-list--mini__user__status--busy">Busy</div>
+				</li>
+				<li class="buddy-list--mini__user">
+					<div class="buddy-list--mini__user__name">Alice</div>
+					<div class="buddy-list--mini__user__status--available">Available</div>
+				</li>
+				<li class="buddy-list--mini__user">
+					<div class="buddy-list--mini__user__name">Daniel</div>
+					<div class="buddy-list--mini__user__status--away">Away</div>
+				</li>
+				<li class="buddy-list--mini__user">
+					<div class="buddy-list--mini__user__name">Janet</div>
+					<div class="buddy-list--mini__user__status--dnd">Do not disturb</div>
+				</li>
+				<li class="buddy-list--mini__user">
+					<div class="buddy-list--mini__user__name">Jennifer</div>
+					<div class="buddy-list--mini__user__status--busy">Busy</div>
+				</li>
+				<li class="buddy-list--mini__user">
+					<div class="buddy-list--mini__user__name">Alice</div>
+					<div class="buddy-list--mini__user__status--available">Available</div>
+				</li>
+				<li class="buddy-list--mini__user">
+					<div class="buddy-list--mini__user__name">Daniel</div>
+					<div class="buddy-list--mini__user__status--away">Away</div>
+				</li>
+				<li class="buddy-list--mini__user">
+					<div class="buddy-list--mini__user__name">Janet</div>
+					<div class="buddy-list--mini__user__status--dnd">Do not disturb</div>
+				</li>
+				<li class="buddy-list--mini__user">
+					<div class="buddy-list--mini__user__name">Jennifer</div>
+					<div class="buddy-list--mini__user__status--busy">Busy</div>
+				</li>
+				<li class="buddy-list--mini__user">
+					<div class="buddy-list--mini__user__name">Alice</div>
+					<div class="buddy-list--mini__user__status--available">Available</div>
+				</li>
+				<li class="buddy-list--mini__user">
+					<div class="buddy-list--mini__user__name">Daniel</div>
+					<div class="buddy-list--mini__user__status--away">Away</div>
+				</li>
+				<li class="buddy-list--mini__user">
+					<div class="buddy-list--mini__user__name">Janet</div>
+					<div class="buddy-list--mini__user__status--dnd">Do not disturb</div>
+				</li>
+				<li class="buddy-list--mini__user">
+					<div class="buddy-list--mini__user__name">Jennifer</div>
+					<div class="buddy-list--mini__user__status--busy">Busy</div>
+				</li>
+			</ul>
+		</nav>
+		<section class="group-chat">
+			<form class="group-chat__form">
+				<input type="text" class="group-chat__form__text" placeholder="Enter your message here">
+				<input type="submit" value="Send" class="group-chat__form__submit">
+			</form>
+		</section>
+	</div>
+
+	<!-- injector:js -->
+	<script src="/app/vendor/jquery/dist/jquery.min.js"></script>
+	<script src="/app/js/app.js"></script>
+	<!-- endinjector -->
+
+	<script>
+		'use strict';
+
+		(function () {
+
+			var $openBtn = $('.group-list-open'),
+					$closeBtn = $('.group-list-close');
+
+			function checkStatus () {
+				if ($('.group-list').length) {
+					openMenu();
+				} else {
+					closeMenu();
+				}
+			}
+
+			function hideMenu (e) {
+				var $openedMenu = $(e.target).closest('.group-list--is-open');
+
+				if ( ($openedMenu.length === 0) && ($(e.target)[0] !== $openBtn[0]) ) {
+					closeMenu();
+				}
+			}
+
+			function openMenu () {
+				$('.group-list').removeClass('group-list').addClass('group-list--is-open');
+			}
+
+			function closeMenu () {
+				$('.group-list--is-open').removeClass('group-list--is-open').addClass('group-list');
+			}
+
+			$openBtn.on('click', checkStatus);
+			$closeBtn.on('click', closeMenu);
+			$('body').on('click', hideMenu);
+
+		})();
+	</script>
+</body>
+</html>

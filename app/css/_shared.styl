@@ -181,18 +181,14 @@ body {
 /*
  * Buddy list
  */
-.buddy-list {
+.buddy-list,
+.buddy-list--mini {
 	list-style: none;
 	margin: 0;
 	padding: 0;
 
 	li {
-		&:first-child {
-			border-radius: 1rem 1rem 0 0;
-		}
-
 		&:last-child {
-			border-radius: 0 0 1rem 1rem;
 			border-bottom: none;
 		}
 	}
@@ -201,7 +197,6 @@ body {
 	&__user {
 		background-color: #fff;
 		border-bottom: 1px solid #dfdfdf;
-		box-shadow: 1px 1px 2px rgba(0, 0, 0, .2), 0 0 1px rgba(0, 0, 0, .1);
 		padding: 1rem;
 	}
 
@@ -211,39 +206,13 @@ body {
 	}
 
 	&__user {
-		min-height: 3.1875rem;
-		padding-left: 5rem;
 		position: relative;
 	}
-
-	/*
-	&__user {
-		background-color: #fff;
-		border-bottom: 1px solid #dfdfdf;
-		box-shadow: 1px 1px 2px rgba(0, 0, 0, .2);
-		min-height: 3.1875rem;
-		padding: 1rem 1rem 1rem 5rem;
-		position: relative;
-
-		&:first-child {
-			border-radius: .5rem .5rem 0 0;
-		}
-
-		&:last-child {
-			border-radius: 0 0 .5rem .5rem;
-			border-bottom: none;
-		}
-	}
-	*/
 
 	&__user__avatar {
 		left: 1rem;
 		position: absolute;
 		top: 1rem;
-	}
-
-	&__user__name {
-		font-size: 1.35rem;
 	}
 
 	&__user__status--available,
@@ -252,7 +221,6 @@ body {
 	&__user__status--dnd,
 	&__user__status--brb {
 		color: #999;
-		font-size: .875rem;
 		margin-top: .15rem;
 
 		&:after {
@@ -285,5 +253,49 @@ body {
 
 	&__user__status--brb:after {
 		background-color: $brbColor;
+	}
+}
+
+.buddy-list {
+	li {
+		&:first-child {
+			border-radius: 1rem 1rem 0 0;
+		}
+
+		&:last-child {
+			border-radius: 0 0 1rem 1rem;
+		}
+	}
+
+	&__title,
+	&__user {
+		box-shadow: 1px 1px 2px rgba(0, 0, 0, .2), 0 0 1px rgba(0, 0, 0, .1);
+	}
+
+	&__user {
+		min-height: 3.1875rem;
+		padding-left: 5rem;
+	}
+
+	&__user__name {
+		font-size: 1.35rem;
+	}
+
+	&__user__status--available,
+	&__user__status--away,
+	&__user__status--busy,
+	&__user__status--dnd,
+	&__user__status--brb {
+		font-size: .875rem;
+	}
+}
+
+.buddy-list--mini {
+	&__user__status--available,
+	&__user__status--away,
+	&__user__status--busy,
+	&__user__status--dnd,
+	&__user__status--brb {
+		font-size: .75rem;
 	}
 }
