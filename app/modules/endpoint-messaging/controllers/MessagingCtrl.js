@@ -37,7 +37,8 @@ App.controllers.messagingCtrl = (function ($, App) {
 
                     // Applies the data to the template using John Resig's micro-templating
                     html = $.tmpl(tmpl, {
-                        message: message
+                        message: message,
+                        username: options.username
                     });
 
                 $el.find('.messages').append(html);

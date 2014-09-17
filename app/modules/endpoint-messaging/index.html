@@ -15,7 +15,7 @@
             <h1 class="em-avatar">
                 <img src="/images/profile-<%= username %>.jpg" alt="<%= username %>"> <%= username %>
             </h1>
-            <ul class="em-thread">
+            <ul class="em-thread messages">
             </ul>
             <form class="em-message">
                 <input type="text" class="em-message__text" placeholder="Enter your message here">
@@ -25,20 +25,37 @@
     </script>
 
     <script type="text/tmpl" id="endpoint-thread-message">
-        <li class="em-thread__message">
-            <div class="em-thread__message__content">
-                <%= message %>
-            </div>
-        </li>
+        <% if (username === 'alice') { %>
+            <li class="message--right">
+                <div class="message--right__content">
+                    <%= message %>
+                </div>
+            </li>
+        <% } else { %>
+            <li class="message--left">
+                <div class="message--left__content">
+                    <%= message %>
+                </div>
+            </li>
+        <% } %>
     </script>
 
     <script type="text/tmpl" id="endpoint-thread-reply">
-        <li class="em-thread__message--reply">
-            <div class="em-thread__message--reply__content">
-                <%= message %>
-            </div>
-            <img class="em-thread__message--reply__avatar" src="/images/profile-<%= username %>.jpg" alt="<%= username %>">
-        </li>
+        <% if (username === 'alice') { %>
+            <li class="message--avatar-right">
+                <img class="message--avatar-right__avatar" src="/images/profile-<%= username %>.jpg" alt="<%= username %>">
+                <div class="message--avatar-right__content">
+                    <%= message %>
+                </div>
+            </li>
+        <% } else { %>
+            <li class="message--avatar-left">
+                <img class="message--avatar-left__avatar" src="/images/profile-<%= username %>.jpg" alt="<%= username %>">
+                <div class="message--avatar-left__content">
+                    <%= message %>
+                </div>
+            </li>
+        <% } %>
     </script>
 
     <script src="https://cdn.respoke.io/respoke.min.js"></script>
