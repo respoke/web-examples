@@ -1,0 +1,98 @@
+@import "_shared";
+
+* {
+	box-sizing: border-box;
+}
+
+html {
+	height: 100%;
+}
+
+body {
+	margin: 0;
+	min-height: 100%;
+	padding: 0;
+	position: relative;
+}
+
+.group-list-open {
+	appearance: none;
+	background-color: #444;
+	border: none;
+	color: #fff;
+	cursor: pointer;
+	font-family: $fonts;
+	font-size: .9rem;
+	margin: 0;
+	outline: none;
+	padding: .75rem;
+	width: 100%;
+}
+
+.group-list,
+.group-list--is-open {
+	background: #fff;
+	box-shadow: 2px 0 2px rgba(0, 0, 0, .1);
+	height: 100%;
+	left: -80%;
+	position: absolute;
+	transition: left .5s;
+	top: 0;
+	width: 80%;
+	z-index: 5;
+
+	@media (min-width: 45em) {
+		left: 0;
+		width: 15rem;
+	}
+}
+
+.group-list--is-open {
+	left: 0;
+}
+
+.group-list-open,
+.group-list-close {
+	@media (min-width: 45em) {
+		display: none;
+	}
+}
+
+.group-chat,
+.group-chat--open-panel {
+	padding: 1rem;
+	transition: opacity .5s;
+
+	@media (min-width: 45em) {
+		margin-left: 15rem;
+	}
+
+	&__form {
+		@extends $inlineForm;
+		background-color: #fff;
+		bottom: 0;
+		box-shadow: 0 -1px 2px rgba(0, 0, 0, .1);
+		padding: 1rem;
+		position: fixed;
+		width: 100%;
+		z-index: 4;
+
+		@media (min-width: 45em) {
+			padding-left: 16rem;
+		}
+	}
+}
+
+.group-chat {
+	padding-bottom: 6rem;
+}
+
+.group-chat--open-panel {
+	opacity: .3;
+}
+
+.chat-window {
+	@media (min-width: 45em) {
+		height: 100%;
+	}
+}

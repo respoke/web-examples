@@ -22,7 +22,8 @@ module.exports = function (grunt) {
                 files: {
                     'app/css/endpoint-messaging.css': 'app/css/endpoint-messaging.styl',
                     'app/css/endpoint-presence.css': 'app/css/endpoint-presence.styl',
-                    'app/css/creating-a-buddy-list.css': 'app/css/creating-a-buddy-list.styl'
+                    'app/css/creating-a-buddy-list.css': 'app/css/creating-a-buddy-list.styl',
+                    'app/css/group-messaging.css': 'app/css/group-messaging.styl'
                 }
             }
         },

@@ -40,7 +40,7 @@ App.controllers.messagingCtrl = (function ($, App) {
                         message: message
                     });
 
-                $el.find('.em-thread').append(html);
+                $el.find('.messages').append(html);
             },
 
             /**
@@ -57,7 +57,7 @@ App.controllers.messagingCtrl = (function ($, App) {
                         message: evt.message.message
                     });
 
-                $el.find('.em-thread').append(html);
+                $el.find('.messages').append(html);
             },
 
             /**
@@ -110,7 +110,7 @@ App.controllers.messagingCtrl = (function ($, App) {
             },
 
             /**
-             * Kicks off the view by attempting to initialize the client and rendering the main template for that client 
+             * Kicks off the view by attempting to initialize the client and rendering the main template for that client
              */
             init: function () {
                 this.renderMainTemplate();
