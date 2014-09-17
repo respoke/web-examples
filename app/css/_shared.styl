@@ -63,6 +63,22 @@ $inlineForm {
 	}
 }
 
+btn(bgColor) {
+	background: bgColor;
+	border: 1px solid darken(bgColor, 10%);
+	border-radius: .25rem;
+	color: darken(bgColor, 50%);
+	cursor: pointer;
+	font-family: $fonts;
+	font-size: .9rem;
+	outline: none;
+	padding: .7rem 1rem;
+
+	&:hover {
+		background: darken(bgColor, 5%);
+	}
+}
+
 body {
 	background: #f9fafc;
 	box-sizing: border-box;
@@ -431,5 +447,79 @@ body {
 		color: #999;
 		font-size: .75em;
 		padding: .35rem 1rem 0 1rem;
+	}
+}
+
+/*
+ * Popups
+ */
+.popup {
+	position: absolute;
+	top: 5rem;
+	width: 100%;
+	z-index: 999;
+
+	&__wrapper {
+		background: #fff;
+		border-radius: .75rem;
+		box-shadow: 0 2px 6px rgba(0, 0, 0, .4);
+		margin: 0 auto;
+		max-width: 30rem;
+		padding: 1rem;
+		width: 90%;
+
+		img {
+			max-width: 100%;
+		}
+	}
+
+	&__wrapper__title {
+		color: $accentColor;
+		margin: 0 0 1rem;
+	}
+
+	&__wrapper__options {
+		display: flex;
+		justify-content: space-between;
+		margin-top: 1rem;
+	}
+
+	&__wrapper__options__btn {
+		btn(#f5f5f5);
+	}
+
+	&__wrapper__options__btn--success {
+		btn(#c0ebc2);
+	}
+
+	&-active:after {
+		background: rgba(0, 0, 0, .3);
+		content: "";
+		display: block;
+		height: 100%;
+		left: 0;
+		position: absolute;
+		top: 0;
+		width: 100%;
+		z-index: 998;
+	}
+}
+
+/*
+ * Video chat
+ */
+.video-chat {
+	background: #000;
+	height: 100%;
+	position: absolute;
+	top: 0;
+	width: 100%;
+	z-index: 5;
+
+	@media (min-width: 45em) {
+		height: calc(100% - 3.25rem);
+		left: 15rem;
+		top: 3.25rem;
+		width: calc(100% - 15rem);
 	}
 }
