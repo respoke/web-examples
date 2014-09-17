@@ -11,8 +11,33 @@ html {
 body {
 	margin: 0;
 	min-height: 100%;
-	padding: 0;
+	padding: 6rem 0 0 0;
 	position: relative;
+
+	@media (min-width: 45em) {
+		padding-top: 3.5rem;
+	}
+}
+
+.group-chat__header {
+	box-shadow: 0 1px 2px rgba(0, 0, 0, .1);
+	left: 0;
+	position: fixed;
+	top: 0;
+	width: 100%;
+	z-index: 4;
+
+	&__me {
+		background: #fff;
+		color: rgba($accentColor, .6);
+		font-size: .875rem;
+		padding: 1rem;
+		text-align: right;
+
+		a {
+			color: $accentColor;
+		}
+	}
 }
 
 .group-list-open {
@@ -32,9 +57,9 @@ body {
 .group-list,
 .group-list--is-open {
 	background: #fff;
-	box-shadow: 2px 0 2px rgba(0, 0, 0, .1);
 	height: 100%;
 	left: -80%;
+	overflow: hidden;
 	position: absolute;
 	transition: left .5s;
 	top: 0;
@@ -42,12 +67,27 @@ body {
 	z-index: 5;
 
 	@media (min-width: 45em) {
+		box-shadow: 2px 0 2px rgba(0, 0, 0, .1);
 		left: 0;
+		position: fixed;
 		width: 15rem;
+	}
+
+	.buddy-list--mini {
+		box-shadow: 2px 0 2px rgba(0, 0, 0, .1);
+
+		@media (min-width: 45em) {
+			box-shadow: none;
+			height: 100%;
+			overflow-y: scroll;
+			position: absolute;
+			width: 100%;
+		}
 	}
 }
 
 .group-list--is-open {
+	overflow: visible;
 	left: 0;
 }
 

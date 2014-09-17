@@ -188,14 +188,8 @@ body {
 	padding: 0;
 
 	li {
-		cursor: pointer;
-
 		&:last-child {
 			border-bottom: none;
-		}
-
-		&:hover {
-			background-color: #f3f3f3;
 		}
 	}
 
@@ -218,7 +212,12 @@ body {
 	}
 
 	&__user {
+		cursor: pointer;
 		position: relative;
+
+		&:hover {
+			background-color: #f3f3f3;
+		}
 	}
 
 	&__user__avatar {
@@ -299,10 +298,6 @@ body {
 		padding-left: 5rem;
 	}
 
-	&__user__name {
-		font-size: 1.35rem;
-	}
-
 	&__user__status--available,
 	&__user__status--away,
 	&__user__status--busy,
@@ -312,13 +307,15 @@ body {
 	}
 }
 
+.buddy-list {
+	&__user__name {
+		font-size: 1.35rem;
+	}
+}
+
 .buddy-list--mini {
-	&__user__status--available,
-	&__user__status--away,
-	&__user__status--busy,
-	&__user__status--dnd,
-	&__user__status--brb {
-		font-size: .75rem;
+	&__user__name {
+		font-size: .9rem;
 	}
 }
 
