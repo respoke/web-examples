@@ -3,7 +3,7 @@ App.controllers.buddylistCtrl = (function ($, App) {
     'use strict';
 
     /**
-     * The buddy list view
+     * The Main Buddy List Controller
      */
     return function (options) {
 

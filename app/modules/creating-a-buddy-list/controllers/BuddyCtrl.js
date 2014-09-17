@@ -2,6 +2,9 @@ App.controllers.buddyCtrl = (function ($, App) {
 
     'use strict';
 
+    /**
+     * The Individual Buddy controller
+     */
     return function (options) {
 
         return {
@@ -38,6 +41,9 @@ App.controllers.buddyCtrl = (function ($, App) {
                 this.el.find('.buddy-list').append(html);
             },
 
+            /**
+             * Initialize this controller
+             */
             init: function (endpoint) {
                 this.endpointId = endpoint.endpointId;
                 this.el = $(options.renderTo);

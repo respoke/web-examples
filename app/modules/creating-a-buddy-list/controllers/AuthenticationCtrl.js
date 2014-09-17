@@ -2,6 +2,9 @@ App.controllers.authenticationCtrl = (function ($, App) {
 
     'use strict';
 
+    /**
+     * The Authentication Controller
+     */
     return function (options) {
 
         return {
