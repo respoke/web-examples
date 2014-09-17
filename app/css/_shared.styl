@@ -225,8 +225,14 @@ body {
 		left: 1rem;
 		position: absolute;
 		top: 1rem;
+		width: 52px;
 	}
 
+	&__user__name {
+		font-size: 1.35rem;
+	}
+
+	&__user__status--unavailable,
 	&__user__status--available,
 	&__user__status--away,
 	&__user__status--busy,
@@ -245,6 +251,10 @@ body {
 			top: .1rem;
 			width: .75rem;
 		}
+	}
+
+	&__user__status--unavailable:after {
+		background-color: $dndColor;
 	}
 
 	&__user__status--available:after {

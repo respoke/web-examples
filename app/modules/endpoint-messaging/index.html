@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Endpoint Messaging</title>
+    <link rel="stylesheet" href="/css/endpoint-messaging.css">
+</head>
+<body>
+
+    <div id="endpoint-messaging"></div>
+
+    <script type="text/tmpl" id="endpoint-thread">
+        <div class="em-col">
+            <h1 class="em-avatar">
+                <img src="/images/profile-<%= username %>.jpg" alt="<%= username %>"> <%= username %>
+            </h1>
+            <ul class="em-thread">
+            </ul>
+            <form class="em-message">
+                <input type="text" class="em-message__text" placeholder="Enter your message here">
+                <input type="submit" value="Send" class="em-message__submit">
+            </form>
+        </div>
+    </script>
+
+    <script type="text/tmpl" id="endpoint-thread-message">
+        <li class="em-thread__message">
+            <div class="em-thread__message__content">
+                <%= message %>
+            </div>
+        </li>
+    </script>
+
+    <script type="text/tmpl" id="endpoint-thread-reply">
+        <li class="em-thread__message--reply">
+            <div class="em-thread__message--reply__content">
+                <%= message %>
+            </div>
+            <img class="em-thread__message--reply__avatar" src="/images/profile-<%= username %>.jpg" alt="<%= username %>">
+        </li>
+    </script>
+
+    <script src="https://cdn.respoke.io/respoke.min.js"></script>
+
+    <!-- injector:js -->
+    <script src="/app/vendor/jquery/dist/jquery.min.js"></script>
+    <script src="/app/js/app.js"></script>
+    <script src="/app/js/lib/helpers.js"></script>
+    <script src="/app/js/lib/md5.js"></script>
+    <script src="/app/js/lib/tmpl.js"></script>
+    <script src="/app/js/models/Client.js"></script>
+    <script src="/app/js/models/Endpoint.js"></script>
+    <script src="/app/js/models/StatusTypes.js"></script>
+    <!-- endinjector -->
+
+    <script src="controllers/MessagingCtrl.js"></script>
+    <script type="text/javascript">
+        var users = [
+            App.controllers.messagingCtrl({
+                username: 'bob',
+                connectTo: 'alice'
+            }).init(),
+            App.controllers.messagingCtrl({
+                username: 'alice',
+                connectTo: 'bob'
+            }).init()
+        ];
+
+        if (~document.location.search.indexOf('mode=d')) { document.write("<script async src='//HOST:3000/browser-sync-client.1.3.6.js'><\/script>".replace(/HOST/g, location.hostname));}
+    </script>
+</body>
+</html>

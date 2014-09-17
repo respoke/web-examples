@@ -12,7 +12,7 @@ module.exports = function (grunt) {
     ];
 
     var testFiles = files.slice();
-        testFiles.push('app/js/views/**/*.js');
+        testFiles.push('app/modules/**/*.js');
         testFiles.push('test/specs/**/*.js');
 
     grunt.initConfig({
@@ -65,7 +65,8 @@ module.exports = function (grunt) {
             scripts: {
                 files: [
                     'app/js/**/*.js',
-                    'test/**/*.js'
+                    'test/**/*.js',
+                    'app/modules/**/*.js'
                 ],
                 tasks: ['test', 'injector', 'jscs']
             },
@@ -96,21 +97,21 @@ module.exports = function (grunt) {
 
             },
             creatingABuddyList: {
-                template: 'app/templates/creating-a-buddy-list.html',
+                template: 'app/modules/creating-a-buddy-list/index.html',
                 files: {
-                    'app/templates/creating-a-buddy-list.html': files
+                    'app/modules/creating-a-buddy-list/index.html': files
                 }
             },
             endpointMessaging: {
-                template: 'app/templates/endpoint-messaging.html',
+                template: 'app/modules/endpoint-messaging/index.html',
                 files: {
-                    'app/templates/endpoint-messaging.html': files
+                    'app/modules/endpoint-messaging/index.html': files
                 }
             },
             endpointPresence: {
-                template: 'app/templates/endpoint-presence.html',
+                template: 'app/modules/endpoint-presence/index.html',
                 files: {
-                    'app/templates/endpoint-presence.html': files
+                    'app/modules/endpoint-presence/index.html': files
                 }
             },
             test: {
