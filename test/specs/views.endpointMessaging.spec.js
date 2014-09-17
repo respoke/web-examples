@@ -1,7 +1,7 @@
 describe('The Endpoint Messaging View', function () {
 
     beforeEach(function () {
-        this.view = messagingView({
+        this.ctrl = App.controllers.messagingCtrl({
             username: 'bob',
             connectTo: 'alice'
         });
@@ -14,7 +14,7 @@ describe('The Endpoint Messaging View', function () {
                 assert.equal(obj.client.myString, 'hi');
                 done();
             };
-            this.view.onConnection({
+            this.ctrl.onConnection({
                 myString: 'hi'
             });
             App.models.endpoint = endpoint;
@@ -32,11 +32,11 @@ describe('The Endpoint Messaging View', function () {
                     }
                 }
             };
-            this.view.renderMessage = sinon.stub();
-            this.view.onConnection({
+            this.ctrl.renderMessage = sinon.stub();
+            this.ctrl.onConnection({
                 myString: 'hi'
             });
-            this.view.sendMessage('test message');
+            this.ctrl.sendMessage('test message');
         });
     });
 

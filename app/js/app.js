@@ -4,7 +4,7 @@
 
     w.App = {
         models: {},
-        views: {}
+        controllers: {}
     };
 
 }(jQuery, window));

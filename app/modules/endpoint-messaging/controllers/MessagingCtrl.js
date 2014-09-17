@@ -1,4 +1,4 @@
-var messagingView = (function ($, App) {
+App.controllers.messagingCtrl = (function ($, App) {
 
     'use strict';
 
