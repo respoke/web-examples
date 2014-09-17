@@ -2,13 +2,18 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, minimal-ui">
     <title>Group Messaging</title>
     <link rel="stylesheet" href="/css/group-messaging.css">
 </head>
 <body>
 
-    <button class="group-list-open">View Buddies</button>
+    <header class="group-chat__header">
+        <button class="group-list-open">View Buddies</button>
+        <div class="group-chat__header__me">
+            <a href="#">Log out</a> as John
+        </div>
+    </header>
 
     <div class="chat-window">
         <nav class="group-list">
@@ -37,6 +42,7 @@
         </form>
 
         <section class="group-chat">
+
             <ol class="messages">
 
                 <li class="message--left">
@@ -74,6 +80,7 @@
                         </div>
                     </div>
                 </li>
+
             </ol>
         </section>
     </div>
@@ -89,7 +96,7 @@
         (function () {
 
             var $openBtn = $('.group-list-open'),
-                    $closeBtn = $('.group-list-close');
+                $closeBtn = $('.group-list-close');
 
             function checkStatus () {
                 if ($('.group-list').length) {
@@ -108,6 +115,9 @@
             }
 
             function openMenu () {
+                $('html, body').animate({
+                    scrollTop: 0
+                }, 500);
                 $('.group-list').removeClass('group-list').addClass('group-list--is-open');
                 $('.group-chat').removeClass('group-chat').addClass('group-chat--open-panel');
             }
