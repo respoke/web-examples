@@ -57,6 +57,7 @@ body {
 .group-list,
 .group-list--is-open {
 	background: #fff;
+	box-shadow: 2px 0 2px rgba(0, 0, 0, .1);
 	height: 100%;
 	left: -80%;
 	overflow: hidden;
@@ -67,15 +68,12 @@ body {
 	z-index: 5;
 
 	@media (min-width: 45em) {
-		box-shadow: 2px 0 2px rgba(0, 0, 0, .1);
 		left: 0;
 		position: fixed;
 		width: 15rem;
 	}
 
 	.buddy-list--mini {
-		box-shadow: 2px 0 2px rgba(0, 0, 0, .1);
-
 		@media (min-width: 45em) {
 			box-shadow: none;
 			height: 100%;

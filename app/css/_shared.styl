@@ -203,7 +203,6 @@ body {
 	&__user {
 		background-color: #fff;
 		border-bottom: 1px solid #dfdfdf;
-		padding: 1rem;
 	}
 
 	&__title {
@@ -291,11 +290,16 @@ body {
 	&__title,
 	&__user {
 		box-shadow: 1px 1px 2px rgba(0, 0, 0, .2), 0 0 1px rgba(0, 0, 0, .1);
+		padding: 1rem;
 	}
 
 	&__user {
 		min-height: 3.1875rem;
 		padding-left: 5rem;
+	}
+
+	&__user__name {
+		font-size: 1.35rem;
 	}
 
 	&__user__status--available,
@@ -307,13 +311,12 @@ body {
 	}
 }
 
-.buddy-list {
-	&__user__name {
-		font-size: 1.35rem;
-	}
-}
-
 .buddy-list--mini {
+	&__title,
+	&__user {
+		padding: .5rem 1rem;
+	}
+
 	&__user__name {
 		font-size: .9rem;
 	}
