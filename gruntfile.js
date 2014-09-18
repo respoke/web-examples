@@ -115,6 +115,12 @@ module.exports = function (grunt) {
                     'app/modules/endpoint-presence/index.html': files
                 }
             },
+            videoCall: {
+                template: 'app/modules/video-call/index.html',
+                files: {
+                    'app/modules/video-call/index.html': files
+                }
+            },
             test: {
                 template: 'test/index.html',
                 files: {
