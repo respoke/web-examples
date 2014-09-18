@@ -26,14 +26,16 @@
 
     <script type="text/tmpl" id="endpoint-thread-message">
         <% if (username === 'alice') { %>
-            <li class="message--right">
-                <div class="message--right__content">
+            <li class="message--avatar-right">
+                <img class="message--avatar-right__avatar" src="/images/profile-<%= username %>.jpg" alt="<%= username %>">
+                <div class="message--avatar-right__content">
                     <%= message %>
                 </div>
             </li>
         <% } else { %>
-            <li class="message--left">
-                <div class="message--left__content">
+            <li class="message--avatar-right">
+                <img class="message--avatar-right__avatar" src="/images/profile-<%= username %>.jpg" alt="<%= username %>">
+                <div class="message--avatar-right__content">
                     <%= message %>
                 </div>
             </li>
@@ -42,9 +44,9 @@
 
     <script type="text/tmpl" id="endpoint-thread-reply">
         <% if (username === 'alice') { %>
-            <li class="message--avatar-right">
-                <img class="message--avatar-right__avatar" src="/images/profile-<%= username %>.jpg" alt="<%= username %>">
-                <div class="message--avatar-right__content">
+            <li class="message--avatar-left">
+                <img class="message--avatar-left__avatar" src="/images/profile-<%= username %>.jpg" alt="<%= username %>">
+                <div class="message--avatar-left__content">
                     <%= message %>
                 </div>
             </li>

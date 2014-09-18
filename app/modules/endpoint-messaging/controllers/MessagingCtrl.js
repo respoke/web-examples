@@ -59,6 +59,16 @@ App.controllers.messagingCtrl = (function ($, App) {
                     });
 
                 $el.find('.messages').append(html);
+                this.pinToBottom();
+
+            },
+
+            /**
+             * Sends the user to the bottom of the chat when a new message is posted
+             */
+            pinToBottom: function () {
+                var msgHeight = $('.em-thread')[0].scrollHeight;
+                $('.em-thread').scrollTop(msgHeight);
             },
 
             /**
@@ -98,7 +108,7 @@ App.controllers.messagingCtrl = (function ($, App) {
                 connection = App.models.endpoint({
                     id: options.connectTo,
                     client: client,
-                    onMessage: this.renderReply
+                    onMessage: this.renderReply.bind(this)
                 });
             },
 
