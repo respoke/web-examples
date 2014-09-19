@@ -15,6 +15,8 @@
             fn(client);
         });
 
+        return client;
+
     };
 
 }(App));

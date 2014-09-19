@@ -2,107 +2,102 @@ App.controllers.videoCallCtrl = (function ($, App) {
 
     return function (options) {
 
-        var client;
+        var client, connection, call, buddyListCtrl, callPreviewCtrl, callWarningCtrl, $el;
 
-        return {
+        function onMemberJoin (e) {
+            buddyListCtrl.renderGroupMember(null, e.connection);
+        }
 
-            /**
-             * When a group member joins, we need to add them to the group list
-             */
-            onMemberJoin: function (e) {
-                this.buddyList.renderGroupMember(null, e.connection);
-            },
+        function onMemberLeave (e) {
+            buddyListCtrl.removeMember(e.connection.endpointId);
+        }
 
-            /**
-             * When a group member leaves, we can remove them from the DOM
-             */
-            onMemberLeave: function (e) {
-                this.buddyList.removeMember(e.connection.endpointId);
-            },
+        function onAllow () {
+            callWarningCtrl.removeWarning();
+            callPreviewCtrl = App.controllers.callPreviewCtrl({
+                el: $el,
+                endpointId: connection.id,
+                startCall: startCall,
+                cancelCall: call.hangup
+            });
+        }
 
-            /**
-             * Gets the members of a group and listens for additions and subtractions
-             */
-            getGroup: function (group) {
-                group.listen('join', this.onMemberJoin.bind(this));
-                group.listen('leave', this.onMemberLeave.bind(this));
-                group.getMembers({
-                    onSuccess: this.buddyList.renderGroup.bind(this.buddyList)
-                });
-            },
+        function onCall (e) {
+            console.log('onCall', e);
+        }
 
-            /**
-             * Join a group
-             */
-            joinGroup: function () {
-                client.join({
-                    id: 'video-group',
-                    onSuccess: this.getGroup.bind(this)
-                });
-            },
+        function onConnection () {
+            client.listen('call', onCall);
+            joinGroup();
+        }
 
-            startCall: function () {
-                this.call.answer();
-                console.log('startCall', this.call);
-            },
+        function getGroup (group) {
+            group.listen('join', onMemberJoin);
+            group.listen('leave', onMemberLeave);
+            group.getMembers({
+                onSuccess: buddyListCtrl.renderGroup
+            });
+        }
 
-            onAllow: function () {
-                this.callWarningCtrl.remove();
-                this.callPreviewCtrl = App.controllers.callPreviewCtrl({
-                    el: this.el,
-                    endpointId: this.connection.id,
-                    startCall: this.startCall.bind(this)
-                });
-            },
+        function joinGroup () {
+            client.join({
+                id: 'video-group',
+                onSuccess: getGroup
+            });
+        }
 
-            previewLocalMedia: function (video) {
-                this.callPreviewCtrl.renderVideo(video)
-            },
+        function startCall () {
+            call.answer();
+            console.log('startCall', call);
+        }
 
-            makeCall: function () {
-                this.callWarningCtrl = App.controllers.callWarningCtrl({
-                    el: this.el,
-                    endpointId: this.connection.id
-                });
-                this.call = client.startCall({
-                    endpointId: this.connection.id,
-                    onAllow: this.onAllow.bind(this),
-                    previewLocalMedia: this.previewLocalMedia.bind(this)
-                });
-            },
+        function previewLocalMedia (video) {
+            callPreviewCtrl.renderVideo(video)
+        }
 
-            promptCall: function (endpointId) {
-                this.connection = client.getEndpoint({
-                    id: endpointId
-                });
-                App.controllers.callpromptCtrl({
-                    el: this.el,
-                    makeCall: this.makeCall.bind(this),
-                    endpointId: endpointId
-                });
-            },
+        function makeCall () {
 
-            onCall: function (e) {
-                console.log('onCall', e);
-            },
+            var endpoint = client.getEndpoint({
+                id: connection.id
+            });
 
-            onConnection: function (_client) {
-                client = _client;
-                client.listen('call', this.onCall.bind(this));
-                this.joinGroup();
-            },
+            callWarningCtrl = App.controllers.callWarningCtrl({
+                el: $el,
+                endpointId: connection.id
+            });
 
-            init: function () {
-                this.el = $(options.renderTo);
-                this.buddyList = App.controllers.buddyListCtrl({
-                    endpointId: options.username,
-                    el: this.el.find('.buddy-list--mini'),
-                    memberClick: this.promptCall.bind(this)
-                });
-                App.models.client(options.username, this.onConnection.bind(this));
-            }
+            call = endpoint.startVideoCall({
+                constraints: {
+                    audio: true,
+                    video: true
+                },
+                onAllow: onAllow,
+                previewLocalMedia: previewLocalMedia
+            });
+        }
 
-        };
+        function promptCall (endpointId) {
+            connection = client.getEndpoint({
+                id: endpointId
+            });
+            App.controllers.callpromptCtrl({
+                el: $el,
+                makeCall: makeCall,
+                endpointId: endpointId
+            });
+        }
+
+        (function () {
+            $el = $(options.renderTo);
+            buddyListCtrl = App.controllers.buddyListCtrl({
+                endpointId: options.username,
+                el: $el.find('.buddy-list--mini'),
+                memberClick: promptCall
+            });
+            App.models.client(options.username, onConnection);
+        }());
+
+        return {};
 
     };
 

@@ -2,31 +2,30 @@ App.controllers.callpromptCtrl = (function ($, App) {
 
     return function (options) {
 
-        var api = {
+        var $el;
 
-            render: function () {
-                var tmpl = $('#prompt-call').html(),
-                    html = $.tmpl(tmpl, options);
-                this.el = $(html);
-                options.el.prepend(this.el);
-                this.el.find('.popup__wrapper__options__btn').bind('click', this.remove.bind(this));
-                this.el.find('.popup__wrapper__options__btn--success').bind('click', this.makeCall.bind(this))
-            },
+        function removePrompt () {
+            $el.remove();
+        }
 
-            remove: function () {
-                this.el.remove();
-            },
+        function makeCall () {
+            removePrompt();
+            options.makeCall();
+        }
 
-            makeCall: function () {
-                this.el.remove();
-                options.makeCall();
-            }
+        (function () {
+            var tmpl = $('#prompt-call').html(),
+                html = $.tmpl(tmpl, options);
+            $el = $(html);
+            options.el.prepend($el);
+            $el.find('.popup__wrapper__options__btn').bind('click', removePrompt);
+            $el.find('.popup__wrapper__options__btn--success').bind('click', makeCall);
 
+        }());
+
+        return {
+            removePrompt: removePrompt
         };
-
-        api.render();
-
-        return api;
 
     };
 

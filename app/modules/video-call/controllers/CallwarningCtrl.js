@@ -2,25 +2,23 @@ App.controllers.callWarningCtrl = (function ($, App) {
 
     return function (options) {
 
-        var api = {
+        var $el;
 
-            render: function () {
-                var tmpl = $('#call-warning').html(),
-                    html = $.tmpl(tmpl, options);
-                this.el = $(html);
-                options.el.prepend(this.el);
-                this.el.find('.popup__wrapper__options__btn').bind('click', this.remove.bind(this));
-            },
+        function removeWarning () {
+            $el.remove();
+        }
 
-            remove: function () {
-                this.el.remove();
-            }
+        (function () {
+            var tmpl = $('#call-warning').html(),
+                html = $.tmpl(tmpl, options);
+            $el = $(html);
+            options.el.prepend($el);
+            $el.find('.popup__wrapper__options__btn').bind('click', removeWarning);
+        }());
 
+        return {
+            removeWarning: removeWarning
         };
-
-        api.render();
-
-        return api;
 
     };
 

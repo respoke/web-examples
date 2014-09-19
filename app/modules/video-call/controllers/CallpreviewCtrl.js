@@ -2,34 +2,40 @@ App.controllers.callPreviewCtrl = (function ($, App) {
 
     return function (options) {
 
-        var api = {
+        var $el;
 
-            renderVideo: function (video) {
-                this.el.find('#video-preview').append(video);
-            },
+        function renderVideo (video) {
+            $el.find('#video-preview').append(video);
+        }
 
-            render: function () {
-                var tmpl = $('#call-preview').html(),
+        function startCall () {
+            removePreview();
+            options.startCall();
+        }
+
+        function cancelCall () {
+            removePreview();
+            options.cancelCall();
+        }
+
+        function removePreview () {
+            $el.remove();
+        }
+
+        (function () {
+
+             var tmpl = $('#call-preview').html(),
                     html = $.tmpl(tmpl, options);
-                this.el = $(html);
-                options.el.prepend(this.el);
-                this.el.find('.popup__wrapper__options__btn').bind('click', this.remove.bind(this));
-                this.el.find('.popup__wrapper__options__btn--success').bind('click', this.startCall.bind(this));
-            },
+                $el = $(html);
+                options.el.prepend($el);
+                $el.find('.popup__wrapper__options__btn').bind('click', cancelCall);
+                $el.find('.popup__wrapper__options__btn--success').bind('click', startCall);
 
-            startCall: function () {
-                options.startCall();
-            },
+        }());
 
-            remove: function () {
-                this.el.remove();
-            }
-
+        return {
+            renderVideo: renderVideo
         };
-
-        api.render();
-
-        return api;
 
     };
 
