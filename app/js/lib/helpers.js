@@ -25,6 +25,24 @@
          */
         getPresenceClass: function (presence) {
             return (presence.indexOf(' ') !== -1) ? 'unavailable' : this.getClassName(presence);
+        },
+
+        insertTemplate: function (options) {
+
+            // Get the contents of the inline template
+            var tmpl = $('#' + options.template).html(),
+
+                // Applies the data to the template using John Resig's micro-templating
+                el = $.tmpl(tmpl, options.data || {}),
+
+                $el = $(el);
+
+            // Insert or append the element
+            options.renderTo[(options.type) ? options.type : 'append']($el);
+
+            // Return the element
+            return $el;
+
         }
 
     };

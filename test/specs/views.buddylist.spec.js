@@ -15,11 +15,11 @@ describe('The Buddy List View', function () {
         });
     });*/
 
-    describe('when we get the avatar', function () {
+    /*describe('when we get the avatar', function () {
         it('should return a gravatar link', function () {
             var avatar = $.helpers.getAvatar('tcadenhead@appendto.com');
             assert.equal(avatar, 'http://gravatar.com/avatar/4ef1e5bfd76b439a605466192fcc570a?s=52');
         });
-    });
+    });*/
 
 });
