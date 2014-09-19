@@ -5,53 +5,55 @@ App.controllers.buddyCtrl = (function ($, App) {
     /**
      * The Individual Buddy controller
      */
-    return function (options) {
+    return function (options, endpoint) {
 
-        return {
+        var $el;
 
-            /**
-             * Returns the class modified for the user buddy list
-             */
-            getPresenceClass: function (presence) {
-                return 'buddy-list__user__status--' + $.helpers.getPresenceClass(presence);
-            },
+        /**
+         * Returns the class modified for the user buddy list
+         */
+        function getPresenceClass (presence) {
+            return 'buddy-list__user__status--' + $.helpers.getPresenceClass(presence);
+        }
 
-            /**
-             * Renders the status of an individual group member
-             */
-            renderMemberStatus: function (e) {
-                var m = e.connection || e.target,
-                    $el = this.el.find('.buddy-list #user-' + $.helpers.getClassName(m.endpointId) + ' .presence > div');
-                $el
-                    .attr('class', this.getPresenceClass(m.presence))
-                    .html(m.presence);
-            },
+        /**
+         * Renders the status of an individual group member
+         */
+        function renderMemberStatus (e) {
+            var m = e.connection || e.target,
+                $presence = $el.find('.buddy-list #user-' + $.helpers.getClassName(m.endpointId) + ' .presence > div');
+            $presence
+                .attr('class', getPresenceClass(m.presence))
+                .html(m.presence);
+        }
 
-            /**
-             * Renders an individual group member
-             */
-            render: function (endpoint) {
-                var tmpl = $('#user-buddy').html(), html;
-                endpoint = $.extend(endpoint, {
-                    photo: $.helpers.getAvatar(endpoint.endpointId),
-                    presenceCls: $.helpers.getPresenceClass(endpoint.presence),
-                    endpointCls: $.helpers.getClassName(endpoint.endpointId)
-                });
-                html = $.tmpl(tmpl, endpoint);
-                this.el.find('.buddy-list').append(html);
-            },
+        /**
+         * Renders an individual group member
+         */
+        function render (endpoint) {
+            var data = $.extend(endpoint, {
+                photo: $.helpers.getAvatar(endpoint.endpointId),
+                presenceCls: $.helpers.getPresenceClass(endpoint.presence),
+                endpointCls: $.helpers.getClassName(endpoint.endpointId)
+            });
 
-            /**
-             * Initialize this controller
-             */
-            init: function (endpoint) {
-                this.endpointId = endpoint.endpointId;
-                this.el = $(options.renderTo);
-                this.render(endpoint);
-                endpoint.listen('presence', this.renderMemberStatus.bind(this));
-            }
+            $.helpers.insertTemplate({
+                template: 'user-buddy',
+                data: data,
+                renderTo: $el.find('.buddy-list')
+            });
+        }
 
-        };
+        /**
+         * Initialize this controller
+         */
+        (function () {
+            $el = $(options.renderTo);
+            render(endpoint);
+            endpoint.listen('presence', renderMemberStatus);
+        }());
+
+        return {};
 
     };
 

@@ -7,117 +7,111 @@ App.controllers.buddylistCtrl = (function ($, App) {
      */
     return function (options) {
 
-        var client, endpoints = {};
+        var client, $el, endpoints = {};
 
-        return {
+        /**
+         * Returns the client's endpoint
+         */
+        function getClientEndpoint () {
+            return endpoints[client.endpointId];
+        }
 
-            /**
-             * Returns the client's endpoint
-             */
-            getClientEndpoint: function () {
-                return endpoints[client.endpointId];
-            },
+        /**
+         * Renders a single group member
+         */
+        function renderGroupMember (key, endpoint) {
+            
+            var buddyCtrl = App.controllers.buddyCtrl(options, endpoint);
 
-            /**
-             * Renders a single group member
-             */
-            renderGroupMember: function (key, endpoint) {
-                
-                var buddyCtrl = App.controllers.buddyCtrl(options);
+            // Save a reference to the endpoint
+            endpoints[endpoint.endpointId] = endpoint;
 
-                // Save a reference to the endpoint
-                endpoints[endpoint.endpointId] = endpoint;
+        }
 
-                // Initialize the buddy controller
-                buddyCtrl.init(endpoint);
+        /**
+         * Renders all of the current group members
+         */
+        function renderGroup (members) {
+            $.each(members, renderGroupMember);
+        }
 
-            },
+        /**
+         * When a group member joins, we need to add them to the group list
+         */
+        function onMemberJoin (e) {
+            renderGroupMember(null, e.connection);
+        }
 
-            /**
-             * Renders all of the current group members
-             */
-            renderGroup: function (members) {
-                $.each(members, this.renderGroupMember);
-            },
+        /**
+         * When a group member leaves, we can remove them from the DOM
+         */
+        function onMemberLeave (e) {
+            var cls = $.helpers.getClassName(e.connection.endpointId);
+            $el.find('.buddy-list #user-' + cls).remove();
+        }
 
-            /**
-             * When a group member joins, we need to add them to the group list
-             */
-            onMemberJoin: function (e) {
-                this.renderGroupMember(null, e.connection);
-            },
+        /**
+         * Gets the members of a group and listens for additions and subtractions
+         */
+        function getGroup (group) {
+            group.listen('join', onMemberJoin);
+            group.listen('leave', onMemberLeave);
+            group.getMembers({
+                onSuccess: renderGroup
+            });
+        }
 
-            /**
-             * When a group member leaves, we can remove them from the DOM
-             */
-            onMemberLeave: function (e) {
-                var cls = $.helpers.getClassName(e.connection.endpointId);
-                this.el.find('.buddy-list #user-' + cls).remove();
-            },
+        /**
+         * Join a group
+         */
+        function joinGroup () {
+            client.join({
+                id: 'everyone',
+                onSuccess: getGroup
+            });
+        }
 
-            /**
-             * Gets the members of a group and listens for additions and subtractions
-             */
-            getGroup: function (group) {
-                group.listen('join', this.onMemberJoin.bind(this));
-                group.listen('leave', this.onMemberLeave.bind(this));
-                group.getMembers({
-                    onSuccess: this.renderGroup.bind(this)
-                });
-            },
+        /**
+         * Changes the status of the connected endpoint
+         */
+        function changePresence (status) {
+            getClientEndpoint().setPresence({
+                presence: status
+            });
+        }
 
-            /**
-             * Join a group
-             */
-            joinGroup: function () {
+        /**
+         * A callback after the respoke client is connected
+         */
+        function onConnection (connection) {
 
-                client.join({
-                    id: 'everyone',
-                    onSuccess: this.getGroup.bind(this)
-                });
+            var userObj = $.extend({
+                onPresenceChange: changePresence
+            }, connection, options);
 
-            },
+            client = connection;
 
-            /**
-             * Changes the status of the connected endpoint
-             */
-            changePresence: function (status) {
+            App.controllers.userPresenceCtrl(userObj);
 
-                this.getClientEndpoint().setPresence({
-                    presence: status
-                });
+            joinGroup();
 
-            },
+        }
 
-            /**
-             * A callback after the respoke client is connected
-             */
-            onConnection: function (connection) {
+        /**
+         * Initialize the buddy list view
+         */
+        (function () {
+            $el = $(options.renderTo);
+            options = $.extend(options, {
+                onConnection: onConnection
+            });
+            App.controllers.authenticationCtrl(options);
+        }());
 
-                var userObj = $.extend({
-                    onPresenceChange: this.changePresence.bind(this)
-                }, connection, options);
-
-                client = connection;
-
-                App.controllers.userPresenceCtrl(userObj).init();
-
-                this.joinGroup();
-
-            },
-
-            /**
-             * Initialize the buddy list view
-             */
-            init: function () {
-                this.el = $(options.renderTo);
-                options = $.extend(options, {
-                    onConnection: this.onConnection.bind(this)
-                });
-                App.controllers.authenticationCtrl(options).init();
-            }
-
-        };
+        /**
+         * Public API
+         */
+        return {};
 
     };
 
