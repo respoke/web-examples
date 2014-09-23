@@ -555,40 +555,57 @@ body {
 /*
  * Video chat
  */
+
 .video-chat {
 	background: #000;
+	height: calc(100% - 5.9375rem);
+	overflow: hidden;
 	position: absolute;
-	top: 0;
+	top: 5.9375rem;
 	width: 100%;
-	min-height: 100%;
-	z-index: 5;
-	margin-top: 88px;
 
 	@media (min-width: 45em) {
+		height: calc(100% - 3.1875rem);
 		left: 15rem;
-		top: 3.25rem;
+		top: 3.1875rem;
 		width: calc(100% - 15rem);
-		margin-top: -3px;
 	}
 }
 
-video {
-	width: 100%;
-}
-
-.videos-container {
+.video-contain {
+	height: 100%;
 	position: relative;
 }
 
 .video-large {
-	position: relative;
-	z-index: 1;
+	height: 100%;
+
+	video {
+		height: 100%;
+		margin: 0 auto;
+		width: 100%;
+	}
+}
+
+.video-buttons,
+.video-small {
+	position: absolute;
+	z-index: 5;
+}
+
+.video-buttons {
+	top: 1rem;
+	text-align: center;
+	width: 100%;
 }
 
 .video-small {
-	width: 25%;
-	position: absolute;
-	bottom: 2%;
-	z-index: 2;
-	right: 2%;
+	bottom: 1rem;
+	right: 1rem;
+	text-align: right;
+	z-index: 5;
+
+	video {
+		width: 35%;
+	}
 }
