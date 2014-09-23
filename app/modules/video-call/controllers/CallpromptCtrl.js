@@ -14,12 +14,20 @@ App.controllers.callpromptCtrl = (function ($, App) {
         }
 
         (function () {
-            var tmpl = $('#prompt-call').html(),
-                html = $.tmpl(tmpl, options);
-            $el = $(html);
-            options.el.prepend($el);
-            $el.find('.popup__wrapper__options__btn').bind('click', removePrompt);
-            $el.find('.popup__wrapper__options__btn--success').bind('click', makeCall);
+            $el = $.helpers.insertTemplate({
+                template: 'prompt-call',
+                renderTo: options.el,
+                type: 'prepend',
+                data: options,
+                bind: {
+                    '.popup__wrapper__options__btn': {
+                        'click': removePrompt
+                    },
+                    '.popup__wrapper__options__btn--success': {
+                        'click': makeCall
+                    }
+                }
+            });
 
         }());
 

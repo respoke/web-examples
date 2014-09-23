@@ -41,11 +41,15 @@ App.controllers.buddyListCtrl = (function ($, App) {
 
         function renderGroupMember (key, endpoint) {
             if (String(endpoint.endpointId) !== String(options.endpointId)) {
-                var tmpl = $('#buddy-list-user').html(),
-                    html = $.tmpl(tmpl, endpoint),
-                    $el = $(html);
-                options.el.append($el);
-                $el.bind('click', memberClick);
+                $el = $.helpers.insertTemplate({
+                    template: 'buddy-list-user',
+                    renderTo: options.el,
+                    type: 'append',
+                    data: endpoint,
+                    bind: {
+                        'click': memberClick
+                    }
+                });
             }
         }
 
@@ -59,9 +63,9 @@ App.controllers.buddyListCtrl = (function ($, App) {
         }
 
         (function () {
-            $openBtn.on('click', checkStatus);
-            $closeBtn.on('click', closeMenu);
-            $('body').on('click', hideMenu);
+            $openBtn.bind('click', checkStatus);
+            $closeBtn.bind('click', closeMenu);
+            $('body').bind('click', hideMenu);
         }());
 
         return {

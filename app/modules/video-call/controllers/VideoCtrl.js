@@ -10,7 +10,7 @@ App.controllers.videoCtrl = (function ($, App) {
         var $el;
 
         function removeTemplate () {
-            $el.find('.videos-container').remove();
+            $el.find('.video-contain').remove();
         }
 
         function renderRemoteMedia (video) {
@@ -21,47 +21,62 @@ App.controllers.videoCtrl = (function ($, App) {
             $el.find('.video-small').html(video);
         }
 
+        function hangup () {
+            removeTemplate();
+            options.onHangup();
+        }
+
+        function mute (e) {
+            var $target = $(e.target);
+            if ($target.text() === 'Mute') {
+                $target.text('Unmute');
+                options.onMuteAudio();
+            } else {
+                $target.text('Mute');
+                options.onUnmuteAudio();
+            }
+        }
+
+        function hideVideo (e) {
+            var $target = $(e.target);
+            if ($target.text() === 'Hide Video') {
+                $target.text('Show Video');
+                $el.find('.video-small').hide();
+                options.onMuteVideo();
+            } else {
+                $target.text('Hide Video');
+                $el.find('.video-small').show();
+                options.onUnmuteVideo();
+            }
+        }
+
+        function mouseenter () {
+            $el.find('.video-buttons').fadeIn();
+        }
+
+        function mouseleave () {
+            $el.find('.video-buttons').fadeOut();
+        }
+
         function render () {
             $.helpers.insertTemplate({
                 template: 'video-container',
                 renderTo: $el,
                 type: 'html',
-                data: {}
-            });
-
-            $el.find('#hangup').bind('click', function () {
-                removeTemplate();
-                options.onHangup();
-            });
-
-            $el.find('#mute').bind('click', function (e) {
-                var $target = $(e.target);
-                if ($target.text() === 'Mute') {
-                    $target.text('Unmute');
-                    options.onMuteAudio();
-                } else {
-                    $target.text('Mute');
-                    options.onUnmuteAudio();
+                data: {},
+                bind: {
+                    '#hangup': {
+                        'click': hangup
+                    },
+                    '#mute': {
+                        'click': mute
+                    },
+                    '#hide-video': {
+                        'click': hideVideo
+                    },
+                    'mouseenter': mouseenter,
+                    'mouseleave': mouseleave
                 }
-            });
-
-            $el.find('#hide-video').bind('click', function (e) {
-                var $target = $(e.target);
-                if ($target.text() === 'Hide Video') {
-                    $target.text('Show Video');
-                    options.onMuteVideo();
-                } else {
-                    $target.text('Hide Video');
-                    options.onUnmuteVideo();
-                }
-            });
-
-            $el.bind('mouseenter', function () {
-                $el.find('.video-buttons').fadeIn();
-            });
-
-            $el.bind('mouseleave', function () {
-                $el.find('.video-buttons').fadeOut();
             });
         }
 

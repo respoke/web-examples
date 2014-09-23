@@ -9,7 +9,11 @@ App.controllers.callPreviewCtrl = (function ($, App) {
         }
 
         function startCall () {
-            removePreview();
+            if (!options.initiator) {
+                removePreview();
+            } else {
+                $el.find('.popup__wrapper__options__btn--success').attr('disabled', 'disabled').text('Waiting for answer...');
+            }
             options.startCall();
         }
 
@@ -23,13 +27,20 @@ App.controllers.callPreviewCtrl = (function ($, App) {
         }
 
         (function () {
-
-             var tmpl = $('#call-preview').html(),
-                    html = $.tmpl(tmpl, options);
-                $el = $(html);
-                options.el.prepend($el);
-                $el.find('.popup__wrapper__options__btn').bind('click', cancelCall);
-                $el.find('.popup__wrapper__options__btn--success').bind('click', startCall);
+            $el = $.helpers.insertTemplate({
+                template: 'call-preview',
+                renderTo: options.el,
+                type: 'prepend',
+                data: options,
+                bind: {
+                    '.popup__wrapper__options__btn': {
+                        'click': cancelCall
+                    },
+                    '.popup__wrapper__options__btn--success': {
+                        'click': startCall
+                    }
+                }
+            });
 
         }());
 

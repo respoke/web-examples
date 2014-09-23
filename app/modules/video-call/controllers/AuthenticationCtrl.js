@@ -35,9 +35,13 @@ App.controllers.authenticationCtrl = (function ($, App) {
             $el = $.helpers.insertTemplate({
                 template: 'user-authentication',
                 renderTo: $el,
-                type: 'html'
+                type: 'html',
+                bind: {
+                    '.cbl-name': {
+                        'submit': submitName
+                    }
+                }
             });
-            $el.find('.cbl-name').bind('submit', submitName);
         }
 
         /**

@@ -40,6 +40,23 @@
             // Insert or append the element
             options.renderTo[(options.type) ? options.type : 'append']($el);
 
+            // Allow the user to bind events to the template
+            if (options.bind) {
+                for (var element in options.bind) {
+                    if (options.bind.hasOwnProperty(element)) {
+                        if (typeof options.bind[element] === 'function') {
+                            $el.bind(element, options.bind[element]);
+                        } else {
+                            for (var evt in options.bind[element]) {
+                                if (options.bind[element].hasOwnProperty(evt)) {
+                                    $el.find(element).bind(evt, options.bind[element][evt]);
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+
             // Return the element
             return $el;
 

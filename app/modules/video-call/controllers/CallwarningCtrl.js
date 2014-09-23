@@ -9,11 +9,17 @@ App.controllers.callWarningCtrl = (function ($, App) {
         }
 
         (function () {
-            var tmpl = $('#call-warning').html(),
-                html = $.tmpl(tmpl, options);
-            $el = $(html);
-            options.el.prepend($el);
-            $el.find('.popup__wrapper__options__btn').bind('click', removeWarning);
+            $el = $.helpers.insertTemplate({
+                template: 'call-warning',
+                renderTo: options.el,
+                type: 'prepend',
+                data: options,
+                bind: {
+                    '.popup__wrapper__options__btn': {
+                        'click': removeWarning
+                    }
+                }
+            });
         }());
 
         return {

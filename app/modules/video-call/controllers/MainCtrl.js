@@ -50,19 +50,23 @@ App.controllers.videoCallCtrl = (function ($, App) {
         }
 
         function getGroup (group) {
-            group.listen('join', function (e) {
-                buddyListCtrl.renderGroupMember(null, e.connection);
-            });
-            group.listen('leave', function (e) {
-                if (call && call.remoteEndpoint.id === e.connection.endpointId) {
-                    call.hangup();
-                }
-                buddyListCtrl.removeMember(e.connection.endpointId);
-                
-            });
+            group.listen('join', onGroupJoin);
+            group.listen('leave', onGroupLeave);
             group.getMembers({
                 onSuccess: buddyListCtrl.renderGroup
             });
+        }
+
+        function onGroupLeave (e) {
+            if (call && call.remoteEndpoint.id === e.connection.endpointId) {
+                call.hangup();
+            }
+            buddyListCtrl.removeMember(e.connection.endpointId);
+            
+        }
+
+        function onGroupJoin (e) {
+            buddyListCtrl.renderGroupMember(null, e.connection);
         }
 
         function startCall () {
@@ -71,6 +75,50 @@ App.controllers.videoCallCtrl = (function ($, App) {
 
         function hangup () {
             call.hangup();
+            if (videoCtrl) {
+                videoCtrl.removeTemplate();
+            }
+            connection = null;
+            call = null;
+        }
+
+        function onRequestingMedia (e) {
+            callWarningCtrl = App.controllers.callWarningCtrl({
+                el: $el,
+                endpointId: e.target.remoteEndpoint.id
+            });
+        }
+
+        function onAllow () {
+            if (callWarningCtrl) {
+                callWarningCtrl.removeWarning();
+            }
+        }
+
+        function previewLocalMedia (video) {
+            callPreviewCtrl = App.controllers.callPreviewCtrl({
+                el: $el,
+                startCall: startCall,
+                cancelCall: hangup,
+                initiator: !!connection
+            });
+            callPreviewCtrl.renderVideo(video);
+        }
+
+        function onCallConnect (e) {
+            if (callPreviewCtrl) {
+                callPreviewCtrl.removePreview();
+            }
+            videoCtrl = App.controllers.videoCtrl({
+                el: $el.find('.video-chat'),
+                onHangup: call.hangup,
+                onMuteAudio: call.muteAudio,
+                onMuteVideo: call.muteVideo,
+                onUnmuteAudio: call.unmuteAudio,
+                onUnmuteVideo: call.unmuteVideo
+            });
+            videoCtrl.renderRemoteMedia(e.element);
+            videoCtrl.renderLocalMedia(e.target.getLocalElement());
         }
 
         (function () {
@@ -80,45 +128,11 @@ App.controllers.videoCallCtrl = (function ($, App) {
                     audio: true,
                     video: true
                 },
-                onRequestingMedia: function (e) {
-                    callWarningCtrl = App.controllers.callWarningCtrl({
-                        el: $el,
-                        endpointId: e.target.remoteEndpoint.id
-                    });
-                },
-                onAllow: function () {
-                    if (callWarningCtrl) {
-                        callWarningCtrl.removeWarning();
-                    }
-                },
-                onHangup: function (e) {
-                    if (videoCtrl) {
-                        videoCtrl.removeTemplate();
-                    }
-                },
-                previewLocalMedia: function (video) {
-                    callPreviewCtrl = App.controllers.callPreviewCtrl({
-                        el: $el,
-                        startCall: startCall,
-                        cancelCall: hangup
-                    });
-                    callPreviewCtrl.renderVideo(video);
-                },
-                onConnect: function (e) {
-                    if (callPreviewCtrl) {
-                        callPreviewCtrl.removePreview();
-                    }
-                    videoCtrl = App.controllers.videoCtrl({
-                        el: $el.find('.video-chat'),
-                        onHangup: call.hangup,
-                        onMuteAudio: call.muteAudio,
-                        onMuteVideo: call.muteVideo,
-                        onUnmuteAudio: call.unmuteAudio,
-                        onUnmuteVideo: call.unmuteVideo
-                    });
-                    videoCtrl.renderRemoteMedia(e.element);
-                    videoCtrl.renderLocalMedia(e.target.getLocalElement());
-                }
+                onHangup: hangup,
+                onRequestingMedia: onRequestingMedia,
+                onAllow: onAllow,
+                previewLocalMedia: previewLocalMedia,
+                onConnect: onCallConnect
             };
 
             App.controllers.authenticationCtrl({
