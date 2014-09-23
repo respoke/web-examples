@@ -54,6 +54,14 @@ App.controllers.videoCtrl = (function ($, App) {
                     options.onUnmuteVideo();
                 }
             });
+
+            $el.bind('mouseenter', function () {
+                $el.find('.video-buttons').fadeIn();
+            });
+
+            $el.bind('mouseleave', function () {
+                $el.find('.video-buttons').fadeOut();
+            });
         }
 
         /**
