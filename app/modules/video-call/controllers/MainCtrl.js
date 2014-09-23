@@ -2,13 +2,24 @@ App.controllers.videoCallCtrl = (function ($, App) {
 
     return function (options) {
 
-        var client, connection, call, videoCtrl, buddyListCtrl, callPreviewCtrl, callWarningCtrl, $preview, connected = false, $el = $(options.renderTo), callOptions;
+        var client, connection, call, videoCtrl, buddyListCtrl, callPreviewCtrl, callWarningCtrl, localMedia, $el = $(options.renderTo), callOptions;
 
         function onCall (e) {
-            var call = e.call;
+            call = e.call;
             if (!call.initiator) {
                 call.answer(callOptions);
             }
+        }
+
+        function memberClick (endpointId) {
+            connection = client.getEndpoint({
+                id: endpointId
+            });
+            App.controllers.callpromptCtrl({
+                el: $el,
+                makeCall: makeCall,
+                endpointId: endpointId
+            });
         }
 
         function onConnection (e) {
@@ -23,16 +34,7 @@ App.controllers.videoCallCtrl = (function ($, App) {
             buddyListCtrl = App.controllers.buddyListCtrl({
                 endpointId: options.username,
                 el: $el.find('.buddy-list--mini'),
-                memberClick: function (endpointId) {
-                    connection = client.getEndpoint({
-                        id: endpointId
-                    });
-                    App.controllers.callpromptCtrl({
-                        el: $el,
-                        makeCall: makeCall,
-                        endpointId: endpointId
-                    });
-                }
+                memberClick: memberClick
             });
             client.join({
                 id: 'video-group-3',
@@ -41,12 +43,10 @@ App.controllers.videoCallCtrl = (function ($, App) {
         }
 
         function makeCall () {
-
             var endpoint = client.getEndpoint({
                 id: connection.id
             });
-
-            call = endpoint.startVideoCall(callOptions);
+            endpoint.startVideoCall(callOptions);
         }
 
         function getGroup (group) {
@@ -66,7 +66,11 @@ App.controllers.videoCallCtrl = (function ($, App) {
         }
 
         function startCall () {
-            //call.answer(callOptions);
+            call.approve();
+        }
+
+        function hangup () {
+            call.hangup();
         }
 
         (function () {
@@ -77,23 +81,14 @@ App.controllers.videoCallCtrl = (function ($, App) {
                     video: true
                 },
                 onRequestingMedia: function (e) {
-                    console.log('onRequestingMedia', e, e.target.getLocalElement());
                     callWarningCtrl = App.controllers.callWarningCtrl({
                         el: $el,
-                        endpointId: connection.id
+                        endpointId: e.target.remoteEndpoint.id
                     });
                 },
                 onAllow: function () {
                     if (callWarningCtrl) {
                         callWarningCtrl.removeWarning();
-                    }
-                    if (connection) {
-                        callPreviewCtrl = App.controllers.callPreviewCtrl({
-                            el: $el,
-                            endpointId: connection.id,
-                            startCall: startCall,
-                            cancelCall: call.hangup
-                        });
                     }
                 },
                 onHangup: function (e) {
@@ -101,15 +96,15 @@ App.controllers.videoCallCtrl = (function ($, App) {
                         videoCtrl.removeTemplate();
                     }
                 },
-                onLocalMedia: function (e) {
-                    if (callPreviewCtrl) {
-                        $preview = e.element;
-                        callPreviewCtrl.renderVideo(e.element);
-                    }
+                previewLocalMedia: function (video) {
+                    callPreviewCtrl = App.controllers.callPreviewCtrl({
+                        el: $el,
+                        startCall: startCall,
+                        cancelCall: hangup
+                    });
+                    callPreviewCtrl.renderVideo(video);
                 },
                 onConnect: function (e) {
-                    call = call || e.target;
-                    connected = true;
                     if (callPreviewCtrl) {
                         callPreviewCtrl.removePreview();
                     }
@@ -122,7 +117,7 @@ App.controllers.videoCallCtrl = (function ($, App) {
                         onUnmuteVideo: call.unmuteVideo
                     });
                     videoCtrl.renderRemoteMedia(e.element);
-                    videoCtrl.renderLocalMedia($preview);
+                    videoCtrl.renderLocalMedia(e.target.getLocalElement());
                 }
             };
 
