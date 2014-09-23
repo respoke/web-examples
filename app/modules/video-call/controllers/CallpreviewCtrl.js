@@ -34,7 +34,8 @@ App.controllers.callPreviewCtrl = (function ($, App) {
         }());
 
         return {
-            renderVideo: renderVideo
+            renderVideo: renderVideo,
+            removePreview: removePreview
         };
 
     };

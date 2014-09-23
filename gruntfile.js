@@ -1,4 +1,5 @@
-var path = require('path');
+var path = require('path'),
+    _ = require('underscore');
 
 module.exports = function (grunt) {
 
@@ -10,10 +11,6 @@ module.exports = function (grunt) {
         'app/js/collections/**/*.js',
         'app/css/**/*.css'
     ];
-
-    var testFiles = files.slice();
-        testFiles.push('app/modules/**/*.js');
-        testFiles.push('test/specs/**/*.js');
 
     grunt.initConfig({
 
@@ -100,31 +97,53 @@ module.exports = function (grunt) {
             creatingABuddyList: {
                 template: 'app/modules/creating-a-buddy-list/index.html',
                 files: {
-                    'app/modules/creating-a-buddy-list/index.html': files
+                    'app/modules/creating-a-buddy-list/index.html': (function () {
+                        var arr = _.clone(files);
+                        arr.push('app/modules/creating-a-buddy-list/**/*.js');
+                        return arr;
+                    }())
                 }
             },
             endpointMessaging: {
                 template: 'app/modules/endpoint-messaging/index.html',
                 files: {
-                    'app/modules/endpoint-messaging/index.html': files
+                    'app/modules/endpoint-messaging/index.html': (function () {
+                        var arr = _.clone(files);
+                        arr.push('app/modules/endpoint-messaging/**/*.js');
+                        return arr;
+                    }())
                 }
             },
             endpointPresence: {
                 template: 'app/modules/endpoint-presence/index.html',
                 files: {
-                    'app/modules/endpoint-presence/index.html': files
+                    'app/modules/endpoint-presence/index.html': (function () {
+                        var arr = _.clone(files);
+                        arr.push('app/modules/endpoint-presence/**/*.js');
+                        return arr;
+                    }())
                 }
             },
             videoCall: {
                 template: 'app/modules/video-call/index.html',
                 files: {
-                    'app/modules/video-call/index.html': files
+                    'app/modules/video-call/index.html': (function () {
+                        var arr = _.clone(files);
+                        arr.push('app/modules/video-call/**/*.js');
+                        return arr;
+                    }())
                 }
             },
             test: {
                 template: 'test/index.html',
                 files: {
-                    'test/index.html': testFiles
+                    'test/index.html': (function () {
+                        var arr = _.clone(files);
+                        arr.push('app/modules/video-call/**/*.js');
+                        arr.push('app/modules/**/*.js');
+                        arr.push('test/specs/**/*.js');
+                        return arr;
+                    }())
                 }
             }
 

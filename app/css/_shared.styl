@@ -536,25 +536,59 @@ body {
 	}
 }
 
+.cbl-instructions {
+	color: $accentColor;
+	font-size: 1.15rem;
+	margin: 5rem auto 0;
+	max-width: 20rem;
+}
+
+.cbl-name {
+	@extends $inlineForm;
+
+	margin: 3rem auto;
+	max-width: 30rem;
+	text-align: center;
+	width: 90%;
+}
+
 /*
  * Video chat
  */
 .video-chat {
 	background: #000;
-	height: 100%;
 	position: absolute;
 	top: 0;
 	width: 100%;
+	min-height: 100%;
 	z-index: 5;
+	margin-top: 88px;
 
 	@media (min-width: 45em) {
-		height: calc(100% - 3.25rem);
 		left: 15rem;
 		top: 3.25rem;
 		width: calc(100% - 15rem);
+		margin-top: -3px;
 	}
 }
 
 video {
 	width: 100%;
+}
+
+.videos-container {
+	position: relative;
+}
+
+.video-large {
+	position: relative;
+	z-index: 1;
+}
+
+.video-small {
+	width: 25%;
+	position: absolute;
+	bottom: 2%;
+	z-index: 2;
+	right: 2%;
 }
