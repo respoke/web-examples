@@ -25,6 +25,7 @@ App.controllers.videoCtrl = (function ($, App) {
             $.helpers.insertTemplate({
                 template: 'video-container',
                 renderTo: $el,
+                type: 'html',
                 data: {}
             });
 

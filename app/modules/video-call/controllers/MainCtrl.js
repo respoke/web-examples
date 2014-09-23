@@ -35,7 +35,7 @@ App.controllers.videoCallCtrl = (function ($, App) {
                 }
             });
             client.join({
-                id: 'video-group-2',
+                id: 'video-group-3',
                 onSuccess: getGroup
             });
         }
@@ -44,11 +44,6 @@ App.controllers.videoCallCtrl = (function ($, App) {
 
             var endpoint = client.getEndpoint({
                 id: connection.id
-            });
-
-            callWarningCtrl = App.controllers.callWarningCtrl({
-                el: $el,
-                endpointId: connection.id
             });
 
             call = endpoint.startVideoCall(callOptions);
@@ -71,7 +66,7 @@ App.controllers.videoCallCtrl = (function ($, App) {
         }
 
         function startCall () {
-            call.answer(callOptions);
+            //call.answer(callOptions);
         }
 
         (function () {
@@ -80,6 +75,13 @@ App.controllers.videoCallCtrl = (function ($, App) {
                 constraints: {
                     audio: true,
                     video: true
+                },
+                onRequestingMedia: function (e) {
+                    console.log('onRequestingMedia', e, e.target.getLocalElement());
+                    callWarningCtrl = App.controllers.callWarningCtrl({
+                        el: $el,
+                        endpointId: connection.id
+                    });
                 },
                 onAllow: function () {
                     if (callWarningCtrl) {
