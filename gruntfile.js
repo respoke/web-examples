@@ -4,7 +4,6 @@ var path = require('path'),
 module.exports = function (grunt) {
 
     var files = [
-        'app/vendor/jquery/dist/jquery.min.js',
         'app/js/app.js',
         'app/js/lib/**/*.js',
         'app/js/models/**/*.js',
