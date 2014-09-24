@@ -37,7 +37,7 @@ App.controllers.videoCallCtrl = (function ($, App) {
                 memberClick: memberClick
             });
             client.join({
-                id: 'video-group-3',
+                id: 'video-group-chat',
                 onSuccess: getGroup
             });
         }
@@ -85,7 +85,8 @@ App.controllers.videoCallCtrl = (function ($, App) {
         function onRequestingMedia (e) {
             callWarningCtrl = App.controllers.callWarningCtrl({
                 el: $el,
-                endpointId: e.target.remoteEndpoint.id
+                endpointId: e.target.remoteEndpoint.id,
+                initiator: e.target.caller
             });
         }
 

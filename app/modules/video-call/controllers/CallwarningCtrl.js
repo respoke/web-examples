@@ -8,6 +8,10 @@ App.controllers.callWarningCtrl = (function ($, App) {
             $el.remove();
         }
 
+        function rejectCall () {
+            removeWarning();
+        }
+
         (function () {
             $el = $.helpers.insertTemplate({
                 template: 'call-warning',
@@ -17,6 +21,9 @@ App.controllers.callWarningCtrl = (function ($, App) {
                 bind: {
                     '.popup__wrapper__options__btn': {
                         'click': removeWarning
+                    },
+                    '.popup__wrapper__options__btn--error': {
+                        'click': rejectCall
                     }
                 }
             });
