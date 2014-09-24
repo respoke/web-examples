@@ -19,6 +19,7 @@ App.controllers.videoCtrl = (function ($, App) {
 
         function renderLocalMedia (video) {
             $el.find('.video-small').html(video);
+            video.play(); // This is a temporary workaround. It will be played automatically in the future
         }
 
         function hangup () {
