@@ -7,18 +7,15 @@ App.controllers.userPresenceCtrl = (function ($, App) {
      */
     return function (options) {
 
+        // The root element will be save in memory
         var $el;
 
-        /**
-         * Returns the class modified for authenticated user
-         */
+        // Returns the class modified for authenticated user
         function getPresenceClass (presence) {
             return 'user-status-dropdown__status--' + $.helpers.getPresenceClass(presence);
         }
 
-        /**
-         * Changes the status of the connected endpoint
-         */
+        // Changes the status of the connected endpoint
         function changeStatus (e) {
             var presence = $(e.target).val();
 
@@ -33,9 +30,7 @@ App.controllers.userPresenceCtrl = (function ($, App) {
             }
         }
 
-        /**
-         * Render the authenticated user to the DOM
-         */
+        // Render the authenticated user to the DOM
         function renderUser () {
 
             // Data to be applied to the template
@@ -54,9 +49,7 @@ App.controllers.userPresenceCtrl = (function ($, App) {
 
         }
 
-        /**
-         * Initializes the user presence controller
-         */
+        // Initializes the user presence controller
         (function () {
 
             // Save a reference to the element
@@ -70,9 +63,7 @@ App.controllers.userPresenceCtrl = (function ($, App) {
 
         }());
 
-        /**
-         * Public API
-         */
+        // Public API
         return {};
 
     };

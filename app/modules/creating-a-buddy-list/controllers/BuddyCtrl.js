@@ -7,18 +7,15 @@ App.controllers.buddyCtrl = (function ($, App) {
      */
     return function (options, endpoint) {
 
+        // The root element will be kept in memory
         var $el;
 
-        /**
-         * Returns the class modified for the user buddy list
-         */
+        // Returns the class modified for the user buddy list
         function getPresenceClass (presence) {
             return 'buddy-list__user__status--' + $.helpers.getPresenceClass(presence);
         }
 
-        /**
-         * Renders the status of an individual group member
-         */
+        // Renders the status of an individual group member
         function renderMemberStatus (e) {
             var m = e.connection || e.target,
                 $presence = $el.find('.buddy-list #user-' + $.helpers.getClassName(m.endpointId) + ' .presence > div');
@@ -27,9 +24,7 @@ App.controllers.buddyCtrl = (function ($, App) {
                 .html(m.presence);
         }
 
-        /**
-         * Renders an individual group member
-         */
+        // Renders an individual group member
         function render (endpoint) {
             var data = $.extend(endpoint, {
                 photo: $.helpers.getAvatar(endpoint.endpointId),
@@ -44,9 +39,7 @@ App.controllers.buddyCtrl = (function ($, App) {
             });
         }
 
-        /**
-         * Initialize this controller
-         */
+        // Initialize this controller
         (function () {
             $el = $(options.renderTo);
             render(endpoint);

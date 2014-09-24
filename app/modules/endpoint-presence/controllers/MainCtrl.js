@@ -2,28 +2,28 @@ App.controllers.endpointCtrl = (function ($, App) {
 
     'use strict';
 
-    /**
-     * The Main Endpoint Presence Controller
-     */
+    // The Main Endpoint Presence Controller
     return function (options) {
 
-        /**
-         * Just some mocked up static users
-         */
-        var users = {
-            janet: {
-                username: 'Janet',
-                presence: 'dnd'
-            },
-            jennifer: {
-                username: 'Jennifer',
-                presence: 'busy'
-            }
-        }, $el, client;
+        // This will contain the client object once the client is connected
+        var client = null,
 
-        /**
-         * Appends a buddy to the members list in the DOM
-         */
+            // Keep a copy of the root element in memory
+            $el = $(options.renderTo),
+
+            // Just a bunch of fake users
+            users = {
+                janet: {
+                    username: 'Janet',
+                    presence: 'dnd'
+                },
+                jennifer: {
+                    username: 'Jennifer',
+                    presence: 'busy'
+                }
+            };
+
+        // Appends a buddy to the members list in the DOM
         function renderBuddy (connection) {
             $.helpers.insertTemplate({
                 template: 'user-buddy',
@@ -32,9 +32,7 @@ App.controllers.endpointCtrl = (function ($, App) {
             });
         }
 
-        /**
-         * Renders the main template
-         */
+        // Renders the main template
         function render () {
             $.helpers.insertTemplate({
                 template: 'user-display',
@@ -47,9 +45,7 @@ App.controllers.endpointCtrl = (function ($, App) {
             $el.find('.user-status-dropdown__status__select').bind('change', updatePresence);
         }
 
-        /**
-         * Loops over all of the static buddies and renders them
-         */
+        // Loops over all of the static buddies and renders them
         function renderBuddies () {
             for (var user in users) {
                 if (users.hasOwnProperty(user)) {
@@ -58,9 +54,7 @@ App.controllers.endpointCtrl = (function ($, App) {
             }
         }
 
-        /**
-         * Updates the presence of the user
-         */
+        // Updates the presence of the user
         function updatePresence (e) {
             var presence = $(e.target).val();
             $el.find('.user-status-dropdown > div')
@@ -71,9 +65,7 @@ App.controllers.endpointCtrl = (function ($, App) {
             });
         }
 
-        /**
-         * Replaces the status of a buddy in the DOM
-         */
+        // Replaces the status of a buddy in the DOM
         function updateBuddyPresence (data) {
             $.helpers.insertTemplate({
                 template: 'user-buddy',
@@ -86,9 +78,7 @@ App.controllers.endpointCtrl = (function ($, App) {
             });
         }
 
-        /**
-         * Creates a connection between the client and the other endpoint
-         */
+        // Creates a connection between the client and the other endpoint
         function createConnection () {
 
             // Connect to the other real user
@@ -106,9 +96,7 @@ App.controllers.endpointCtrl = (function ($, App) {
             
         }
 
-        /**
-         * When an endpoint is connected, we will set the client data and create a connection between the client and the other endpoint
-         */
+        // When an endpoint is connected, we will set the client data and create a connection between the client and the other endpoint
         function onConnection (e) {
             client = e;
             render();
@@ -118,13 +106,10 @@ App.controllers.endpointCtrl = (function ($, App) {
 
         // Kick off the application
         (function () {
-            $el = $(options.renderTo);
             App.models.client(options.username, onConnection);
         }());
 
-        /**
-         * Public API
-         */
+        // Public API
         return {};
 
     }

@@ -7,18 +7,21 @@ App.controllers.buddylistCtrl = (function ($, App) {
      */
     return function (options) {
 
-        var client, $el, endpoints = {};
+        // The client object
+        var client, 
 
-        /**
-         * Returns the client's endpoint
-         */
+            // The root element will be kept in memory
+            $el,
+
+            // This object will contain all of the endpoints
+            endpoints = {};
+
+        // Returns the client's endpoint
         function getClientEndpoint () {
             return endpoints[client.endpointId];
         }
 
-        /**
-         * Renders a single group member
-         */
+        // Renders a single group member
         function renderGroupMember (key, endpoint) {
             
             var buddyCtrl = App.controllers.buddyCtrl(options, endpoint);
@@ -28,31 +31,23 @@ App.controllers.buddylistCtrl = (function ($, App) {
 
         }
 
-        /**
-         * Renders all of the current group members
-         */
+        // Renders all of the current group members
         function renderGroup (members) {
             $.each(members, renderGroupMember);
         }
 
-        /**
-         * When a group member joins, we need to add them to the group list
-         */
+        // When a group member joins, we need to add them to the group list
         function onMemberJoin (e) {
             renderGroupMember(null, e.connection);
         }
 
-        /**
-         * When a group member leaves, we can remove them from the DOM
-         */
+        // When a group member leaves, we can remove them from the DOM
         function onMemberLeave (e) {
             var cls = $.helpers.getClassName(e.connection.endpointId);
             $el.find('.buddy-list #user-' + cls).remove();
         }
 
-        /**
-         * Gets the members of a group and listens for additions and subtractions
-         */
+        // Gets the members of a group and listens for additions and subtractions
         function getGroup (group) {
             group.listen('join', onMemberJoin);
             group.listen('leave', onMemberLeave);
@@ -61,9 +56,7 @@ App.controllers.buddylistCtrl = (function ($, App) {
             });
         }
 
-        /**
-         * Join a group
-         */
+        // Join a group
         function joinGroup () {
             client.join({
                 id: 'everyone',
@@ -71,18 +64,14 @@ App.controllers.buddylistCtrl = (function ($, App) {
             });
         }
 
-        /**
-         * Changes the status of the connected endpoint
-         */
+        // Changes the status of the connected endpoint
         function changePresence (status) {
             getClientEndpoint().setPresence({
                 presence: status
             });
         }
 
-        /**
-         * A callback after the respoke client is connected
-         */
+        // A callback after the respoke client is connected
         function onConnection (connection) {
 
             var userObj = $.extend({
@@ -97,9 +86,7 @@ App.controllers.buddylistCtrl = (function ($, App) {
 
         }
 
-        /**
-         * Initialize the buddy list view
-         */
+        // Initialize the buddy list view
         (function () {
             $el = $(options.renderTo);
             options = $.extend(options, {
@@ -108,9 +95,7 @@ App.controllers.buddylistCtrl = (function ($, App) {
             App.controllers.authenticationCtrl(options);
         }());
 
-        /**
-         * Public API
-         */
+        // Public API
         return {};
 
     };

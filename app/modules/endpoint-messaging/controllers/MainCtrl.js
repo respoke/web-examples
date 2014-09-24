@@ -2,16 +2,19 @@ App.controllers.messagingCtrl = (function ($, App) {
 
     'use strict';
 
-    /**
-     * The Endpoint Messaging View
-     */
+    // The Endpoint Messaging View
     return function (options) {
 
-        var client, connection, $el;
+        // This will contain the client who is connected
+        var client = null,
 
-        /**
-         * A callback fired when the form is submitted to post a new message
-         */
+            // Once two endpoints are connected, this will contain the connection object
+            connection = null,
+
+            // This will hold the root element in memory
+            $el = null;
+
+        // A callback fired when the form is submitted to post a new message
         function postMessage (e) {
 
             // Prevent the form from posting back
@@ -26,9 +29,7 @@ App.controllers.messagingCtrl = (function ($, App) {
 
         }
 
-        /**
-         * Appends a message to the thread
-         */
+        // Appends a message to the thread
         function renderMessage (message) {
             $.helpers.insertTemplate({
                 template: 'endpoint-thread-message',
@@ -40,9 +41,7 @@ App.controllers.messagingCtrl = (function ($, App) {
             });
         }
 
-        /**
-         * Appends a reply message to the thread
-         */
+        // Appends a reply message to the thread
         function renderReply (evt) {
             $.helpers.insertTemplate({
                 template: 'endpoint-thread-reply',
@@ -57,17 +56,13 @@ App.controllers.messagingCtrl = (function ($, App) {
 
         }
 
-        /**
-         * Sends the user to the bottom of the chat when a new message is posted
-         */
+        // Sends the user to the bottom of the chat when a new message is posted
         function pinToBottom () {
             var msgHeight = $('.em-thread')[0].scrollHeight;
             $('.em-thread').scrollTop(msgHeight);
         }
 
-        /**
-         * Renders the main template to hold the thread
-         */
+        // Renders the main template to hold the thread
         function renderMainTemplate () {
 
             // Render the template
@@ -82,9 +77,7 @@ App.controllers.messagingCtrl = (function ($, App) {
 
         }
 
-        /**
-         * Sends the message over respoke and appends the message to the thread of the endpoint who posted it
-         */
+        // Sends the message over respoke and appends the message to the thread of the endpoint who posted it
         function sendMessage (message) {
             connection.sendMessage({
                 message: message
@@ -92,9 +85,7 @@ App.controllers.messagingCtrl = (function ($, App) {
             renderMessage(message);
         }
 
-        /**
-         * Creates a connection between the client and the other endpoint
-         */
+        // Creates a connection between the client and the other endpoint
         function createConnection () {
             connection = App.models.endpoint({
                 id: options.connectTo,
@@ -103,9 +94,7 @@ App.controllers.messagingCtrl = (function ($, App) {
             });
         }
 
-        /**
-         * When an endpoint is connected, we will set the client data and create a connection between the client and the other endpoint
-         */
+        // When an endpoint is connected, we will set the client data and create a connection between the client and the other endpoint
         function onConnection (_client) {
             client = _client;
             createConnection();
@@ -117,9 +106,7 @@ App.controllers.messagingCtrl = (function ($, App) {
             App.models.client(options.username, onConnection);
         }());
 
-        /**
-         * Public API
-         */
+        // Public API
         return {};
 
     };
