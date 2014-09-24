@@ -4,31 +4,37 @@ App.controllers.callWarningCtrl = (function ($, App) {
 
         var $el;
 
+        // Removes the warning modal from the DOM
         function removeWarning () {
             $el.remove();
         }
 
-        function rejectCall () {
-            removeWarning();
-        }
-
-        (function () {
+        // Renders the template
+        function render () {
             $el = $.helpers.insertTemplate({
                 template: 'call-warning',
                 renderTo: options.el,
                 type: 'prepend',
                 data: options,
+
+                // Bind events to the template
                 bind: {
                     '.popup__wrapper__options__btn': {
                         'click': removeWarning
                     },
                     '.popup__wrapper__options__btn--error': {
-                        'click': rejectCall
+                        'click': removeWarning
                     }
                 }
             });
+        }
+
+        // Initialize the controller
+        (function () {
+            render();
         }());
 
+        // Expose a public API
         return {
             removeWarning: removeWarning
         };

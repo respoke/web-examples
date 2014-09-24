@@ -4,16 +4,19 @@ App.controllers.callpromptCtrl = (function ($, App) {
 
         var $el;
 
+        // Remove the call prompt from the DOM
         function removePrompt () {
             $el.remove();
         }
 
+        // Kicks off the call
         function makeCall () {
             removePrompt();
             options.makeCall();
         }
 
-        (function () {
+        // Renders the template
+        function render () {
             $el = $.helpers.insertTemplate({
                 template: 'prompt-call',
                 renderTo: options.el,
@@ -28,9 +31,14 @@ App.controllers.callpromptCtrl = (function ($, App) {
                     }
                 }
             });
+        }
 
+        // Initialize this controller
+        (function () {
+            render();
         }());
 
+        // Expose a public API
         return {
             removePrompt: removePrompt
         };
