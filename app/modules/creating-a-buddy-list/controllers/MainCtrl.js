@@ -31,7 +31,7 @@ App.controllers.buddylistCtrl = (function ($, App) {
 
         /**
          * Renders all of the current group members
-         * @param {Array<Connection>} connections
+         * @param {Array<respoke.Connection>} connections
          */
         function renderGroup (connections) {
             $.each(connections, function(index, connection) {
@@ -133,9 +133,6 @@ App.controllers.buddylistCtrl = (function ($, App) {
          * callback in the options object.
          */
         App.controllers.authenticationCtrl(authOptions);
-
-        // Public API
-        return {};
     };
 
 }(jQuery, App));

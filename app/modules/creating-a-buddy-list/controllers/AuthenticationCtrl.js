@@ -48,10 +48,6 @@ App.controllers.authenticationCtrl = (function ($, App) {
         // initialize the controller
         $el = $(options.renderTo);
         renderForm();
-
-        // public API
-        return {};
-
     };
 
 }(jQuery, App));

@@ -80,10 +80,6 @@ App.controllers.userPresenceCtrl = (function ($, App) {
         // listen for changes to the status
         $el.find('.user-status-dropdown__status__select')
             .bind('change', changeStatus);
-
-        // Public API
-        return {};
-
     };
 
 }(jQuery, App));
