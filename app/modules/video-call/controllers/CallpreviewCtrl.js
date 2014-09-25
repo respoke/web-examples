@@ -1,5 +1,7 @@
 App.controllers.callPreviewCtrl = (function ($, App) {
 
+    'use strict';
+
     return function (options) {
 
         var $el;
@@ -26,13 +28,17 @@ App.controllers.callPreviewCtrl = (function ($, App) {
             }
 
             // Calls the startCall method on the options that were passed in to kick off the call
-            return (options.startCall) ? options.startCall() : null;
+            if (options.startCall) {
+                options.startCall();
+            }
         }
 
         // Cancels the call
         function cancelCall () {
             removePreview();
-            (options.cancelCall) ? options.cancelCall() : null;
+            if (options.cancelCall) {
+                options.cancelCall();
+            }
         }
 
         // Removes the preview modal from the DOM

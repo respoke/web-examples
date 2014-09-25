@@ -1,5 +1,7 @@
 App.controllers.callWarningCtrl = (function ($, App) {
 
+    'use strict';
+
     return function (options) {
 
         var $el;
