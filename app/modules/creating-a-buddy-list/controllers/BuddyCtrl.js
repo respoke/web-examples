@@ -15,10 +15,13 @@ App.controllers.buddyCtrl = (function ($, App) {
             return 'buddy-list__user__status--' + $.helpers.getPresenceClass(presence);
         }
 
-        // Renders the status of an individual group member
+        /**
+         * Renders the status of an individual group member
+         * @param {Object} e - endpoint event
+         */
         function renderMemberStatus (e) {
             var m = e.connection || e.target,
-                $presence = $el.find('.buddy-list #user-' + $.helpers.getClassName(m.endpointId) + ' .presence > div');
+                $presence = $el.find('.buddy-list #user-' + $.helpers.getClassName(m.id) + ' .presence > div');
             $presence
                 .attr('class', getPresenceClass(m.presence))
                 .html(m.presence);
@@ -27,9 +30,9 @@ App.controllers.buddyCtrl = (function ($, App) {
         // Renders an individual group member
         function render (endpoint) {
             var data = $.extend(endpoint, {
-                photo: $.helpers.getAvatar(endpoint.endpointId),
+                photo: $.helpers.getAvatar(endpoint.id),
                 presenceCls: $.helpers.getPresenceClass(endpoint.presence),
-                endpointCls: $.helpers.getClassName(endpoint.endpointId)
+                endpointCls: $.helpers.getClassName(endpoint.id)
             });
 
             $.helpers.insertTemplate({
@@ -39,15 +42,14 @@ App.controllers.buddyCtrl = (function ($, App) {
             });
         }
 
-        // Initialize this controller
-        (function () {
-            $el = $(options.renderTo);
-            render(endpoint);
-            endpoint.listen('presence', renderMemberStatus);
-        }());
+        /**
+         * Initialize this controller
+         */
+        $el = $(options.renderTo);
+        endpoint.listen('presence', renderMemberStatus);
+        render(endpoint);
 
         return {};
-
     };
 
 }(jQuery, App));

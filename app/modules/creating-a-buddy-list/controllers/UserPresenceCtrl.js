@@ -10,24 +10,32 @@ App.controllers.userPresenceCtrl = (function ($, App) {
         // The root element will be save in memory
         var $el;
 
-        // Returns the class modified for authenticated user
+        function NO_OP() {}
+
+        /**
+         * Returns the class modified for authenticated user
+         */
         function getPresenceClass (presence) {
             return 'user-status-dropdown__status--' + $.helpers.getPresenceClass(presence);
         }
 
-        // Changes the status of the connected endpoint
-        function changeStatus (e) {
-            var presence = $(e.target).val();
-
+        function renderPresence(presence) {
             // Update the HTML to reflect the presence change
             $el.find('.user-status-dropdown div')
                 .html(presence)
                 .attr('class', getPresenceClass(presence));
+        }
+
+        /**
+         * Changes the status of the connected endpoint
+         */
+        function changeStatus (e) {
+            var presence = $(e.target).val();
+
+            renderPresence(presence);
 
             // Fire an event to let the MainController know that the presence has changed
-            if (typeof options.onPresenceChange === 'function') {
-                options.onPresenceChange(presence);
-            }
+            (options.onPresenceChange || NO_OP)(presence);
         }
 
         // Render the authenticated user to the DOM
@@ -49,19 +57,18 @@ App.controllers.userPresenceCtrl = (function ($, App) {
 
         }
 
-        // Initializes the user presence controller
-        (function () {
+        /**
+         * Initializes the user presence controller
+         */
+        // Save a reference to the element
+        $el = $(options.renderTo);
 
-            // Save a reference to the element
-            $el = $(options.renderTo);
+        // Render the template to the DOM
+        renderUser();
 
-            // Render the template to the DOM
-            renderUser();
-
-            // Listen for changes to the status
-            $el.find('.user-status-dropdown__status__select').bind('change', changeStatus);
-
-        }());
+        // Listen for changes to the status
+        $el.find('.user-status-dropdown__status__select')
+            .bind('change', changeStatus);
 
         // Public API
         return {};

@@ -1,3 +1,4 @@
+'use strict';
 var path = require('path'),
     _ = require('underscore');
 
@@ -66,7 +67,7 @@ module.exports = function (grunt) {
                     'test/**/*.js',
                     'app/modules/**/*.js'
                 ],
-                tasks: ['test', 'injector', 'jscs']
+                tasks: [/*'test', */'injector', 'jscs']
             },
             templates: {
                 files: [
@@ -189,6 +190,6 @@ module.exports = function (grunt) {
 
     grunt.registerTask('server', ['injector', 'express', 'browserSync', 'watch']);
     grunt.registerTask('test', ['jshint', 'mocha']);
-    grunt.registerTask('default', ['jshint', 'injector', 'uglify', 'cssmin']);
+    grunt.registerTask('default', ['jshint', 'injector', 'uglify']);
 
 };
