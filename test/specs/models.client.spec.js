@@ -1,3 +1,4 @@
+'use strict';
 describe('The Client Model', function () {
 
     describe('when we connect to a client', function () {

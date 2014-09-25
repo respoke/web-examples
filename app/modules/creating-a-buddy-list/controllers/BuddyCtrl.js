@@ -1,35 +1,56 @@
-App.controllers.buddyCtrl = (function ($, App) {
-
+App.controllers.buddyCtrl = (function ($) {
     'use strict';
 
     /**
+     * Presence event constant
+     * @type {string}
+     */
+    var PRESENCE_EVENT = 'presence';
+
+    /**
      * The Individual Buddy controller
+     * @param {Object} options
+     * @param {respoke.Endpoint} endpoint
      */
     return function (options, endpoint) {
 
-        // The root element will be kept in memory
+        /**
+         * Root HTML element
+         * @type {jQuery}
+         */
         var $el;
 
-        // Returns the class modified for the user buddy list
+        /**
+         * Returns the class modified for the user buddy list
+         * @param {String} presence
+         * @returns {string}
+         */
         function getPresenceClass (presence) {
             return 'buddy-list__user__status--' + $.helpers.getPresenceClass(presence);
         }
 
-        // Renders the status of an individual group member
-        function renderMemberStatus (e) {
-            var m = e.connection || e.target,
-                $presence = $el.find('.buddy-list #user-' + $.helpers.getClassName(m.endpointId) + ' .presence > div');
+        /**
+         * Renders the status of an individual group member
+         */
+        function renderMemberStatus (/*e*/) {
+            var userClassName = $.helpers.getClassName(endpoint.id),
+                $presence = $el.find('.buddy-list #user-' + userClassName + ' .presence > div');
             $presence
-                .attr('class', getPresenceClass(m.presence))
-                .html(m.presence);
+                .attr('class', getPresenceClass(endpoint.presence))
+                .html(endpoint.presence);
         }
 
-        // Renders an individual group member
-        function render (endpoint) {
-            var data = $.extend(endpoint, {
-                photo: $.helpers.getAvatar(endpoint.endpointId),
+        /**
+         * Renders an individual group member
+         * @param {respoke.Endpoint} endpoint
+         */
+        function render () {
+            var data = $.extend({}, {
+                id: endpoint.id,
+                presence: endpoint.presence,
+                photo: $.helpers.getAvatar(endpoint.id),
                 presenceCls: $.helpers.getPresenceClass(endpoint.presence),
-                endpointCls: $.helpers.getClassName(endpoint.endpointId)
+                endpointCls: $.helpers.getClassName(endpoint.id)
             });
 
             $.helpers.insertTemplate({
@@ -39,15 +60,26 @@ App.controllers.buddyCtrl = (function ($, App) {
             });
         }
 
-        // Initialize this controller
-        (function () {
-            $el = $(options.renderTo);
-            render(endpoint);
-            endpoint.listen('presence', renderMemberStatus);
-        }());
+        /**
+         * Dispose this controller and remove event handlers
+         * from its endpoint.
+         */
+        function dispose() {
+            endpoint.ignore(PRESENCE_EVENT, renderMemberStatus);
+            $el = null;
+        }
 
-        return {};
+        // initialize this controller
+        $el = $(options.renderTo);
+        endpoint.listen(PRESENCE_EVENT, renderMemberStatus);
+        render();
 
+        /**
+         * Public API
+         */
+        return {
+            dispose: dispose
+        };
     };
 
-}(jQuery, App));
+}(jQuery));

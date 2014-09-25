@@ -8,15 +8,15 @@
 
     "bitwise"       : true,     // Prohibit bitwise operators (&, |, ^, etc.).
     //TODO change camelcase to true
-	"camelcase"     : false,     // Enforce camelCase
+    "camelcase"     : false,     // Enforce camelCase
     "curly"         : true,     // Require {} for every new block or scope.
     "eqeqeq"        : true,     // Require triple equals i.e. `===`.
     "forin"         : false,     // Tolerate `for in` loops without `hasOwnPrototype`.
     "immed"         : true,     // Require immediate invocations to be wrapped in parens
-	                            // e.g. `( function(){}() );`
+                                // e.g. `( function(){}() );`
     "latedef"       : true,     // Prohibit variable use before definition.
     "newcap"        : false,     // Require capitalization of all constructor functions
-	                            // e.g. `new F()`.
+                                // e.g. `new F()`.
     "noarg"         : true,     // Prohibit use of `arguments.caller` and `arguments.callee`.
     "noempty"       : false,     // Prohibit use of empty blocks.
     "nonew"         : true,     // Prohibit use of constructors for side-effects.
@@ -24,7 +24,7 @@
     "undef"         : true,     // Require all non-global variables be declared before they are used.
     "strict"        : true,     // Require `use strict` pragma in every file.
     "trailing"      : true,     // Prohibit trailing whitespaces.
-	"unused"        : false,    // Prohibit unused variables
+    "unused"        : false,    // Prohibit unused variables
 
     // == Relaxing Options ================================================
     //
@@ -34,20 +34,20 @@
 
     "asi"           : false,    // Tolerate Automatic Semicolon Insertion (no semicolons).
     "boss"          : false,    // Tolerate assignments inside if, for & while. Usually
-	                            // conditions & loops are for comparison, not assignments.
+                                // conditions & loops are for comparison, not assignments.
     "debug"         : false,    // Allow debugger statements e.g. browser breakpoints.
     "eqnull"        : false,    // Tolerate use of `== null`.
     "esnext"        : false,    // Allow ES.next specific features such as `const` and `let`.
     "evil"          : false,    // Tolerate use of `eval`.
     "expr"          : false,    // Tolerate `ExpressionStatement` as Programs.
     "funcscope"     : false,    // Tolerate declarations of variables inside of control structures
-	                            // while accessing them later from the outside.
+                                // while accessing them later from the outside.
     "globalstrict"  : false,    // Allow global "use strict" (also enables 'strict').
     "iterator"      : false,    // Allow usage of __iterator__ property.
     "lastsemic"     : false,    // Tolerat missing semicolons when the it is omitted for the
-	                            // last statement in a one-line block.
+                                // last statement in a one-line block.
     "laxbreak"      : false,    // Tolerate unsafe line breaks e.g. `return [\n] x` without
-	                            // semicolons.
+                                // semicolons.
     "laxcomma"      : false,    // Suppress warnings about comma-first coding style.
     "loopfunc"      : false,    // Allow functions to be defined within loops.
     "multistr"      : true,    // Tolerate multi-line strings.
@@ -56,13 +56,13 @@
     "regexdash"     : false,    // Tolerate unescaped last dash i.e. `[-...]`.
     "scripturl"     : false,    // Tolerate script-targeted URLs.
     "smarttabs"     : false,    // Tolerate mixed tabs and spaces when the latter are used for
-	                            // alignmnent only.
+                                // alignmnent only.
     "shadow"        : true,     // Allows re-define variables later in code e.g. `var x=1; x=2;`.
     "sub"           : false,    // Tolerate all forms of subscript notation besides dot notation
-	                            // e.g. `dict['key']` instead of `dict.key`.
+                                // e.g. `dict['key']` instead of `dict.key`.
     "supernew"      : false,    // Tolerate `new function () { ... };` and `new Object;`.
     "validthis"     : false,    // Tolerate strict violations when the code is running in strict
-	                            // mode and you use this in a non-constructor function.
+                                // mode and you use this in a non-constructor function.
 
     // == Environments ====================================================
     //
@@ -77,14 +77,14 @@
     "jquery"        : false,    // Enable globals exposed by jQuery JavaScript library.
     "mootools"      : false,    // Enable globals exposed by MooTools JavaScript framework.
     "node"          : true,    // Enable globals available when code is running inside of the
-	                            // NodeJS runtime environment.
+                                // NodeJS runtime environment.
     "nonstandard"   : false,    // Define non-standard but widely adopted globals such as escape
-	                            // and unescape.
+                                // and unescape.
     "prototypejs"   : false,    // Enable globals exposed by Prototype JavaScript framework.
     "rhino"         : false,    // Enable globals available when your code is running inside of
-	                            // the Rhino runtime environment.
+                                // the Rhino runtime environment.
     "wsh"           : false,    // Enable globals available when your code is running as a
-	                            // script for the Windows Script Host.
+                                // script for the Windows Script Host.
 
     // == JSLint Legacy ===================================================
     //
@@ -112,10 +112,12 @@
         "describe": true,
         "it": true,
         "should": true,
-        "helpers": true, // custom helpers written by us for karma tests
-	"jQuery": true, // Global jQuery var
-	"respoke": true, // Global respoke namespace
-	"App": true // The Respoke App namespace
+        "helpers": true, // custom helpers written by us for karma tests,
+        "assert": true,
+        "jQuery": true, // Global jQuery var
+        "$": true,
+        "respoke": true, // Global respoke namespace
+        "App": true // The Respoke App namespace
     },
     "indent"        : 4         // Specify indentation spacing
 }
