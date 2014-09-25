@@ -23,4 +23,4 @@
         return client;
     };
 
-}(window.respoke, App));
+}(respoke, App));
