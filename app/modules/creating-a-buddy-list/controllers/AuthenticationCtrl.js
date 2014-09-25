@@ -7,7 +7,10 @@ App.controllers.authenticationCtrl = (function ($, App) {
      */
     return function (options) {
 
-        // Keep a copy of the root element in memory
+        /**
+         * Root HTML element
+         * @type jQuery
+         */
         var $el;
 
         /**
@@ -30,7 +33,9 @@ App.controllers.authenticationCtrl = (function ($, App) {
             App.models.client(username, options.onConnection);
         }
 
-        // Renders the authentication form
+        /**
+         * Renders the authentication form
+         */
         function renderForm () {
             $.helpers.insertTemplate({
                 template: 'user-authentication',
@@ -40,13 +45,11 @@ App.controllers.authenticationCtrl = (function ($, App) {
             $el.find('.cbl-name').bind('submit', submitName);
         }
 
-        /**
-         * Initializes the controller
-         */
+        // initialize the controller
         $el = $(options.renderTo);
         renderForm();
 
-        // Public API
+        // public API
         return {};
 
     };
