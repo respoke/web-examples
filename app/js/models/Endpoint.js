@@ -2,7 +2,7 @@
 
     'use strict';
 
-    App.models.endpoint = function (options, fn) {
+    App.models.endpoint = function (options) {
         return options.client.getEndpoint(options);
     };
 
