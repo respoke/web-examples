@@ -189,7 +189,7 @@ module.exports = function (grunt) {
     grunt.loadNpmTasks('grunt-autoprefixer');
 
     grunt.registerTask('server', ['jshint', 'injector', 'express', 'browserSync', 'watch']);
-    grunt.registerTask('test', ['jshint', 'mocha']);
+    grunt.registerTask('test', ['express', 'jshint', 'mocha']);
     grunt.registerTask('default', ['jshint', 'injector', 'uglify']);
 
 };
