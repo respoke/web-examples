@@ -103,8 +103,7 @@ App.controllers.buddylistCtrl = (function ($, App) {
          * @param {respoke.Client} client
          */
         function onConnection (client) {
-            // TODO: remove global
-            window.userClient = userClient = client;
+            userClient = client;
 
             var presenceOptions = $.extend({}, options, {
                 onPresenceChange: changePresence,
