@@ -1,10 +1,10 @@
 {
   "name": "digium-respoke",
-  "version": "0.0.0",
+  "version": "0.0.1",
   "authors": [
-    "Tyson Cadenhead <tcadenhead@appendto.com>"
+    "Tyson Cadenhead <tcadenhead@appendto.com>",
+    "Nicholas Cloud <ncloud@appendto.com>"
   ],
-  "main": "app/js/main.js",
   "moduleType": [
     "amd"
   ],

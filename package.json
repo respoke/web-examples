@@ -7,13 +7,17 @@
     "test": "test"
   },
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "install": "npm install -g bower && bower install"
   },
   "repository": {
     "type": "git",
     "url": "git://github.com/appendto/digium-respoke-applets.git"
   },
-  "author": "",
+  "authors": [
+    "Tyson Cadenhead <tcadenhead@appendto.com>",
+    "Nicholas Cloud <ncloud@appendto.com>"
+  ],
   "license": "ISC",
   "bugs": {
     "url": "https://github.com/appendto/digium-respoke-applets/issues"

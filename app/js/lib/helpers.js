@@ -18,7 +18,8 @@
 
         // Returns a class for the presence
         getPresenceClass: function (presence) {
-            return (presence.indexOf(' ') !== -1) ? 'unavailable' : this.getClassName(presence);
+            var presenceClass = (presence.indexOf(' ') !== -1) ? 'unavailable' : this.getClassName(presence);
+            return presenceClass;
         },
 
         // Inserts a template

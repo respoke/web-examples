@@ -1,5 +1,4 @@
 App.controllers.buddylistCtrl = (function ($, App) {
-
     'use strict';
 
     /**
@@ -7,48 +6,71 @@ App.controllers.buddylistCtrl = (function ($, App) {
      */
     return function (options) {
 
-        // The client object
-        var client, 
-
-            // The root element will be kept in memory
+        var userClient,
             $el,
+            buddies = {};
 
-            // This object will contain all of the endpoints
-            endpoints = {};
+        /**
+         * Renders a single group member when the member
+         * joins the "Everyone" group
+         * @param {respoke.Endpoint} endpoint
+         */
+        function renderGroupMember (endpoint) {
+            var endpointId = endpoint.id,
+                buddy = buddies[endpointId];
 
-        // Returns the client's endpoint
-        function getClientEndpoint () {
-            return endpoints[client.endpointId];
+            // if there is a previous, undisposed buddy with an
+            // active endpoint; dispose it first, then replace
+            // it
+            if (buddy) {
+                buddy.dispose();
+            }
+
+            buddies[endpointId] = App.controllers.buddyCtrl(options, endpoint);
         }
 
-        // Renders a single group member
-        function renderGroupMember (key, endpoint) {
-            
-            var buddyCtrl = App.controllers.buddyCtrl(options, endpoint);
-
-            // Save a reference to the endpoint
-            endpoints[endpoint.endpointId] = endpoint;
-
+        /**
+         * Renders all of the current group members
+         * @param {Array<respoke.Connection>} connections
+         */
+        function renderGroup (connections) {
+            $.each(connections, function(index, connection) {
+                // ignore "self" in buddies list
+                if (connection.endpointId === userClient.endpointId) {
+                    return;
+                }
+                renderGroupMember(connection.getEndpoint());
+            });
         }
 
-        // Renders all of the current group members
-        function renderGroup (members) {
-            $.each(members, renderGroupMember);
-        }
-
-        // When a group member joins, we need to add them to the group list
+        /**
+         * When a group member joins, we need to add them to the group list
+         * @param {{connection: respoke.Connection}} e - event
+         */
         function onMemberJoin (e) {
-            renderGroupMember(null, e.connection);
+            renderGroupMember(e.connection.getEndpoint());
         }
 
-        // When a group member leaves, we can remove them from the DOM
+        /**
+         * When a group member leaves, we can remove them from the DOM
+         * @param {{connection: respoke.Connection}} e - event
+         */
         function onMemberLeave (e) {
-            var cls = $.helpers.getClassName(e.connection.endpointId);
-            $el.find('.buddy-list #user-' + cls).remove();
+            var endpointId = e.connection.endpointId;
+            var buddy = buddies[endpointId];
+            if (buddy) {
+                buddy.dispose();
+                buddies[endpointId] = null;
+            }
+            var userClassName = $.helpers.getClassName(endpointId);
+            $el.find('.buddy-list #user-' + userClassName).remove();
         }
 
-        // Gets the members of a group and listens for additions and subtractions
-        function getGroup (group) {
+        /**
+         * Gets the members of a group and listens for additions and subtractions
+         * @param {respoke.Group} group
+         */
+        function onJoinGroupSuccess (group) {
             group.listen('join', onMemberJoin);
             group.listen('leave', onMemberLeave);
             group.getMembers({
@@ -56,48 +78,61 @@ App.controllers.buddylistCtrl = (function ($, App) {
             });
         }
 
-        // Join a group
+        /**
+         * Joins the client to the "Everyone" group
+         */
         function joinGroup () {
-            client.join({
+            userClient.join({
                 id: 'everyone',
-                onSuccess: getGroup
+                onSuccess: onJoinGroupSuccess
             });
         }
 
-        // Changes the status of the connected endpoint
+        /**
+         * Changes the status of the connected endpoint
+         * @param {String} status
+         */
         function changePresence (status) {
-            getClientEndpoint().setPresence({
+            userClient.setPresence({
                 presence: status
             });
         }
 
-        // A callback after the respoke client is connected
-        function onConnection (connection) {
+        /**
+         * A callback after the respoke client is connected
+         * @param {respoke.Client} client
+         */
+        function onConnection (client) {
+            userClient = client;
 
-            var userObj = $.extend({
-                onPresenceChange: changePresence
-            }, connection, options);
+            var presenceOptions = $.extend({}, options, {
+                onPresenceChange: changePresence,
+                endpointId: client.endpointId,
+                presence: client.presence
+            });
 
-            client = connection;
-
-            App.controllers.userPresenceCtrl(userObj);
+            /*
+             * Set up the user presence form. When presence changes,
+             * it will invoke the onPresenceChange callback in the
+             * options object.
+             */
+            App.controllers.userPresenceCtrl(presenceOptions);
 
             joinGroup();
-
         }
 
-        // Initialize the buddy list view
-        (function () {
-            $el = $(options.renderTo);
-            options = $.extend(options, {
-                onConnection: onConnection
-            });
-            App.controllers.authenticationCtrl(options);
-        }());
+        // initialize the buddy list view
+        $el = $(options.renderTo);
+        var authOptions = $.extend({}, options, {
+            onConnection: onConnection
+        });
 
-        // Public API
-        return {};
-
+        /*
+         * Set up the authentication form. On submit it will
+         * establish the connection and invoked the onConnection
+         * callback in the options object.
+         */
+        App.controllers.authenticationCtrl(authOptions);
     };
 
 }(jQuery, App));

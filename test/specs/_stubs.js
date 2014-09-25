@@ -1,3 +1,4 @@
+'use strict';
 var respoke = {
     createClient: function (options) {
         options.connect = function (obj) {
@@ -8,7 +9,7 @@ var respoke = {
                 done: function (fn) {
                     fn();
                 }
-            }
+            };
         };
         return options;
     }
