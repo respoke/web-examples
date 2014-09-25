@@ -1,3 +1,4 @@
+'use strict';
 describe('The Client Model', function () {
 
     before(function (done) {

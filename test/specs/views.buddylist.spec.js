@@ -1,3 +1,4 @@
+'use strict';
 describe('The Buddy List View', function () {
 
     beforeEach(function () {

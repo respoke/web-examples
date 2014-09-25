@@ -67,7 +67,7 @@ module.exports = function (grunt) {
                     'test/**/*.js',
                     'app/modules/**/*.js'
                 ],
-                tasks: [/*'test', */'injector', 'jscs']
+                tasks: ['test', 'injector', 'jscs']
             },
             templates: {
                 files: [

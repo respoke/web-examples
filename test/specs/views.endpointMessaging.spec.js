@@ -1,3 +1,4 @@
+'use strict';
 describe('The Endpoint Messaging View', function () {
 
     beforeEach(function () {
