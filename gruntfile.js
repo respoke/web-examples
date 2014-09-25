@@ -58,7 +58,7 @@ module.exports = function (grunt) {
 
         watch: {
             options: {
-                livereload: 1338
+                livereload: process.env.LIVERELOAD || 1338
             },
             scripts: {
                 files: [
