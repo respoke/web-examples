@@ -135,6 +135,16 @@ module.exports = function (grunt) {
                     }())
                 }
             },
+            groupMessaging: {
+                template: 'app/modules/group-messaging/index.html',
+                files: {
+                    'app/modules/group-messaging/index.html': (function () {
+                        var arr = _.clone(files);
+                        arr.push('app/modules/group-messaging/**/*.js');
+                        return arr;
+                    }())
+                }
+            },
             test: {
                 template: 'test/index.html',
                 files: {

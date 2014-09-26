@@ -5,34 +5,72 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, minimal-ui">
     <title>Group Messaging</title>
     <link rel="stylesheet" href="/css/group-messaging.css">
+    <link rel="stylesheet" href="/css/fontello.css">
 </head>
 <body>
+
+    <script type="text/x-handlebars-template" id="chat-tabs-template">
+        {{#each tabs}}
+        <a href="#" id="{{label}}" class="tab{{#if isActive}} active{{/if}}">
+            <i class="icon-cancel-squared close"></i>{{label}}
+        </a>
+        {{/each}}
+    </script>
+
+    <script type="text/x-handlebars-template" id="buddies-template">
+        {{#each buddies}}
+        <li id="{{username}}" class="buddy-list--mini__user{{#if isActive}} active{{/if}}">
+            <img src="{{#gravatar}}{{username}}{{/gravatar}}" alt="{{username}}" class="buddy-list--mini__user__avatar">
+            <div class="buddy-list__user__name">{{username}}</div>
+            <div class="presence">
+                <div class="buddy-list__user__status--{{#presenceClass}}{{presence}}{{/presenceClass}}">{{presence}}</div>
+            </div>
+        </li>
+        {{/each}}
+    </script>
+
+    <script type="text/x-handlebars-template" id="chat-list-item">
+        <li class="message--full-{{#if isMyMessage}}left{{else}}right{{/if}}">
+            <img class="message--full-{{#if isMyMessage}}left{{else}}right{{/if}}__avatar" src="{{photo}}" alt="{{fullName}}">
+            <div class="message--full-{{#if isMyMessage}}left{{else}}right{{/if}}__container">
+                <div class="message--full-{{#if isMyMessage}}left{{else}}right{{/if}}__container__content">
+                    {{message}}
+                </div>
+                <div class="message--full-{{#if isMyMessage}}left{{else}}right{{/if}}__meta">
+                    {{fullName}} at <time>{{time}}</time>
+                </div>
+            </div>
+        </li>
+    </script>
 
     <header class="group-chat__header">
         <button class="group-list-open">View Buddies</button>
         <div class="group-chat__header__me">
             <a href="#">Log out</a> as John
         </div>
+        <nav class="group-chat__header__tabs">
+            <!--<a href="#" id="tab-12345" class="tab active">Everyone</a>-->
+        </nav>
     </header>
 
     <div class="chat-window">
         <nav class="group-list">
             <ul class="buddy-list--mini">
-                <li class="buddy-list--mini__user active">
-                    <div class="buddy-list--mini__user__name">Everyone</div>
-                </li>
-                <li class="buddy-list--mini__user">
-                    <div class="buddy-list--mini__user__name">Alice</div>
-                </li>
-                <li class="buddy-list--mini__user">
-                    <div class="buddy-list--mini__user__name">Bob</div>
-                </li>
-                <li class="buddy-list--mini__user">
-                    <div class="buddy-list--mini__user__name">John</div>
-                </li>
-                <li class="buddy-list--mini__user">
-                    <div class="buddy-list--mini__user__name">Steven</div>
-                </li>
+                <!--<li class="buddy-list--mini__user active">-->
+                    <!--<div class="buddy-list--mini__user__name">Everyone</div>-->
+                <!--</li>-->
+                <!--<li class="buddy-list--mini__user">-->
+                    <!--<div class="buddy-list--mini__user__name">Alice</div>-->
+                <!--</li>-->
+                <!--<li class="buddy-list--mini__user">-->
+                    <!--<div class="buddy-list--mini__user__name">Bob</div>-->
+                <!--</li>-->
+                <!--<li class="buddy-list--mini__user">-->
+                    <!--<div class="buddy-list--mini__user__name">John</div>-->
+                <!--</li>-->
+                <!--<li class="buddy-list--mini__user">-->
+                    <!--<div class="buddy-list--mini__user__name">Steven</div>-->
+                <!--</li>-->
             </ul>
         </nav>
 
@@ -42,7 +80,7 @@
         </form>
 
         <section class="group-chat">
-
+<!--
             <ol class="messages">
 
                 <li class="message--full-right">
@@ -118,14 +156,25 @@
                 </li>
 
             </ol>
-
+-->
         </section>
     </div>
 
+    <script src="https://cdn.respoke.io/respoke.min.js"></script>
     <script src="http://code.jquery.com/jquery-2.1.1.min.js"></script>
+    <script src="http:////cdnjs.cloudflare.com/ajax/libs/handlebars.js/2.0.0/handlebars.min.js"></script>
 
     <!-- injector:js -->
     <script src="/app/js/app.js"></script>
+    <script src="/app/js/lib/helpers.js"></script>
+    <script src="/app/js/lib/md5.js"></script>
+    <script src="/app/js/lib/tmpl.js"></script>
+    <script src="/app/js/models/Client.js"></script>
+    <script src="/app/js/models/Endpoint.js"></script>
+    <script src="/app/js/models/StatusTypes.js"></script>
+    <script src="/app/modules/group-messaging/index.js"></script>
+    <script src="/app/modules/group-messaging/state.js"></script>
+    <script src="/app/modules/group-messaging/ui.js"></script>
     <!-- endinjector -->
 
     <script>
@@ -173,9 +222,9 @@
     </script>
     
     <script type="text/javascript">
-        videoCallCtrl({
-            endpointId: 'Alice'
-        }).init();
+        (function () {
+            App.state.init('John');
+        }());
     </script>
 </body>
 </html>

@@ -28,6 +28,7 @@ body {
     z-index: 6;
 
     &__me {
+        float: right;
         background: #fff;
         color: rgba($accentColor, .6);
         font-size: .875rem;
@@ -37,6 +38,54 @@ body {
         a {
             color: $accentColor;
         }
+    }
+
+    &__tabs {
+        position: absolute;
+        bottom: 0;
+        margin: 0 0 0 1rem;
+        padding: 0;
+
+        @media (min-width: 45em) {
+            margin: 0 0 0 16rem;
+        }
+
+        .tab {
+            width: 5rem;
+            font-size: 0.8rem;
+
+            float: left;
+            display: inline-block;
+            padding: 0.3rem 0.6rem;
+            text-align: left;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+            overflow: hidden;
+            margin-left: -1px;
+            border: 1px solid #ddd;
+            border-bottom: 0;
+            border-radius: 0 0.8rem 0 0;
+            color: #444;
+            background-color: #fff;
+            text-decoration: none;
+
+            &:hover,
+            &.active {
+                color: #fff;
+                background-color: $accentColor;
+            }
+
+            .icon-cancel-squared {
+                float: right;
+            }
+
+            @media (min-width: 45em) {
+                width: 8rem;
+                font-size: 1rem;
+            }
+        }
+
+
     }
 }
 
@@ -72,15 +121,24 @@ body {
         position: fixed;
         width: 15rem;
     }
+}
 
-    .buddy-list--mini {
-        @media (min-width: 45em) {
-            box-shadow: none;
-            height: 100%;
-            overflow-y: scroll;
-            position: absolute;
-            width: 100%;
-        }
+.buddy-list--mini {
+    @media (min-width: 45em) {
+        box-shadow: none;
+        height: 100%;
+        overflow-y: scroll;
+        position: absolute;
+        width: 100%;
+    }
+
+    &__user__avatar {
+        position: relative;
+        float: right;
+        max-width: 1.5rem;
+        top: auto;
+        width: auto;
+        left: auto;
     }
 }
 
