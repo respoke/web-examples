@@ -9,6 +9,41 @@
 </head>
 <body>
 
+    <script type="text/x-handlebars-template" id="auth-form-template">
+        <div class="authentication">
+            <p class="cbl-instructions">
+                Enter your name to see a buddy list of all others on this page right now.
+            </p>
+            <form class="cbl-name">
+                <input class="cbl-name__text" type="text" placeholder="Enter a name">
+                <input class="cbl-name__submit" type="submit" value="Send">
+            </form>
+        </div>
+    </script>
+
+    <script type="text/x-handlebars-template" id="group-message-template">
+        <header class="group-chat__header">
+            <button class="group-list-open">View Buddies</button>
+            <div class="group-chat__header__me">
+                <a href="#" class="logout">Log out</a> as {{username}}
+            </div>
+            <nav class="group-chat__header__tabs"><!-- #chat-tabs-template --></nav>
+        </header>
+
+        <div class="chat-window">
+            <nav class="group-list">
+                <ul class="buddy-list--mini"><!-- #buddies-template --></ul>
+            </nav>
+
+            <form class="group-chat__form">
+                <input type="text" class="group-chat__form__text" placeholder="Enter your message here">
+                <input type="submit" value="Send" class="group-chat__form__submit">
+            </form>
+
+            <section class="group-chat"><!-- #chat-list-template --></section>
+        </div>
+    </script>
+
     <script type="text/x-handlebars-template" id="chat-tabs-template">
         {{#each tabs}}
         <a href="#" id="{{label}}" class="tab{{#if isActive}} active{{/if}}">
@@ -29,135 +64,41 @@
         {{/each}}
     </script>
 
-    <script type="text/x-handlebars-template" id="chat-list-item">
-        <li class="message--full-{{#if isMyMessage}}left{{else}}right{{/if}}">
-            <img class="message--full-{{#if isMyMessage}}left{{else}}right{{/if}}__avatar" src="{{photo}}" alt="{{fullName}}">
-            <div class="message--full-{{#if isMyMessage}}left{{else}}right{{/if}}__container">
-                <div class="message--full-{{#if isMyMessage}}left{{else}}right{{/if}}__container__content">
-                    {{message}}
+    <script type="text/x-handlebars-template" id="chat-list-template">
+        <ol class="messages">
+            {{#each messages}}
+            <li class="message--full-{{#if isMyMessage}}left{{else}}right{{/if}}">
+                <img class="message--full-{{#if isMyMessage}}left{{else}}right{{/if}}__avatar" src="{{photo}}" alt="{{fullName}}">
+                <div class="message--full-{{#if isMyMessage}}left{{else}}right{{/if}}__container">
+                    <div class="message--full-{{#if isMyMessage}}left{{else}}right{{/if}}__container__content">
+                        {{message}}
+                    </div>
+                    <div class="message--full-{{#if isMyMessage}}left{{else}}right{{/if}}__meta">
+                        {{fullName}} at <time>{{time}}</time>
+                    </div>
                 </div>
-                <div class="message--full-{{#if isMyMessage}}left{{else}}right{{/if}}__meta">
-                    {{fullName}} at <time>{{time}}</time>
+            </li>
+            <!--
+            <li class="message--full-right">
+                <img class="message--full-right__avatar" src="/images/profile-bob.jpg" alt="Bob">
+                <div class="message--full-right__container">
+                    <div class="message--full-right__container__content">
+                        Hello, everyone.
+                    </div>
+                    <div class="message--full-right__meta">
+                        Bob Landon at <time>12:07 PM</time>
+                    </div>
                 </div>
-            </div>
-        </li>
+            </li>
+            -->
+            {{/each}}
+        </ol>
     </script>
 
-    <header class="group-chat__header">
-        <button class="group-list-open">View Buddies</button>
-        <div class="group-chat__header__me">
-            <a href="#">Log out</a> as John
-        </div>
-        <nav class="group-chat__header__tabs">
-            <!--<a href="#" id="tab-12345" class="tab active">Everyone</a>-->
-        </nav>
-    </header>
 
-    <div class="chat-window">
-        <nav class="group-list">
-            <ul class="buddy-list--mini">
-                <!--<li class="buddy-list--mini__user active">-->
-                    <!--<div class="buddy-list--mini__user__name">Everyone</div>-->
-                <!--</li>-->
-                <!--<li class="buddy-list--mini__user">-->
-                    <!--<div class="buddy-list--mini__user__name">Alice</div>-->
-                <!--</li>-->
-                <!--<li class="buddy-list--mini__user">-->
-                    <!--<div class="buddy-list--mini__user__name">Bob</div>-->
-                <!--</li>-->
-                <!--<li class="buddy-list--mini__user">-->
-                    <!--<div class="buddy-list--mini__user__name">John</div>-->
-                <!--</li>-->
-                <!--<li class="buddy-list--mini__user">-->
-                    <!--<div class="buddy-list--mini__user__name">Steven</div>-->
-                <!--</li>-->
-            </ul>
-        </nav>
 
-        <form class="group-chat__form">
-            <input type="text" class="group-chat__form__text" placeholder="Enter your message here">
-            <input type="submit" value="Send" class="group-chat__form__submit">
-        </form>
+    <div id="ui">
 
-        <section class="group-chat">
-<!--
-            <ol class="messages">
-
-                <li class="message--full-right">
-                    <img class="message--full-right__avatar" src="/images/profile-bob.jpg" alt="Bob">
-                    <div class="message--full-right__container">
-                        <div class="message--full-right__container__content">
-                            Hello, everyone.
-                        </div>
-                        <div class="message--full-right__meta">
-                            Bob Landon at <time>12:07 PM</time>
-                        </div>
-                    </div>
-                </li>
-
-                <li class="message--full-left">
-                    <img class="message--full-left__avatar" src="/images/profile-alice.jpg" alt="Alice">
-                    <div class="message--full-left__container">
-                        <div class="message--full-left__container__content">
-                            Hey there, Bob! How are you doing today?
-                        </div>
-                        <div class="message--full-left__meta">
-                            Alice Smith at <time>12:08 PM</time>
-                        </div>
-                    </div>
-                </li>
-
-                <li class="message--full-right">
-                    <img class="message--full-right__avatar" src="/images/profile-bob.jpg" alt="Bob">
-                    <div class="message--full-right__container">
-                        <div class="message--full-right__container__content">
-                            Really well, thanks. How are you, Alice?
-                        </div>
-                        <div class="message--full-right__meta">
-                            Bob Landon at <time>12:09 PM</time>
-                        </div>
-                    </div>
-                </li>
-
-                <li class="message--full-left">
-                    <img class="message--full-left__avatar" src="/images/profile-alice.jpg" alt="Alice">
-                    <div class="message--full-left__container">
-                        <div class="message--full-left__container__content">
-                            Very well, thanks.
-                        </div>
-                        <div class="message--full-left__meta">
-                            Alice Smith at <time>12:09 PM</time>
-                        </div>
-                    </div>
-                </li>
-
-                <li class="message--full-left">
-                    <img class="message--full-left__avatar" src="/images/profile-alice.jpg" alt="Alice">
-                    <div class="message--full-left__container">
-                        <div class="message--full-left__container__content">
-                            Got a second to help me through some debugging issues?
-                        </div>
-                        <div class="message--full-left__meta">
-                            Alice Smith at <time>12:11 PM</time>
-                        </div>
-                    </div>
-                </li>
-
-                <li class="message--full-right">
-                    <img class="message--full-right__avatar" src="/images/profile-bob.jpg" alt="Bob">
-                    <div class="message--full-right__container">
-                        <div class="message--full-right__container__content">
-                            Sure thing. Give me 10 minutes.
-                        </div>
-                        <div class="message--full-right__meta">
-                            Bob Landon at <time>12:12 PM</time>
-                        </div>
-                    </div>
-                </li>
-
-            </ol>
--->
-        </section>
     </div>
 
     <script src="https://cdn.respoke.io/respoke.min.js"></script>

@@ -1,14 +1,39 @@
 (function groupMessagingState (App, respoke) {
     'use strict';
 
+    /**
+     * The state module
+     * @type {respoke.EventEmitter}
+     */
     var state = respoke.EventEmitter({});
 
+    /**
+     * The respoke lient
+     * @type {respoke.Client}
+     */
     state.client = null;
 
-    state.buddies = [
-        {username: 'Everyone', isActive: false}
-    ];
+    /**
+     * The current logged in user
+     * @type {String}
+     */
+    state.loggedInUser = '';
 
+    /**
+     * @typedef {{username:String, presence:String, isActive:Boolean}} Buddy
+     */
+
+    /**
+     * The user's current buddies/groups
+     * @type {Array.<Buddy>}
+     */
+    state.buddies = [];
+
+    /**
+     * Finds a buddy by predicate (or ID)
+     * @param {Function|String} predicate - function predicate or string ID
+     * @returns {Array.<Buddy>}
+     */
     function findBuddy(predicate) {
         var username = predicate;
         if (!$.isFunction (predicate)) {
@@ -19,6 +44,13 @@
         return state.buddies.filter(predicate)[0];
     }
 
+    /**
+     * Adds a buddy to the buddies collection
+     * @param {String} username
+     * @param {String} [presence]
+     * @param {Boolean} [isActive]
+     * @returns {Buddy}
+     */
     function addBuddy(username, presence, isActive) {
         var buddy = findBuddy(username);
         if (!buddy) {
@@ -35,6 +67,11 @@
         return buddy;
     }
 
+    /**
+     * Removes a buddy from the buddies collection
+     * @param {String} username
+     * @returns {Buddy}
+     */
     function removeBuddy(username) {
         var buddy = findBuddy(username);
         if (!buddy) {
@@ -44,6 +81,10 @@
         return buddy;
     }
 
+    /**
+     * Activates a buddy in the buddies collection
+     * @param {String} username
+     */
     var activateBuddy = state.activateBuddy = function activateBuddy(username) {
         state.buddies.forEach(function (buddy) {
             buddy.isActive = (buddy.username === username);
@@ -57,6 +98,14 @@
         });
     };
 
+    /**
+     * @typedef {{connection: {endpointId:String, presence:String} }} GroupEvent
+     */
+
+    /**
+     * Handles the group join event from respoke.Client
+     * @param {GroupEvent} e - event
+     */
     function onGroupJoin(e) {
         var username = e.connection.endpointId;
         var presence = e.connection.presence;
@@ -65,6 +114,10 @@
         }
     }
 
+    /**
+     * Handles the group leave event from respoke.Client
+     * @param {GroupEvent} e - event
+     */
     function onGroupLeave(e) {
         var username = e.connection.endpointId;
         if (removeBuddy(username)) {
@@ -72,8 +125,21 @@
         }
     }
 
+    /**
+     * @typedef {{label:String, isActive:Boolean}} Tab
+     */
+
+    /**
+     * Data for open chat tabs
+     * @type {Array.<Tab>}
+     */
     state.tabs = [];
 
+    /**
+     * Finds a specific tab by predicate or label
+     * @param {Function|String} predicate - predicate function or label
+     * @returns {Tab}
+     */
     function findTab(predicate) {
         var label = predicate;
         if (!$.isFunction (predicate)) {
@@ -84,6 +150,12 @@
         return state.tabs.filter(predicate)[0];
     }
 
+    /**
+     * Opens a specific tab
+     * @param {String} label
+     * @param {Boolean} [isActive] - make this the active tab
+     * @returns {Tab}
+     */
     function openTab(label, isActive) {
         var tab = findTab(label);
         if (!tab) {
@@ -99,6 +171,10 @@
         return tab;
     }
 
+    /**
+     * Closes a specific tab
+     * @param {String} label
+     */
     var closeTab = state.closeTab = function closeTab(label) {
         var tab = findTab(label);
         if (!tab) {
@@ -110,6 +186,10 @@
         });
     };
 
+    /**
+     * Activate a specific tab (or optionally deactivate all tabs if label is omitted)
+     * @param {String} [label] - tab label
+     */
     var activateTab = state.activateTab = function activateTab(label) {
         state.tabs.forEach(function (tab) {
             tab.isActive = (tab.label === label);
@@ -119,31 +199,75 @@
         });
     };
 
+    /**
+     * @typedef {{}} ChatMessage
+     */
+
+    /**
+     * Chat message data
+     * @type {Array.<ChatMessage>}
+     */
     state.messages = [
-        {to: 'Bob', from: 'John', content: 'test123', timestamp: Date.now()}
+        //{to: 'Bob', from: 'John', content: 'test123', timestamp: Date.now()}
     ];
 
-//    function sortByTimestamp(a, b) {
-//        if (a.timestamp === b.timestamp) {
-//            return 0;
-//        }
-//        if (a.timestamp > b.timestamp) {
-//            return 1;
-//        }
-//        return -1;
-//    }
-//
-//    state.messagesForEndpoint = function (endpointId) {
-//        var activeUser = state.client.endpointId;
-//        return state.messages.filter(function (message) {
-//            return (message.to === activeUser || message.from === activeUser) &&
-//                (message.to === endpointId || message.from === endpointId);
-//        }).sort(sortByTimestamp);
-//    };
+    // initialization/load methods
 
+    /**
+     * Loads roster data
+     * @returns {respoke.Promise}
+     */
+    state.loadRoster = function () {
+        state.buddies = [];
+        return state.client.join({id: 'Everyone'}).then(function (group) {
+            state.fire('group.joined');
+            addBuddy('Everyone', 'available', false);
+            state.everyoneGroup = group;
+            state.everyoneGroup.listen('join', onGroupJoin);
+            state.everyoneGroup.listen('leave', onGroupLeave);
+            return state.everyoneGroup.getMembers().then(function (connections) {
+                connections.forEach(function (connection) {
+                    addBuddy(connection.endpointId, connection.presence, false);
+                });
+            }).then(function () {
+                state.fire('buddies.updated');
+            }, function (err) {
+                state.fire('roster.error', err);
+                console.error(err);
+            });
+        });
+    };
 
+    /**
+     * Logs the user in
+     * @param {String} username
+     * @returns {respoke.Promise}
+     */
+    state.login = function (username) {
+        return state.client.connect({
+            endpointId: username
+        }).done(function (e) {
+            console.info('>> login', e);
+            state.loggedInUser = username;
+            state.fire('auth.success');
+        }, function (err) {
+            state.fire('auth.error', err);
+            console.error(err);
+        });
+    };
 
-    state.init = function (endpointId) {
+    /**
+     * Logs the user out
+     */
+    state.logout = function () {
+        //TODO: implement
+    };
+
+    /**
+     * Initializes application state and creates a client
+     * connection to respoke
+     */
+    state.init = function () {
         if (state.client && state.client.isConnected()) {
             return;
         }
@@ -152,27 +276,7 @@
             developmentMode: true
         };
         state.client = respoke.createClient(connectionOptions);
-        state.client.connect({
-            endpointId: endpointId
-        }).done(function () {
-            state.fire('init.connected');
-            return state.client.join({id: 'Everyone'}).then(function (group) {
-                state.fire('init.group-joined');
-                addBuddy('Everyone', 'available', false);
-                state.everyoneGroup = group;
-                state.everyoneGroup.listen('join', onGroupJoin);
-                state.everyoneGroup.listen('leave', onGroupLeave);
-                return state.everyoneGroup.getMembers().then(function (connections) {
-                    connections.forEach(function (connection) {
-                        addBuddy(connection.endpointId, connection.presence, false);
-                    });
-                    state.fire('buddies.updated');
-                });
-            });
-
-        }, function (err) {
-            console.error(err);
-        });
+        state.fire('init.success');
     };
 
     App.state = (App.state || state);
