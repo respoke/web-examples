@@ -37,7 +37,7 @@ module.exports = function (grunt) {
         },
 
         jshint: {
-            files: ['app/js/**/*.js'],
+            files: ['app/js/**/*.js', 'app/modules/**/*.js'],
             options: {
                 force: true,
                 jshintrc: './.jshintrc',
@@ -59,7 +59,7 @@ module.exports = function (grunt) {
 
         watch: {
             options: {
-                livereload: 1338
+                livereload: process.env.LIVERELOAD || 1338
             },
             scripts: {
                 files: [
@@ -67,7 +67,7 @@ module.exports = function (grunt) {
                     'test/**/*.js',
                     'app/modules/**/*.js'
                 ],
-                tasks: ['test', 'injector', 'jscs']
+                tasks: ['jshint', 'test', 'injector', 'jscs']
             },
             templates: {
                 files: [
@@ -188,8 +188,8 @@ module.exports = function (grunt) {
     grunt.loadNpmTasks('grunt-contrib-uglify');
     grunt.loadNpmTasks('grunt-autoprefixer');
 
-    grunt.registerTask('server', ['injector', 'express', 'browserSync', 'watch']);
-    grunt.registerTask('test', ['jshint', 'mocha']);
+    grunt.registerTask('server', ['jshint', 'injector', 'express', 'browserSync', 'watch']);
+    grunt.registerTask('test', ['express', 'jshint', 'mocha']);
     grunt.registerTask('default', ['jshint', 'injector', 'uglify']);
 
 };

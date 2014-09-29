@@ -1,2 +1,6 @@
+.grunt
+.git
+logs
+*.log
 node_modules
 app/vendor

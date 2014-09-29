@@ -112,6 +112,6 @@ App.controllers.endpointCtrl = (function ($, App) {
         // Public API
         return {};
 
-    }
+    };
 
 }(jQuery, App));

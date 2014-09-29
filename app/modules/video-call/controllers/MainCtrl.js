@@ -1,5 +1,7 @@
 App.controllers.videoCallCtrl = (function ($, App) {
 
+    'use strict';
+
     return function (options) {
 
         // This will contain the call object once a video call is established

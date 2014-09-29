@@ -50,7 +50,7 @@ App.controllers.messagingCtrl = (function ($, App) {
                     username: options.connectTo,
                     message: evt.message.message
                 }
-            })
+            });
 
             pinToBottom();
 
