@@ -7,7 +7,6 @@
     // with different skill levels.
 
     "bitwise"       : true,     // Prohibit bitwise operators (&, |, ^, etc.).
-    //TODO change camelcase to true
     "camelcase"     : false,     // Enforce camelCase
     "curly"         : true,     // Require {} for every new block or scope.
     "eqeqeq"        : true,     // Require triple equals i.e. `===`.

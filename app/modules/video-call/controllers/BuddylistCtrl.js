@@ -1,5 +1,7 @@
 App.controllers.buddyListCtrl = (function ($, App) {
 
+    'use strict';
+
     // The buddy list controller
     return function (options) {
 
