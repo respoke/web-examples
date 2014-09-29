@@ -37,7 +37,8 @@
             username: entity.id,
             presence: entity.presence || 'available',
             isActive: !!isActive,
-            dispose: function () {}
+            dispose: App.NO_OP,
+            sendMessage: App.NO_OP
         };
 
         return respoke.EventEmitter(buddy);
@@ -64,6 +65,13 @@
         }
         endpoint.listen('presence', onPresenceChange);
 
+        inst.sendMessage = function (content) {
+            return state.client.sendMessage({
+                endpointId: inst.username,
+                message: content
+            });
+        };
+
         return inst;
     }
 
@@ -75,7 +83,15 @@
      * @constructor
      */
     function GroupBuddy(group, isActive) {
-        return new Buddy(group, isActive);
+        var inst = new Buddy(group, isActive);
+
+        inst.sendMessage = function (content) {
+            return group.sendMessage({
+                message: content
+            });
+        };
+
+        return inst;
     }
 
     /**
@@ -240,6 +256,10 @@
         if (isActive) {
             activateTab(label);
         }
+        state.fire('tab.opened', {
+            label: label,
+            isActive: isActive
+        });
         return tab;
     }
 
@@ -306,6 +326,50 @@
      */
     state.messages = {};
 
+    /**
+     * User message
+     * @param {String} to
+     * @param {String} from
+     * @param {String} content
+     * @param {Number} timestamp
+     * @constructor
+     */
+    function UserMessage(to, from, content, timestamp) {
+        this.to = to;
+        this.from = from;
+        this.content = content;
+        this.timestamp = timestamp;
+        this.isMyMessage = (from === state.loggedInUser);
+        this.key = function () {
+            return this.isMyMessage ? this.to : this.from;
+        };
+    }
+
+    /**
+     * Group message
+     * @param {String} to
+     * @param {String} from
+     * @param {String} content
+     * @param {Number} timestamp
+     * @param {String} recipient
+     * @constructor
+     */
+    function GroupMessage(to, from, content, timestamp, recipient) {
+        UserMessage.call(this, to, from, content, timestamp);
+        this.recipient = recipient;
+        this.key = function () {
+            return this.recipient;
+        };
+    }
+
+    GroupMessage.prototype = UserMessage.prototype;
+
+    /**
+     * Sort function for objects with timestamps
+     * @param {{timestamp:Number}} a
+     * @param {{timestamp:Number}} b
+     * @returns {Number}
+     */
     function timestampSort(a, b) {
         if (a.timestamp === b.timestamp) {
             return 0;
@@ -315,38 +379,41 @@
 
     /**
      * Adds a message to the message hash
-     * @param {String} to
-     * @param {String} from
-     * @param {String} content
-     * @param {Number} timestamp
+     * @param {(UserMessage|GroupMessage)} message
      */
-    function addMessage(to, from, content, timestamp) {
-        var message = {
-            to: to,
-            from: from,
-            content: content,
-            timestamp: timestamp,
-            isMyMessage: (from === state.loggedInUser)
-        };
+    function addMessage(message) {
+        var key = message.key();
 
-        var otherUser = message.isMyMessage ? to : from;
-
-        if (!state.messages.hasOwnProperty(otherUser)) {
-            state.messages[otherUser] = [];
+        if (!state.messages.hasOwnProperty(key)) {
+            state.messages[key] = [];
         }
 
-        state.messages[otherUser] =
-            state.messages[otherUser].concat([message])
+        state.messages[key] =
+            state.messages[key].concat([message])
                 .sort(timestampSort);
 
-        if (hasActiveTab() && otherUser === activeTab().label) {
+        if (hasActiveTab() && key === activeTab().label) {
             state.fire('message.added', {
-                to: to,
-                from: from
+                to: message.to,
+                from: message.from
             });
         }
 
         state.fire('messages.updated');
+
+        // if there is no active tab, open one for this
+        // message's sender
+        if (!hasActiveTab()) {
+            openTab(key, true);
+        }
+
+        // if this message's sender has no tab at all
+        // and an active tab is already open, open a new
+        // tab but make it inactive
+        var tab = findTab(key);
+        if (!tab) {
+            openTab(key, false);
+        }
     }
 
     /**
@@ -370,24 +437,20 @@
      */
     function onMessageReceived(e) {
         var message = e.message;
-        addMessage(
+        var Ctor = !!message.recipient ?
+            GroupMessage :
+            UserMessage;
+        var newMessage = new Ctor(
             state.loggedInUser,
             message.endpointId,
             message.message,
-            message.timestamp
+            message.timestamp,
+            message.recipient
         );
-        // if there is no active tab, open one for this
-        // message's sender
-        if (!hasActiveTab()) {
-            openTab(message.endpointId, true);
-        }
-        // if this message's sender has no tab at all
-        // and an active tab is already open, open a new
-        // tab but make it inactive
-        var tab = findTab(message.endpointId);
-        if (!tab) {
-            openTab(message.endpointId, false);
-        }
+        addMessage(newMessage);
+        state.fire('message.received', {
+            key: newMessage.key()
+        });
     }
 
     /**
@@ -397,15 +460,23 @@
      */
     var sendMessage = state.sendMessage = function (message) {
         var to = activeTab().label,
-            from = state.loggedInUser,
             content = message,
             timestamp = Date.now();
-        return state.client.sendMessage({
-            endpointId: to,
-            message: content
-        }).then(function () {
+
+        var buddy = findBuddy(to);
+        if (!buddy) {
+            return;
+        }
+
+        return buddy.sendMessage(content).then(function () {
             state.fire('message.sent');
-            addMessage(to, from, content, timestamp);
+            var message = new UserMessage(
+                buddy.username,
+                state.loggedInUser,
+                content,
+                timestamp
+            );
+            addMessage(message);
         }, function (err) {
             console.error(err);
         });
@@ -425,7 +496,7 @@
             state.everyoneGroup = group;
             state.everyoneGroup.listen('join', onGroupJoin);
             state.everyoneGroup.listen('leave', onGroupLeave);
-            state.everyoneGroup.listen('message', onMessageReceived);
+//            state.everyoneGroup.listen('message', onGroupMessageReceived);
             return state.everyoneGroup.getMembers().then(function (connections) {
                 connections.filter(function (connection) {
                     // ignore self

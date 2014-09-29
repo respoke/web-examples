@@ -89,6 +89,9 @@
             username: App.state.loggedInUser
         }));
 
+        /**
+         * The groupMessage.menu submodule
+         */
         ui.groupMessage.menu = (function () {
             var $openButton = $('.group-list-open'),
                 $closeButton = $('.group-list-close');
@@ -165,6 +168,21 @@
                 $el.append(html);
             }
 
+            function onMessageReceived(e) {
+                var times = 3;
+                function twinkle() {
+                    if (times === 0) {
+                        return;
+                    }
+                    $el.find('#' + e.key)
+                        .fadeTo('fast', 0.5)
+                        .fadeTo('fast', 1.0);
+                    times -= 1;
+                    setTimeout(twinkle, 0);
+                }
+                twinkle();
+            }
+
             function onTabClicked(e) {
                 var label = e.target.getAttribute('id');
                 App.state.activateTab(label);
@@ -181,6 +199,7 @@
             App.state.listen('tab.opened', render);
             App.state.listen('tab.closed', render);
             App.state.listen('tab.activated', render);
+            App.state.listen('message.received', onMessageReceived);
 
             return {
                 dispose: function () {
@@ -188,6 +207,7 @@
                     App.state.ignore('tab.opened', render);
                     App.state.ignore('tab.closed', render);
                     App.state.ignore('tab.activated', render);
+                    App.state.ignore('message.received', onMessageReceived);
                 }
             };
         }());
