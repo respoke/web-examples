@@ -35,12 +35,12 @@
                 <ul class="buddy-list--mini"><!-- #buddies-template --></ul>
             </nav>
 
-            <form class="group-chat__form">
-                <input type="text" class="group-chat__form__text" placeholder="Enter your message here">
-                <input type="submit" value="Send" class="group-chat__form__submit">
+            <form class="group-chat__form group-chat__form--disabled">
+                <input type="text" class="group-chat__form__text" placeholder="Enter your message here" disabled="disabled">
+                <input type="submit" value="Send" class="group-chat__form__submit" disabled="disabled">
             </form>
 
-            <section class="group-chat"><!-- #chat-list-template --></section>
+            <section class="group-chat"><!-- #chat-messages-template --></section>
         </div>
     </script>
 
@@ -64,17 +64,17 @@
         {{/each}}
     </script>
 
-    <script type="text/x-handlebars-template" id="chat-list-template">
+    <script type="text/x-handlebars-template" id="chat-messages-template">
         <ol class="messages">
             {{#each messages}}
             <li class="message--full-{{#if isMyMessage}}left{{else}}right{{/if}}">
-                <img class="message--full-{{#if isMyMessage}}left{{else}}right{{/if}}__avatar" src="{{photo}}" alt="{{fullName}}">
+                <img class="message--full-{{#if isMyMessage}}left{{else}}right{{/if}}__avatar" src="{{#gravatar}}{{username}}{{/gravatar}}" alt="{{username}}">
                 <div class="message--full-{{#if isMyMessage}}left{{else}}right{{/if}}__container">
                     <div class="message--full-{{#if isMyMessage}}left{{else}}right{{/if}}__container__content">
-                        {{message}}
+                        {{content}}
                     </div>
                     <div class="message--full-{{#if isMyMessage}}left{{else}}right{{/if}}__meta">
-                        {{fullName}} at <time>{{time}}</time>
+                        {{username}} at <time>{{#friendlyTime}}{{timestamp}}{{/friendlyTime}}</time>
                     </div>
                 </div>
             </li>
@@ -95,14 +95,11 @@
         </ol>
     </script>
 
-
-
-    <div id="ui">
-
-    </div>
+    <div id="ui"><!-- root element --></div>
 
     <script src="https://cdn.respoke.io/respoke.min.js"></script>
     <script src="http://code.jquery.com/jquery-2.1.1.min.js"></script>
+    <script src="http://cdnjs.cloudflare.com/ajax/libs/moment.js/2.8.3/moment.min.js"></script>
     <script src="http:////cdnjs.cloudflare.com/ajax/libs/handlebars.js/2.0.0/handlebars.min.js"></script>
 
     <!-- injector:js -->
@@ -118,53 +115,9 @@
     <script src="/app/modules/group-messaging/ui.js"></script>
     <!-- endinjector -->
 
-    <script>
-        'use strict';
-
-        (function () {
-
-            var $openBtn = $('.group-list-open'),
-                $closeBtn = $('.group-list-close');
-
-            function checkStatus () {
-                if ($('.group-list').length) {
-                    openMenu();
-                } else {
-                    closeMenu();
-                }
-            }
-
-            function hideMenu (e) {
-                var $openedMenu = $(e.target).closest('.group-list--is-open');
-
-                if ( ($openedMenu.length === 0) && ($(e.target)[0] !== $openBtn[0]) ) {
-                    closeMenu();
-                }
-            }
-
-            function openMenu () {
-                $('html, body').animate({
-                    scrollTop: 0
-                }, 500);
-                $('.group-list').removeClass('group-list').addClass('group-list--is-open');
-                $('.group-chat').removeClass('group-chat').addClass('group-chat--open-panel');
-            }
-
-            function closeMenu () {
-                $('.group-list--is-open').removeClass('group-list--is-open').addClass('group-list');
-                $('.group-chat--open-panel').addClass('group-chat').removeClass('group-chat--open-panel');
-            }
-
-            $openBtn.on('click', checkStatus);
-            $closeBtn.on('click', closeMenu);
-            $('body').on('click touchstart', hideMenu);
-
-        })();
-    </script>
-    
     <script type="text/javascript">
         (function () {
-            App.state.init('John');
+            App.state.init('7c15ec35-71a9-457f-8b73-97caf4eb43ca');
         }());
     </script>
 </body>

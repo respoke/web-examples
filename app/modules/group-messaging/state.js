@@ -8,20 +8,75 @@
     var state = respoke.EventEmitter({});
 
     /**
-     * The respoke lient
+     * The respoke client
      * @type {respoke.Client}
      */
     state.client = null;
 
     /**
-     * The current logged in user
+     * Convenience handle to the "Everyone" group
+     * @type {respoke.Group}
+     */
+    state.everyoneGroup = null;
+
+    /**
+     * The current logged in user(name)
      * @type {String}
      */
     state.loggedInUser = '';
 
     /**
-     * @typedef {{username:String, presence:String, isActive:Boolean}} Buddy
+     * Creates a Buddy object
+     * @abstract
+     * @param {(respoke.Endpoint|respoke.Group)} entity
+     * @param {Boolean} [isActive]
+     * @constructor
      */
+    function Buddy(entity, isActive) {
+        var buddy = {
+            username: entity.id,
+            presence: entity.presence || 'available',
+            isActive: !!isActive,
+            dispose: function () {}
+        };
+
+        return respoke.EventEmitter(buddy);
+    }
+
+    /**
+     * Creates a UserBody object
+     * @param {respoke.Connection} connection
+     * @param {Boolean} [isActive]
+     * @returns {Buddy}
+     * @constructor
+     */
+    function UserBuddy(connection, isActive) {
+        var endpoint = connection.getEndpoint();
+        var inst = new Buddy(endpoint, isActive);
+        inst.dispose = function () {
+            endpoint.ignore('presence', onPresenceChange);
+            endpoint = null;
+        };
+
+        function onPresenceChange(e) {
+            inst.presence = e.presence;
+            inst.fire('presence.changed');
+        }
+        endpoint.listen('presence', onPresenceChange);
+
+        return inst;
+    }
+
+    /**
+     * Creates a GroupBuddy object
+     * @param {respoke.Group} group
+     * @param {Boolean} [isActive]
+     * @returns {Buddy}
+     * @constructor
+     */
+    function GroupBuddy(group, isActive) {
+        return new Buddy(group, isActive);
+    }
 
     /**
      * The user's current buddies/groups
@@ -46,25 +101,16 @@
 
     /**
      * Adds a buddy to the buddies collection
-     * @param {String} username
-     * @param {String} [presence]
-     * @param {Boolean} [isActive]
-     * @returns {Buddy}
+     * @param {(UserBuddy|GroupBuddy)} buddy
      */
-    function addBuddy(username, presence, isActive) {
-        var buddy = findBuddy(username);
-        if (!buddy) {
-            buddy = {
-                username: username,
-                presence: presence || 'unavailable',
-                isActive: !!isActive
-            };
-            state.buddies.push(buddy);
-        }
+    function addBuddy(buddy) {
+        state.buddies.push(buddy);
+        buddy.listen('presence.changed', function () {
+            state.fire('buddies.updated');
+        });
         if (buddy.isActive) {
-            activateBuddy(username);
+            activateBuddy(buddy.username);
         }
-        return buddy;
     }
 
     /**
@@ -77,6 +123,8 @@
         if (!buddy) {
             return;
         }
+        buddy.ignore('presence.changed');
+        buddy.dispose();
         state.buddies.splice(state.buddies.indexOf(buddy), 1);
         return buddy;
     }
@@ -108,10 +156,23 @@
      */
     function onGroupJoin(e) {
         var username = e.connection.endpointId;
-        var presence = e.connection.presence;
-        if (addBuddy(username, presence, false)) {
-            state.fire('buddies.updated');
+
+        // don't join self
+        if (username === state.loggedInUser) {
+            return;
         }
+
+        var buddy = findBuddy(username);
+
+        if (buddy) {
+            // already tracking this endpoint
+            return;
+        }
+
+        buddy = new UserBuddy(e.connection, false);
+        addBuddy(buddy);
+
+        state.fire('buddies.updated');
     }
 
     /**
@@ -122,6 +183,7 @@
         var username = e.connection.endpointId;
         if (removeBuddy(username)) {
             state.fire('buddies.updated');
+            closeTab(username);
         }
     }
 
@@ -134,6 +196,16 @@
      * @type {Array.<Tab>}
      */
     state.tabs = [];
+
+    /**
+     * Retrieves the one and only active tab (if any)
+     * @returns {Tab}
+     */
+    function activeTab() {
+        return findTab(function (tab) {
+            return tab.isActive;
+        });
+    }
 
     /**
      * Finds a specific tab by predicate or label
@@ -180,6 +252,9 @@
         if (!tab) {
             return;
         }
+        if (tab.isActive) {
+            deactivateTab(label);
+        }
         state.tabs.splice(state.tabs.indexOf(tab), 1);
         state.fire('tab.closed', {
             label: label
@@ -194,40 +269,170 @@
         state.tabs.forEach(function (tab) {
             tab.isActive = (tab.label === label);
         });
-        state.fire('tab.activated', {
+        if (hasActiveTab()) {
+            state.fire('tab.activated', {
+                label: label
+            });
+        }
+        state.fire('tabs.updated');
+    };
+
+    function deactivateTab(label) {
+        var tab = findTab(label);
+        if (!tab) {
+            return;
+        }
+        tab.isActive = false;
+        state.fire('tab.deactivated', {
             label: label
         });
+    }
+
+    /**
+     * Convenience method to determine if there is an active tab
+     * @returns {Boolean}
+     */
+    var hasActiveTab = state.hasActiveTab = function hasActiveTab() {
+        return !!activeTab();
     };
 
     /**
-     * @typedef {{}} ChatMessage
+     * @typedef {{to:String, from:String, content:String, timestamp:Number, isMyMessage:Boolean}} ChatMessage
      */
 
     /**
      * Chat message data
      * @type {Array.<ChatMessage>}
      */
-    state.messages = [
-        //{to: 'Bob', from: 'John', content: 'test123', timestamp: Date.now()}
-    ];
+    state.messages = {};
+
+    function timestampSort(a, b) {
+        if (a.timestamp === b.timestamp) {
+            return 0;
+        }
+        return a.timestamp > b.timestamp ? 1 : -1;
+    }
+
+    /**
+     * Adds a message to the message hash
+     * @param {String} to
+     * @param {String} from
+     * @param {String} content
+     * @param {Number} timestamp
+     */
+    function addMessage(to, from, content, timestamp) {
+        var message = {
+            to: to,
+            from: from,
+            content: content,
+            timestamp: timestamp,
+            isMyMessage: (from === state.loggedInUser)
+        };
+
+        var otherUser = message.isMyMessage ? to : from;
+
+        if (!state.messages.hasOwnProperty(otherUser)) {
+            state.messages[otherUser] = [];
+        }
+
+        state.messages[otherUser] =
+            state.messages[otherUser].concat([message])
+                .sort(timestampSort);
+
+        if (hasActiveTab() && otherUser === activeTab().label) {
+            state.fire('message.added', {
+                to: to,
+                from: from
+            });
+        }
+
+        state.fire('messages.updated');
+    }
+
+    /**
+     * Gets the "active messages" (e.g., messages for the open tab)
+     * @returns {Array.<ChatMessage>}
+     */
+    var activeMessages = state.activeMessages = function activeMessages() {
+        if (!hasActiveTab()) {
+            return [];
+        }
+        return state.messages[activeTab().label] || [];
+    };
+
+    /**
+     * @typedef {{endpointId:String, message:String, timestamp:Number}} MessageEvent
+     */
+
+    /**
+     * Handles the message event from respoke.Client
+     * @param {MessageEvent} e - event
+     */
+    function onMessageReceived(e) {
+        var message = e.message;
+        addMessage(
+            state.loggedInUser,
+            message.endpointId,
+            message.message,
+            message.timestamp
+        );
+        // if there is no active tab, open one for this
+        // message's sender
+        if (!hasActiveTab()) {
+            openTab(message.endpointId, true);
+        }
+        // if this message's sender has no tab at all
+        // and an active tab is already open, open a new
+        // tab but make it inactive
+        var tab = findTab(message.endpointId);
+        if (!tab) {
+            openTab(message.endpointId, false);
+        }
+    }
+
+    /**
+     * Sends a chat message
+     * @param {String} message
+     * @returns {respoke.Promise}
+     */
+    var sendMessage = state.sendMessage = function (message) {
+        var to = activeTab().label,
+            from = state.loggedInUser,
+            content = message,
+            timestamp = Date.now();
+        return state.client.sendMessage({
+            endpointId: to,
+            message: content
+        }).then(function () {
+            state.fire('message.sent');
+            addMessage(to, from, content, timestamp);
+        }, function (err) {
+            console.error(err);
+        });
+    };
 
     // initialization/load methods
 
     /**
-     * Loads roster data
+     * Loads all buddies
      * @returns {respoke.Promise}
      */
-    state.loadRoster = function () {
-        state.buddies = [];
+    state.loadBuddies = function () {
         return state.client.join({id: 'Everyone'}).then(function (group) {
             state.fire('group.joined');
-            addBuddy('Everyone', 'available', false);
+            var buddy = new GroupBuddy(group, false);
+            addBuddy(buddy);
             state.everyoneGroup = group;
             state.everyoneGroup.listen('join', onGroupJoin);
             state.everyoneGroup.listen('leave', onGroupLeave);
+            state.everyoneGroup.listen('message', onMessageReceived);
             return state.everyoneGroup.getMembers().then(function (connections) {
-                connections.forEach(function (connection) {
-                    addBuddy(connection.endpointId, connection.presence, false);
+                connections.filter(function (connection) {
+                    // ignore self
+                    return connection.endpointId !== state.loggedInUser;
+                }).forEach(function (connection) {
+                    var buddy = new UserBuddy(connection, false);
+                    addBuddy(buddy);
                 });
             }).then(function () {
                 state.fire('buddies.updated');
@@ -245,10 +450,12 @@
      */
     state.login = function (username) {
         return state.client.connect({
-            endpointId: username
+            endpointId: username,
+            presence: 'available'
         }).done(function (e) {
             console.info('>> login', e);
             state.loggedInUser = username;
+            state.client.listen('message', onMessageReceived);
             state.fire('auth.success');
         }, function (err) {
             state.fire('auth.error', err);
@@ -267,12 +474,12 @@
      * Initializes application state and creates a client
      * connection to respoke
      */
-    state.init = function () {
+    state.init = function (appId) {
         if (state.client && state.client.isConnected()) {
             return;
         }
         var connectionOptions = {
-            appId: '7c15ec35-71a9-457f-8b73-97caf4eb43ca',
+            appId: appId,
             developmentMode: true
         };
         state.client = respoke.createClient(connectionOptions);
