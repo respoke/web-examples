@@ -888,4 +888,5 @@ describe('App.state module', function () {
             });
         });
     });
+
 });
