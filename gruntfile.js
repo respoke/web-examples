@@ -48,10 +48,12 @@ module.exports = function (grunt) {
         mocha: {
             all: {
                 options: {
+                    log: true,
                     threshhold: 90,
                     timeout: 5000,
                     urls: [
-                        'http://localhost:9876/test/index.html'
+//                        'http://localhost:9876/test/index.html',
+                        'http://localhost:9876/test/group-messaging/index.html',
                     ]
                 }
             }

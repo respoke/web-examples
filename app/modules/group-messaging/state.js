@@ -1,4 +1,4 @@
-(function groupMessagingState (App, respoke) {
+(function groupMessagingState (App, respoke, $) {
     'use strict';
 
     /**
@@ -150,16 +150,20 @@
      * @param {String} username
      */
     var activateBuddy = state.activateBuddy = function activateBuddy(username) {
+        var activeBuddy = null;
         state.buddies.forEach(function (buddy) {
             buddy.isActive = (buddy.username === username);
+            if (buddy.isActive) {
+                activeBuddy = buddy;
+            }
         });
+        if (!activeBuddy) {
+            return;
+        }
         state.fire('buddy.activated', {
-            username: username
+            username: activeBuddy.username
         });
         openTab(username, true);
-        state.fire('tab.opened', {
-            label: username
-        });
     };
 
     /**
@@ -482,6 +486,7 @@
             );
             addMessage(message);
         }, function (err) {
+            state.fire('message.failed');
             console.error(err);
         });
     };
@@ -511,9 +516,12 @@
             }).then(function () {
                 state.fire('buddies.updated');
             }, function (err) {
-                state.fire('roster.error', err);
+                state.fire('buddies.error', err);
                 console.error(err);
             });
+        }, function (err) {
+            state.fire('group.unjoined', err);
+            console.error(err);
         });
     };
 
@@ -526,7 +534,7 @@
         return state.client.connect({
             endpointId: username,
             presence: 'available'
-        }).done(function (e) {
+        }).done(function () {
             state.loggedInUser = username;
             state.client.listen('message', onMessageReceived);
             state.fire('login.success');
@@ -557,6 +565,7 @@
             state.loggedInUser = '';
             state.fire('logout.success');
         }, function (err) {
+            state.fire('logout.failed', err);
             console.error(err);
         });
     };
@@ -583,4 +592,4 @@
      */
     App.state = state;
 
-}(App, respoke));
+}(App, respoke, jQuery));
