@@ -10,16 +10,16 @@
 
     <script type="text/tmpl" id="user-buddy">
         <li class="buddy-list__user" id="user-<%= username %>">
-            <img src="/images/profile-<%= username %>.jpg" alt="User" class="buddy-list__user__avatar">
-            <div class="buddy-list__user__name"><%= username %></div>
+            <img src="/images/profile-<%= username.substr(0, username.indexOf('-')) %>.jpg" alt="User" class="buddy-list__user__avatar">
+            <div class="buddy-list__user__name"><%= username.substr(0, username.indexOf('-')) %></div>
             <div class="buddy-list__user__status--<%= $.helpers.getPresenceClass(presence) %>"><%= presence %></div>
         </li>
     </script>
 
     <script type="text/tmpl" id="user-display">
         <h1 class="user-handle">
-            <img src="/images/profile-<%= username %>.jpg" alt="Avatar">
-            <%= username %>
+            <img src="/images/profile-<%= username.substr(0, username.indexOf('-')) %>.jpg" alt="Avatar">
+            <%= username.substr(0, username.indexOf('-')) %>
         </h1>
         <form class="user-status-dropdown">
             <div class="user-status-dropdown__status--<%= $.helpers.getPresenceClass(presence) %>"><%= presence %></div>
@@ -57,17 +57,21 @@
 
     <script type="text/javascript">
 
+        var now = Date.now(),
+            bobEndpointId = 'Bob-' + now,
+            aliceEndpointId = 'Alice-' + now;
+
         // Render Bob
         App.controllers.endpointCtrl({
-            username: 'Bob',
-            connectTo: 'Alice',
+            username: bobEndpointId,
+            connectTo: aliceEndpointId,
             renderTo: '#user-container-bob'
         });
 
         // Render Alice
         App.controllers.endpointCtrl({
-            username: 'Alice',
-            connectTo: 'Bob',
+            username: aliceEndpointId,
+            connectTo: bobEndpointId,
             renderTo: '#user-container-alice'
         });
 
