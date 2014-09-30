@@ -48,10 +48,12 @@ module.exports = function (grunt) {
         mocha: {
             all: {
                 options: {
+                    log: false,
                     threshhold: 90,
                     timeout: 5000,
                     urls: [
-                        'http://localhost:9876/test/index.html'
+                        'http://localhost:9876/test/index.html',
+                        'http://localhost:9876/test/group-messaging/index.html',
                     ]
                 }
             }
@@ -131,6 +133,16 @@ module.exports = function (grunt) {
                     'app/modules/video-call/index.html': (function () {
                         var arr = _.clone(files);
                         arr.push('app/modules/video-call/**/*.js');
+                        return arr;
+                    }())
+                }
+            },
+            groupMessaging: {
+                template: 'app/modules/group-messaging/index.html',
+                files: {
+                    'app/modules/group-messaging/index.html': (function () {
+                        var arr = _.clone(files);
+                        arr.push('app/modules/group-messaging/**/*.js');
                         return arr;
                     }())
                 }

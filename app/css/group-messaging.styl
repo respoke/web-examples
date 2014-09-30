@@ -1,136 +1,214 @@
 @import "_shared";
 
 * {
-	box-sizing: border-box;
+    box-sizing: border-box;
 }
 
 html {
-	height: 100%;
+    height: 100%;
 }
 
 body {
-	margin: 0;
-	min-height: 100%;
-	padding: 6rem 0 0 0;
-	position: relative;
+    margin: 0;
+    min-height: 100%;
+    padding: 6rem 0 0 0;
+    position: relative;
 
-	@media (min-width: 45em) {
-		padding-top: 3.5rem;
-	}
+    @media (min-width: 45em) {
+        padding-top: 3.5rem;
+    }
+}
+
+#ui {
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 100%;
+    width: 100%;
+    padding: 0;
+    margin: 0;
 }
 
 .group-chat__header {
-	box-shadow: 0 1px 2px rgba(0, 0, 0, .1);
-	left: 0;
-	position: fixed;
-	top: 0;
-	width: 100%;
-	z-index: 6;
+    box-shadow: 0 1px 2px rgba(0, 0, 0, .1);
+    left: 0;
+    position: fixed;
+    top: 0;
+    width: 100%;
+    z-index: 6;
+    background-color: #fff;
 
-	&__me {
-		background: #fff;
-		color: rgba($accentColor, .6);
-		font-size: .875rem;
-		padding: 1rem;
-		text-align: right;
+    &__me {
+        float: right;
+        background: #fff;
+        color: rgba($accentColor, .6);
+        font-size: .875rem;
+        padding: 1rem;
+        text-align: right;
 
-		a {
-			color: $accentColor;
-		}
-	}
+        a {
+            color: $accentColor;
+        }
+    }
+
+    &__tabs {
+        position: absolute;
+        bottom: 0;
+        margin: 0 0 0 1rem;
+        padding: 0;
+
+        @media (min-width: 45em) {
+            margin: 0 0 0 16rem;
+        }
+
+        .tab {
+            width: 5rem;
+            font-size: 0.8rem;
+
+            float: left;
+            display: inline-block;
+            padding: 0.3rem 0.6rem;
+            text-align: left;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+            overflow: hidden;
+            margin-left: -1px;
+            border: 1px solid #ddd;
+            border-bottom: 0;
+            border-radius: 0 0.8rem 0 0;
+            color: #444;
+            background-color: #fff;
+            text-decoration: none;
+
+            &:hover,
+            &.active {
+                color: #fff;
+                background-color: $accentColor;
+            }
+
+            .icon-cancel-squared {
+                float: right;
+            }
+
+            @media (min-width: 45em) {
+                width: 8rem;
+                font-size: 1rem;
+            }
+        }
+
+
+    }
 }
 
 .group-list-open {
-	appearance: none;
-	background-color: #444;
-	border: none;
-	color: #fff;
-	cursor: pointer;
-	font-family: $fonts;
-	font-size: .9rem;
-	margin: 0;
-	outline: none;
-	padding: .75rem;
-	width: 100%;
+    appearance: none;
+    background-color: #444;
+    border: none;
+    color: #fff;
+    cursor: pointer;
+    font-family: $fonts;
+    font-size: .9rem;
+    margin: 0;
+    outline: none;
+    padding: .75rem;
+    width: 100%;
 }
 
 .group-list,
 .group-list--is-open {
-	background: #fff;
-	box-shadow: 2px 0 2px rgba(0, 0, 0, .1);
-	height: 100%;
-	left: -80%;
-	overflow: hidden;
-	position: absolute;
-	transition: left .5s;
-	top: 0;
-	width: 80%;
-	z-index: 8;
+    background: #fff;
+    box-shadow: 2px 0 2px rgba(0, 0, 0, .1);
+    height: 100%;
+    left: -80%;
+    overflow: hidden;
+    position: absolute;
+    transition: left .5s;
+    top: 0;
+    width: 80%;
+    z-index: 8;
 
-	@media (min-width: 45em) {
-		left: 0;
-		position: fixed;
-		width: 15rem;
-	}
+    @media (min-width: 45em) {
+        left: 0;
+        position: fixed;
+        width: 15rem;
+    }
+}
 
-	.buddy-list--mini {
-		@media (min-width: 45em) {
-			box-shadow: none;
-			height: 100%;
-			overflow-y: scroll;
-			position: absolute;
-			width: 100%;
-		}
-	}
+.buddy-list--mini {
+    @media (min-width: 45em) {
+        box-shadow: none;
+        height: 100%;
+        overflow-y: scroll;
+        position: absolute;
+        width: 100%;
+    }
+
+    &__user__avatar {
+        position: relative;
+        float: right;
+        max-width: 1.5rem;
+        top: auto;
+        width: auto;
+        left: auto;
+    }
 }
 
 .group-list--is-open {
-	overflow: visible;
-	left: 0;
+    overflow: visible;
+    left: 0;
 }
 
 .group-list-open,
 .group-list-close {
-	@media (min-width: 45em) {
-		display: none;
-	}
+    @media (min-width: 45em) {
+        display: none;
+    }
 }
 
 .group-chat,
 .group-chat--open-panel {
-	padding: 1rem;
-	transition: opacity .5s;
+    padding: 1rem;
+    transition: opacity .5s;
 
-	@media (min-width: 45em) {
-		margin-left: 15rem;
-	}
+    @media (min-width: 45em) {
+        margin-left: 15rem;
+    }
 
-	&__form {
-		@extends $inlineForm;
-		background-color: #fff;
-		bottom: 0;
-		box-shadow: 0 -1px 2px rgba(0, 0, 0, .1);
-		padding: 1rem;
-		position: fixed;
-		width: 100%;
-		z-index: 4;
+    &__form {
+        @extends $inlineForm;
+        background-color: #fff;
+        bottom: 0;
+        box-shadow: 0 -1px 2px rgba(0, 0, 0, .1);
+        padding: 1rem;
+        position: fixed;
+        width: 100%;
+        z-index: 4;
 
-		@media (min-width: 45em) {
-			padding-left: 16rem;
-		}
-	}
+        @media (min-width: 45em) {
+            padding-left: 16rem;
+        }
+    }
+
+    &__form--disabled {
+        display: none;
+    }
 }
 
 .group-chat {
-	padding-bottom: 6rem;
+    padding-bottom: 6rem;
+    padding-top: 8rem;
+
+    @media (min-width: 45em) {
+        padding-top: 6rem;
+    }
 }
 
 .group-chat--open-panel {
-	opacity: .3;
+    opacity: .3;
 }
 
 .chat-window {
-	@media (min-width: 45em) {
-		height: 100%;
-	}
+    @media (min-width: 45em) {
+        height: 100%;
+    }
 }

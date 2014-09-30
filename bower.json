@@ -19,12 +19,15 @@
     "tests"
   ],
   "dependencies": {
-    "jquery": "~2.1.1",
+    "jquery": "~2.1.1"
+  },
+  "devDependencies": {
     "chai": "~1.9.1",
     "grunt-blanket-mocha": "~0.4.1",
     "blanket": "~1.1.5",
     "mocha": "~1.21.4",
     "sinon": "~1.10.3",
-    "sinonjs": "~1.10.2"
+    "sinonjs": "~1.10.2",
+    "sinon-chai": "~2.5.0"
   }
 }
