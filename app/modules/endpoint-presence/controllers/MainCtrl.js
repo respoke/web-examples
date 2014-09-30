@@ -14,11 +14,11 @@ App.controllers.endpointCtrl = (function ($, App) {
             // Just a bunch of fake users
             users = {
                 janet: {
-                    username: 'Janet',
+                    username: 'Janet-' + Date.now(),
                     presence: 'dnd'
                 },
                 jennifer: {
-                    username: 'Jennifer',
+                    username: 'Jennifer-' + Date.now(),
                     presence: 'busy'
                 }
             };
