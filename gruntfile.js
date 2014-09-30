@@ -178,14 +178,6 @@ module.exports = function (grunt) {
             options: {
                 config: '.jscsrc'
             }
-        },
-
-        uglify: {
-            app: {
-                files: {
-                    'app/dist/app.min.js': files
-                }
-            }
         }
 
     });
@@ -197,11 +189,10 @@ module.exports = function (grunt) {
     grunt.loadNpmTasks('grunt-browser-sync');
     grunt.loadNpmTasks('grunt-jscs');
     grunt.loadNpmTasks('grunt-contrib-stylus');
-    grunt.loadNpmTasks('grunt-contrib-uglify');
     grunt.loadNpmTasks('grunt-autoprefixer');
 
     grunt.registerTask('server', ['jshint', 'injector', 'express', 'browserSync', 'watch']);
     grunt.registerTask('test', ['express', 'jshint', 'mocha']);
-    grunt.registerTask('default', ['jshint', 'injector', 'uglify']);
+    grunt.registerTask('default', ['jshint', 'injector']);
 
 };
