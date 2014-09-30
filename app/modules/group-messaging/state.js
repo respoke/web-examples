@@ -297,6 +297,10 @@
         state.fire('tabs.updated');
     };
 
+    /**
+     * Deactivates a tab
+     * @param {String} label
+     */
     function deactivateTab(label) {
         var tab = findTab(label);
         if (!tab) {
@@ -420,7 +424,7 @@
      * Gets the "active messages" (e.g., messages for the open tab)
      * @returns {Array.<ChatMessage>}
      */
-    var activeMessages = state.activeMessages = function activeMessages() {
+    state.activeMessages = function activeMessages() {
         if (!hasActiveTab()) {
             return [];
         }
@@ -437,10 +441,10 @@
      */
     function onMessageReceived(e) {
         var message = e.message;
-        var Ctor = !!message.recipient ?
+        var MessageCtor = !!message.recipient ?
             GroupMessage :
             UserMessage;
-        var newMessage = new Ctor(
+        var newMessage = new MessageCtor(
             state.loggedInUser,
             message.endpointId,
             message.message,
@@ -458,7 +462,7 @@
      * @param {String} message
      * @returns {respoke.Promise}
      */
-    var sendMessage = state.sendMessage = function (message) {
+    state.sendMessage = function sendMessage(message) {
         var to = activeTab().label,
             content = message,
             timestamp = Date.now();
@@ -496,7 +500,6 @@
             state.everyoneGroup = group;
             state.everyoneGroup.listen('join', onGroupJoin);
             state.everyoneGroup.listen('leave', onGroupLeave);
-//            state.everyoneGroup.listen('message', onGroupMessageReceived);
             return state.everyoneGroup.getMembers().then(function (connections) {
                 connections.filter(function (connection) {
                     // ignore self
@@ -524,12 +527,11 @@
             endpointId: username,
             presence: 'available'
         }).done(function (e) {
-            console.info('>> login', e);
             state.loggedInUser = username;
             state.client.listen('message', onMessageReceived);
-            state.fire('auth.success');
+            state.fire('login.success');
         }, function (err) {
-            state.fire('auth.error', err);
+            state.fire('login.error', err);
             console.error(err);
         });
     };
@@ -538,7 +540,25 @@
      * Logs the user out
      */
     state.logout = function () {
-        //TODO: implement
+        return state.client.disconnect().then(function () {
+            state.client.ignore('message', onMessageReceived);
+            state.buddies.forEach(function (buddy) {
+                buddy.dispose();
+            });
+            state.buddies = [];
+            state.fire('buddies.updated');
+            state.tabs = [];
+            state.fire('tabs.updated');
+            state.messages = {};
+            state.fire('messages.updated');
+            state.everyoneGroup.ignore('join', onGroupJoin);
+            state.everyoneGroup.ignore('leave', onGroupLeave);
+            state.everyoneGroup = null;
+            state.loggedInUser = '';
+            state.fire('logout.success');
+        }, function (err) {
+            console.error(err);
+        });
     };
 
     /**
@@ -557,6 +577,10 @@
         state.fire('init.success');
     };
 
-    App.state = (App.state || state);
+    /**
+     * App.state module
+     * @type {respoke.EventEmitter}
+     */
+    App.state = state;
 
 }(App, respoke));

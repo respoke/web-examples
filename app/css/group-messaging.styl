@@ -36,6 +36,7 @@ body {
     top: 0;
     width: 100%;
     z-index: 6;
+    background-color: #fff;
 
     &__me {
         float: right;
@@ -195,6 +196,11 @@ body {
 
 .group-chat {
     padding-bottom: 6rem;
+    padding-top: 8rem;
+
+    @media (min-width: 45em) {
+        padding-top: 6rem;
+    }
 }
 
 .group-chat--open-panel {
