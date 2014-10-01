@@ -31,6 +31,11 @@
         return now.format('MM/DD/YYYY');
     });
 
+    Handlebars.registerHelper('elid', function elementID(options) {
+        var unsanitized = options.fn(this);
+        return $.helpers.sanitizeElementID(unsanitized);
+    });
+
     /**
      * Compiled Handlebars templates
      * @type {{authForm:Function, groupMessage:Function, chatTabs:Function, buddies:Function, chatMessages:Function}}
@@ -233,7 +238,8 @@
                     if (times === 0) {
                         return;
                     }
-                    $el.find('#' + e.key)
+                    var id = $.helpers.sanitizeElementID(e.key);
+                    $el.find('#' + id)
                         .fadeTo('fast', 0.5)
                         .fadeTo('fast', 1.0);
                     times -= 1;
@@ -248,6 +254,7 @@
              */
             function onTabClicked(e) {
                 var label = e.target.getAttribute('id');
+                label = $.helpers.unsanitizeElementID(label);
                 App.state.activateTab(label);
             }
 
@@ -257,6 +264,7 @@
              */
             function onCloseClicked(e) {
                 var label = $(e.target).parent().attr('id');
+                label = $.helpers.unsanitizeElementID(label);
                 App.state.closeTab(label);
             }
 
@@ -367,6 +375,7 @@
              */
             function onUserClicked(e) {
                 var username = e.currentTarget.getAttribute('id');
+                username = $.helpers.unsanitizeElementID(username);
                 App.state.activateBuddy(username);
             }
 

@@ -6,6 +6,14 @@
 
     $.helpers = {
 
+        sanitizeElementID: function (unsanitizedID) {
+            return unsanitizedID.replace(/[@]/g, '__');
+        },
+
+        unsanitizeElementID: function (sanitizedID) {
+            return sanitizedID.replace(/__/g, '@');
+        },
+
         // Returns the gravatar image for the endpoint it
         getAvatar: function (endpointId) {
             return 'http://gravatar.com/avatar/' + md5(endpointId) + '?s=52';

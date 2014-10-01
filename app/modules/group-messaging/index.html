@@ -12,7 +12,8 @@
     <script type="text/x-handlebars-template" id="auth-form-template">
         <div class="authentication">
             <p class="cbl-instructions">
-                Enter your name to see a buddy list of all others on this page right now.
+                Enter your name (or email) to see a buddy list of all others on this page right now.<br /><br />
+                Hint: use an email address associated with a <a href="https://en.gravatar.com/" target="_blank">gravatar</a>!
             </p>
             <form class="cbl-name">
                 <input class="cbl-name__text" type="text" placeholder="Enter a name">
@@ -46,7 +47,7 @@
 
     <script type="text/x-handlebars-template" id="chat-tabs-template">
         {{#each tabs}}
-        <a href="#" id="{{label}}" class="tab{{#if isActive}} active{{/if}}">
+        <a href="#" id="{{#elid}}{{label}}{{/elid}}" class="tab{{#if isActive}} active{{/if}}">
             <i class="icon-cancel-squared close"></i>{{label}}
         </a>
         {{/each}}
@@ -54,7 +55,7 @@
 
     <script type="text/x-handlebars-template" id="buddies-template">
         {{#each buddies}}
-        <li id="{{username}}" class="buddy-list--mini__user{{#if isActive}} active{{/if}}">
+        <li id="{{#elid}}{{username}}{{/elid}}" class="buddy-list--mini__user{{#if isActive}} active{{/if}}">
             <img src="{{#gravatar}}{{username}}{{/gravatar}}" alt="{{username}}" class="buddy-list--mini__user__avatar">
             <div class="buddy-list__user__name">{{username}}</div>
             <div class="presence">
@@ -68,13 +69,13 @@
         <ol class="messages">
             {{#each messages}}
             <li class="message--full-{{#if isMyMessage}}left{{else}}right{{/if}}">
-                <img class="message--full-{{#if isMyMessage}}left{{else}}right{{/if}}__avatar" src="{{#gravatar}}{{username}}{{/gravatar}}" alt="{{username}}">
+                <img class="message--full-{{#if isMyMessage}}left{{else}}right{{/if}}__avatar" src="{{#gravatar}}{{from}}{{/gravatar}}" alt="{{username}}">
                 <div class="message--full-{{#if isMyMessage}}left{{else}}right{{/if}}__container">
                     <div class="message--full-{{#if isMyMessage}}left{{else}}right{{/if}}__container__content">
                         {{content}}
                     </div>
                     <div class="message--full-{{#if isMyMessage}}left{{else}}right{{/if}}__meta">
-                        {{username}} at <time>{{#friendlyTime}}{{timestamp}}{{/friendlyTime}}</time>
+                        {{from}} at <time>{{#friendlyTime}}{{timestamp}}{{/friendlyTime}}</time>
                     </div>
                 </div>
             </li>
