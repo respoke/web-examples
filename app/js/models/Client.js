@@ -15,7 +15,8 @@
         });
 
         client.connect({
-            endpointId: endpointId
+            endpointId: endpointId,
+            presence: 'available'
         }).done(function () {
             cb(client);
         });

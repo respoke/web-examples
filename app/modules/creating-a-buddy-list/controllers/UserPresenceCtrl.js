@@ -3,9 +3,10 @@ App.controllers.userPresenceCtrl = (function ($, App) {
 
     /**
      * The User Presence Controller
+     * @param {respoke.Client} client
      * @param {Object} options
      */
-    return function (options) {
+    return function (client, options) {
 
         /**
          * Handle to the root HTML element
@@ -43,8 +44,6 @@ App.controllers.userPresenceCtrl = (function ($, App) {
         function changeStatus (e) {
             var presence = $(e.target).val();
 
-            renderPresence(presence);
-
             // Fire an event to let the MainCtrl know that the presence has changed
             (options.onPresenceChange || NO_OP)(presence);
         }
@@ -55,11 +54,11 @@ App.controllers.userPresenceCtrl = (function ($, App) {
         function renderUser () {
             // Data to be applied to the template
             var data = $.extend({}, {
-                endpointId: options.endpointId,
-                presence: options.presence,
+                endpointId: client.endpointId,
+                presence: client.presence,
                 statusTypes: App.models.statusTypes(),
-                presenceCls: $.helpers.getPresenceClass(options.presence),
-                photo: $.helpers.getAvatar(options.endpointId)
+                presenceCls: $.helpers.getPresenceClass(client.presence),
+                photo: $.helpers.getAvatar(client.endpointId)
             });
 
             $.helpers.insertTemplate({
@@ -77,9 +76,25 @@ App.controllers.userPresenceCtrl = (function ($, App) {
         // render the template to the DOM
         renderUser();
 
+        // listen for presence changes from the client
+        function onClientPresenceChange (e) {
+            renderPresence(e.presence);
+        }
+
+        client.listen('presence', onClientPresenceChange);
+
         // listen for changes to the status
         $el.find('.user-status-dropdown__status__select')
             .bind('change', changeStatus);
+
+        return {
+            /**
+             * Dispose of this instance
+             */
+            dispose: function () {
+                client.ignore('presence', onClientPresenceChange);
+            }
+        };
     };
 
 }(jQuery, App));

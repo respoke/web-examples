@@ -106,9 +106,7 @@ App.controllers.buddylistCtrl = (function ($, App) {
             userClient = client;
 
             var presenceOptions = $.extend({}, options, {
-                onPresenceChange: changePresence,
-                endpointId: client.endpointId,
-                presence: client.presence
+                onPresenceChange: changePresence
             });
 
             /*
@@ -116,7 +114,7 @@ App.controllers.buddylistCtrl = (function ($, App) {
              * it will invoke the onPresenceChange callback in the
              * options object.
              */
-            App.controllers.userPresenceCtrl(presenceOptions);
+            App.controllers.userPresenceCtrl(client, presenceOptions);
 
             joinGroup();
         }
