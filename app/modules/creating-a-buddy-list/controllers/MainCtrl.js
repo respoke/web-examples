@@ -6,8 +6,25 @@ App.controllers.buddylistCtrl = (function ($, App) {
      */
     return function (options) {
 
+        /**
+         * Client for the logged-in user
+         * @type {respoke.Client}
+         */
         var userClient,
+            /**
+             * "Everyone" group
+             * @type {respoke.Group}
+             */
+            everyoneGroup,
+            /**
+             * Root HTML element
+             * @type {jQuery}
+             */
             $el,
+            /**
+             * Buddies list
+             * @type {Object} - hash of buddy controllers {endpointId -> buddyCtrl}
+             */
             buddies = {};
 
         /**
@@ -67,24 +84,15 @@ App.controllers.buddylistCtrl = (function ($, App) {
         }
 
         /**
-         * Gets the members of a group and listens for additions and subtractions
-         * @param {respoke.Group} group
-         */
-        function onJoinGroupSuccess (group) {
-            group.listen('join', onMemberJoin);
-            group.listen('leave', onMemberLeave);
-            group.getMembers({
-                onSuccess: renderGroup
-            });
-        }
-
-        /**
          * Joins the client to the "Everyone" group
          */
         function joinGroup () {
             userClient.join({
-                id: 'everyone',
-                onSuccess: onJoinGroupSuccess
+                id: 'everyone'
+            }).then(function (group) {
+                everyoneGroup = group;
+                everyoneGroup.listen('join', onMemberJoin);
+                group.getMembers().then(renderGroup);
             });
         }
 
