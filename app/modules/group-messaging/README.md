@@ -347,7 +347,37 @@ Like the `Buddy` objects discussed previously, these `Message` objects encapsula
 
 Imagine that you are chatting with Tom. From your perspective, a chat window called "Tom" contains messages from Tom to you, and from you to Tom. "Tom" is the message "key" here that ties all these messages together. From Tom's perspective, *your name* is the message key that ties them all together.
 
-In the case of a group chat, messages are from any number of people, but they are all sent to you (actually they are sent to everyone in the group, but from your perspective they are sent to you, to your chat instance). The "key" that ties all these messages together is the name of the *group*, not the name of any specific user.
+In the case of a group chat, messages are from any number of people, but they are all sent to you (actually they are sent to everyone in the group, but from your perspective they are sent to you, to your chat instance). The "key" that ties all these messages together, though, is the name of the *group*, not the name of any specific user.
 
+Creating different message types makes it simple to determine which chat "tab" displays a series of messages. The `state` model simply looks for messages that share a specific key.
+
+Once a message has been added to the appropriate collection (based on key), the `state` model fires an event to inform the `ui` controller that there are potentially new messages to render.
 
 #### When the client logs out
+
+The `client` object's `disconnect()` method is called when the user logs out of the chat session. When the connection has been terminated, the `state` model does some simple cleanup, removing event handlers attached to respoke objects (`client`, `everyoneGroup`) and disposing of any buddy objects in the buddies collection. The buddies, tabs, and messages collections are all cleared, and the logged in user handle is reset. Events are fired for each stage of cleanup so that the `ui` controller can also clean up the view accordingly. Once the `logout.success` event is fired at the end of the process, the `ui` controller will reset the rest of the view and present the user, once again, with a login screen.
+
+```javascript
+state.logout = function () {
+    return state.client.disconnect().then(function () {
+        state.client.ignore('message', onMessageReceived);
+        state.buddies.forEach(function (buddy) {
+            buddy.dispose();
+        });
+        state.buddies = [];
+        state.fire('buddies.updated');
+        state.tabs = [];
+        state.fire('tabs.updated');
+        state.messages = {};
+        state.fire('messages.updated');
+        state.everyoneGroup.ignore('join', onGroupJoin);
+        state.everyoneGroup.ignore('leave', onGroupLeave);
+        state.everyoneGroup = null;
+        state.loggedInUser = '';
+        state.fire('logout.success');
+    }, function (err) {
+        state.fire('logout.failed', err);
+        console.error(err);
+    });
+};
+```
