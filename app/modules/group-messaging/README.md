@@ -291,15 +291,63 @@ function UserBuddy(connection, isActive) {
             message: content
         });
     };
-    
     //...
 }
 ```
 
-In this example, if Luke sends his buddy Anikan the message: `/nick Vader`, the buddy will see the message: `> You are now known as Vader`. If the view's buddy list template uses the `displayName` property instead of `username`, Luke will see Anikan represented as "Vader". By encapsulating the endpoint behind a buddy object it is possible to cleanly introduce additional application logic before actually interacting with the endpoint. 
+In this example, if Luke sends his buddy Anikan the message: `/nick Vader`, Anikan will see the message: `> You are now known as Vader`. If Luke's buddy list template uses the `displayName` property instead of `username` in the view, Luke will now see Anikan represented as "Vader". By encapsulating the endpoint in buddy object it is possible to cleanly introduce additional application logic before actually interacting with the endpoint. 
 
 #### When the client receives a message
 
+Messages are received when the `client` object fires a `message` event. The handler for this event receives an event object with several properties containing details about the message. The `client` object receives messages from buddies sent directly to the logged in user, and any messages sent to groups of which the logged in user is a member ("Everyone"). If the event object contains a group message it will have a "recipient" property which identifies the group to which the message is addressed.
+
+The `state` model's `onMessageReceived` handler makes use of the recipient property to determine if it should create a `UserMessage` or `GroupMessage` object.
+
+```javascript
+function UserMessage(to, from, content, timestamp) {
+    this.to = to;
+    this.from = from;
+    this.content = content;
+    this.timestamp = timestamp;
+    this.isMyMessage = (from === state.loggedInUser);
+    this.key = function () {
+        return this.isMyMessage ? this.to : this.from;
+    };
+}
+
+function GroupMessage(to, from, content, timestamp, recipient) {
+    UserMessage.call(this, to, from, content, timestamp);
+    this.recipient = recipient;
+    this.key = function () {
+        return this.recipient;
+    };
+}
+
+function onMessageReceived(e) {
+    var message = e.message;
+    // is this a user or group message?
+    var MessageCtor = !!message.recipient ?
+        GroupMessage :
+        UserMessage;
+    var newMessage = new MessageCtor(
+        state.loggedInUser, //to
+        message.endpointId, //from
+        message.message,    //content
+        message.timestamp,  //timestamp
+        message.recipient   //group (if applicable)
+    );
+    addMessage(newMessage);
+    state.fire('message.received', {
+        key: newMessage.key()
+    });
+}
+```
+
+Like the `Buddy` objects discussed previously, these `Message` objects encapsulate some important behavior on which the `state` model relies, specifically: whether the message is from the logged in user to someone else, from someone else to the logged in user, or broadcast to the "Everyone" group. This information determines a message's "key", which is simply the name of the message collection to which a given message belongs.
+
+Imagine that you are chatting with Tom. From your perspective, a chat window called "Tom" contains messages from Tom to you, and from you to Tom. "Tom" is the message "key" here that ties all these messages together. From Tom's perspective, *your name* is the message key that ties them all together.
+
+In the case of a group chat, messages are from any number of people, but they are all sent to you (actually they are sent to everyone in the group, but from your perspective they are sent to you, to your chat instance). The "key" that ties all these messages together is the name of the *group*, not the name of any specific user.
 
 
 #### When the client logs out
