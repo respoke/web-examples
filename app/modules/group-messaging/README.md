@@ -35,9 +35,21 @@ The "Everyone" buddy is special. Sending a message to "Everyone" will open a cha
 
 ## Application Architecture
 
-### The user interface module
+The group messaging example application follows a simplified model-view-controller (MVC) architecture.
 
-### The state module
+![group messaging application architecture](group-messaging-architecture.png)
+
+### The user interface (controller) module
+
+### The state (model) module
+
+### The view
+
+`index.html` contains script reference to all style sheets, library scripts, application modules scripts, and the respoke API script.
+
+Markup is divided into several template `<script>` blocks which are read and manipulated by the `ui.js` module. Each template block contains a [Handlebars](http://handlebarsjs.com) template: HTML markup with special Handlebars syntax for injecting data.
+
+A single element, `<div id="ui">` serves as the root HTML element for the application. When the UI module manipulates the page, it attaches rendered templates to this element.
 
 ### The respoke API
 
