@@ -66,8 +66,7 @@
         endpoint.listen('presence', onPresenceChange);
 
         inst.sendMessage = function (content) {
-            return state.client.sendMessage({
-                endpointId: inst.username,
+            return endpoint.sendMessage({
                 message: content
             });
         };

@@ -70,6 +70,8 @@ The `state` model contains both application logic and application data. It expos
 
 ### The respoke API
 
+#### Creating a respoke client and connecting to its services
+
 When the `index.html` page is loaded, it instructs the `state` model to initialize itself. (This occurs after all assets, styles, and scripts are loaded.) During initialization the state model creates a respoke `client` object, passing it the respoke application identifier and a flag that indicates that the application is operating in development mode.
 
 ```html
@@ -110,6 +112,8 @@ state.login = function (username) {
 
 When the `client` connection succeeds, the `state` model begins listening to any `message` events raised by the `client` object--incoming messages from other users or from groups of which the current user is a member.
 
+#### Joining the "Everyone" group and populating the buddy list
+
 Once the user has successfully logged in, the controller updates the user interface and instructs the `state` model to populate the buddy list. The `state` model uses the `client` object to join the "Everyone" group, and then retrieves all members from this group to populate the buddy list.
 
 ```javascript
@@ -147,3 +151,155 @@ It is possible that other users have joined the "Everyone" group already, so the
 
 Once these steps are complete, the `state` model will raise events that tell the `ui` controller to refresh its buddy list so the user can see all available buddies.
 
+#### When members join or leave the "Everyone" group
+
+In the example above, calling `everyoneGroup.getMembers()` created a collection of `respoke.Connection` objects. Connections represent a particular user on a particular device, whether a PC, phone, tablet, etc. Connections that belong to the same endpoint--the same user--have the same `endpointId` property value which identifies a particular user.
+
+When a user joins or leaves a group, the `join` and `leave` events are raised on the group object. Event objects will be passed to any handlers invoked for these events. These handlers are passed a single event argument which holds a reference to the connection from which the event originated. The `state` model tracks buddies by "username" (endpointId), and uses the event object to retrieve that bit of information.
+
+The join handler checks to make sure that the user isn't the currently logged in user, and that the user is not already being tracked in the buddies list. If both of these conditions are met, a new `UserBuddy` object is created for the new member, and it is added to the buddy list. This object will use the connection object to get an instance of the user's endpoint (`connection.getEndpoint()`) in order to track the individual buddy's presence (more on this later). The `state` model then fires an event and the `ui` controller updates the view with the altered buddies list. 
+
+```javascript
+function onGroupJoin(e) {
+    var username = e.connection.endpointId;
+
+    // don't join self
+    if (username === state.loggedInUser) {
+        return;
+    }
+
+    var buddy = findBuddy(username);
+
+    if (buddy) {
+        // already tracking this endpoint
+        return;
+    }
+
+    buddy = new UserBuddy(e.connection, false);
+    addBuddy(buddy);
+
+    state.fire('buddies.updated');
+}
+```
+
+The leave handler is a bit more simplistic. It simply captures the `endpointId` from the event object created by the group, then attempts to remove a matching buddy from the buddies collection. If the removal succeeds, an event is fired and the `ui` controller updates the view.
+
+```javascript
+function onGroupLeave(e) {
+    var username = e.connection.endpointId;
+    if (removeBuddy(username)) {
+        state.fire('buddies.updated');
+        closeTab(username);
+    }
+}
+```
+
+#### When a buddy changes presence
+
+The `UserBuddy` constructor is used to store a reference to a buddy's endpoint, track that buddy's presence changes, and send messages (by way of the client) to that buddy (more on that later).
+
+```javascript
+function Buddy(entity, isActive) {
+    var buddy = {
+        username: entity.id,
+        presence: entity.presence || 'available'
+        //...other properties
+    };
+
+    return respoke.EventEmitter(buddy);
+}
+
+function UserBuddy(connection, isActive) {
+    var endpoint = connection.getEndpoint();
+    var inst = new Buddy(endpoint, isActive);
+    
+    inst.dispose = function () {
+        endpoint.ignore('presence', onPresenceChange);
+        endpoint = null;
+    };
+
+    function onPresenceChange(e) {
+        inst.presence = e.presence;
+        inst.fire('presence.changed');
+    }
+    endpoint.listen('presence', onPresenceChange);
+    
+    //...other methods
+
+    return inst;
+}
+```
+
+When a `UserBuddy` object is created, it sets up an event handler that listens for the `presence` event on the respoke endpoint. When this event fires the user object updates its own internal presence data, then fires its *own* `presence.changed` event. When the `state` model adds a user buddy to its buddies list, it listens for this event to know that a buddy's presence has changed, and in turn notifies the `ui` controller to refresh its buddy list (thereby showing the updated presence value). When a buddy is removed from the `state` model's buddy list, its dispose method is called and the presence event handler is removed from the endpoint object. The `state` model will also stop listening to the buddy object as well.
+
+
+#### When the client sends a message
+
+Buddy objects do more than track state: they are also responsible for routing messages to the appropriate places. In the code below, a `sendMessage` method is added to each type of buddy object. In the case of users, the message is sent to the endpoint object; in the case of groups (the "Everyone" group), to the group object.
+
+```javascript
+function Buddy(entity, isActive) {
+    //...data properties
+}
+
+function UserBuddy(connection, isActive) {
+    var endpoint = connection.getEndpoint();
+    var inst = new Buddy(endpoint, isActive);
+
+    //...other methods
+
+    inst.sendMessage = function (content) {
+        return endpiont.sendMessage({
+            message: content
+        });
+    };
+
+    return inst;
+}
+
+function GroupBuddy(group, isActive) {
+    var inst = new Buddy(group, isActive);
+
+    inst.sendMessage = function (content) {
+        return group.sendMessage({
+            message: content
+        });
+    };
+
+    return inst;
+}
+```
+
+At this point you might be asking: why introduce these levels of indirection between buddy objects and endpoints/groups? Why doesn't the `state` model listen to endpoints/groups directly? By encapsulating an endpoint behind a custom type (e.g., `UserBuddy`) application-specific functionality can be added to a buddy object without altering an endpoint directly, or introducing additional code into the `state` model itself.
+
+Consider a use case in which a specific message has some side-effect for a particular user:
+
+```javascript
+function UserBuddy(connection, isActive) {
+    //...
+    inst.displayName = inst.username; //Anikan
+
+    inst.sendMessage = function (content) {
+        // set a new nickname?
+        // content = "/nick (nickname)"
+        var match = content.match(/^\/nick\s([a-z]+)$/i);
+        if (match) {
+            inst.displayName = match[1];
+            content = '> You are now known as ' + inst.displayName;
+        }
+        return endpiont.sendMessage({
+            message: content
+        });
+    };
+    
+    //...
+}
+```
+
+In this example, if Luke sends his buddy Anikan the message: `/nick Vader`, the buddy will see the message: `> You are now known as Vader`. If the view's buddy list template uses the `displayName` property instead of `username`, Luke will see Anikan represented as "Vader". By encapsulating the endpoint behind a buddy object it is possible to cleanly introduce additional application logic before actually interacting with the endpoint. 
+
+#### When the client receives a message
+
+
+
+#### When the client logs out
