@@ -2,15 +2,15 @@
 
 ## Application Overview
 
-The group messaging demo (/modules/group-messaging) is designed to demonstrate how to use the respoke API to message both individual users and users that are participating in a group chat.
+The group messaging application (`/modules/group-messaging`) is designed to demonstrate how to use the respoke API to chat with individual users and users that are participating in a group chat.
 
 ### Logging in
 
-To log in as a user, navigate to `/modules/group-messaging`. Enter a username (or an email address) and submit the form. You will be added to the "Everyone" group automatically and redirected to the main chat screen. You should see a buddy roster with the "Everyone" group listed on the left.
+To log in as a user navigate to `/modules/group-messaging`. Enter a username (or an email address) and submit the form. You will be added to the "Everyone" group automatically and redirected to the main chat screen. You should see a buddy roster with the "Everyone" group listed on the left.
 
-__HINT__: If you use an email address associated to a [gravatar](https://secure.gravatar.com) account, your gravatar will be displayed in the buddy and message lists!
+__HINT__: If you use an email address associated with a [gravatar](https://secure.gravatar.com) account, your gravatar will be displayed in the buddy and message lists!
 
-Open another browser (or a private browsing window in your current browser) and repeat this process using a different username (or email address). You should see the "user" from each browser appear in the other browser window's roster. 
+Open another browser (or a private browsing window in your current browser) and repeat this process using a different username (or email address). You should see each "user" appear in each respective buddy list. 
 
 ![logging in](login.png)
 
@@ -18,7 +18,7 @@ Open another browser (or a private browsing window in your current browser) and 
 
 ### Chatting with buddies
 
-Click on a buddy in the roster to begin a chat session. A new tab will open at the top of the screen, and you will see a form appear at the bottom where you can enter a message to send to that user. When you send a message to another user it will open a tab in their browser window (if one is not already open) for your conversation.
+Click on a buddy in the buddy list to begin a chat session. A new chat tab will open and an input field will appear at the bottom of the screen where you can enter a message. When you send a message to another user it will open a conversation tab in their browser window (if one is not already open).
 
 ![chatting with a buddy](buddy-chat.png)
 
@@ -35,44 +35,42 @@ The "Everyone" buddy is special. Sending a message to "Everyone" will open a cha
 
 ## Application Architecture
 
-The group messaging example application follows a simplified model-view-controller (MVC) architecture.
+The group messaging application follows a simplified model-view-controller (MVC) architecture.
 
 ![group messaging application architecture](group-messaging-architecture.png)
 
 ### The view
 
-`index.html` contains script reference to all style sheets, library scripts, application modules scripts, and the respoke API script.
+`index.html` contains reference to all style sheets, library scripts, application module scripts, and the respoke API script.
 
-Markup is divided into several template `<script>` blocks which are read and manipulated by the `ui.js` module. Each template block contains a [Handlebars](http://handlebarsjs.com) template: HTML markup with special Handlebars syntax for injecting data.
+Markup is divided into several template `<script>` blocks which are parsed and manipulated by the `ui.js` module. Each template block contains a [Handlebars](http://handlebarsjs.com) template: HTML markup with special Handlebars syntax where data will be injected.
 
-A single element, `<div id="ui">` serves as the root HTML element for the application. When the `ui` module manipulates the page, it attaches rendered templates to this element.
+A single element, `<div id="ui">` serves as the application's root HTML element. When the `ui` module manipulates the page, it attaches rendered templates to this element.
 
 ### The ui controller (ui.js)
 
 The `ui` controller manages all interaction with the DOM (view) and renders templates when necessary. It is composed of a number of submodules that each govern specific user interface components:
 
 - `auth`: sets up authentication submodules
-    - `authForm`: accepts login credentials
+    - `authForm`: submits login credentials from a form
 - `groupMessage`: sets up group messaging submodules
-    - `menu`: shows and hides elements in responsive mode
+    - `menu`: shows and hides buddy list (only in mobile view) 
     - `tabs`: creates, removes, and pulses tabs during chat
     - `messages`: displays messages for the active chat
-    - `buddies`: begins user/group chats
+    - `buddies`: buddy list, begins user/group chats
     - `chatForm`: accepts input (messages) for the active chat
 
-Each submodule listens to events from the application's `state` model and manipulates its specific DOM elements accordingly. Likewise, when DOM events occur, each submodule may invoke methods in the `state` model that will perform some operation (sending a message, for example). The `ui` controller does not hold any application data itself; it merely holds references to actual view objects (DOM elements).
-
-All application data belongs to the `state` model. This means that, for example, when a new message arrives for a user, the view is notified and must request message data from the model in order to render the message template.
+Each submodule listens to events from the application's `state` model and manipulates its specific DOM elements in response. Likewise, when DOM events occur, each submodule may invoke `state` model methods that perform application operations (sending a message, for example). The `ui` controller does not hold any application data itself; it merely holds references to view objects (DOM elements). All application data belongs to the `state` model. This means that, for example, when a new message arrives for a user, the view is notified and must request message data from the model in order to render the message template.
 
 ### The state model (state.js)
 
-The `state` model contains both application logic and application data. It exposes a number of "public" methods which the `ui` controller may invoke, as well as a number of properties that contain data objects such as collections of buddies, messages, and tabs. When the `ui` controller invokes a method on the `state` model, it will typically execute some application logic, manipulate its data, then fire an event to let the controller know that its state has changed. It is also responsible for communicating with the respoke API when required.
+The `state` model contains both application logic and application data. It exposes a number of "public" methods which the `ui` controller may invoke, as well as a number of properties that contain data objects (such as buddies, messages, and tabs). When the `ui` controller invokes a method on the `state` model, the model will typically execute some application logic, manipulate its data, then fire an event to let the controller know that its state has changed. It is also responsible for communicating with the respoke API when required.
 
 ### The respoke API
 
 #### Creating a respoke client and connecting to its services
 
-When the `index.html` page is loaded, it instructs the `state` model to initialize itself. (This occurs after all assets, styles, and scripts are loaded.) During initialization the state model creates a respoke `client` object, passing it the respoke application identifier and a flag that indicates that the application is operating in development mode.
+When the `index.html` page is loaded, it instructs the `state` model to initialize itself. (This occurs after all assets, styles, and scripts are loaded.) During initialization the state model creates a respoke `client` object with the respoke application identifier and a flag that indicates that the application is operating in development mode.
 
 ```html
 <script type="text/javascript">
@@ -93,7 +91,7 @@ state.init = function (appId) {
 };
 ```
 
-The `state` model maintains a reference to the respoke `client` at all times. It uses this client object to communicate with the respoke services on behalf of the user. Before it can do this, however, the current user must log into the application and connect to respoke with a username (a respoke endpointId). When the user enters their information into the login form and clicks the `submit` button, the `controller` invokes the `login` method on the state model and a respoke connection is established for the `client` object.
+The `state` model maintains a reference to the respoke `client` at all times. It uses this client object to communicate with the respoke services on behalf of the user. Before it can do this, however, the current user must log into the application and connect to respoke with a username (a respoke `endpointId`). When the user enters their information into the login form and clicks the `submit` button, the `controller` invokes the `login` method on the `state` model and a respoke connection is established for the `client` object.
 
 ```javascript
 state.login = function (username) {
@@ -110,11 +108,11 @@ state.login = function (username) {
 };
 ```
 
-When the `client` connection succeeds, the `state` model begins listening to any `message` events raised by the `client` object--incoming messages from other users or from groups of which the current user is a member.
+When the `client` connection succeeds, the `state` model begins listening to any `message` events raised by the `client` object--incoming messages from other users or from groups in which the current user is a participant (more on this later).
 
 #### Joining the "Everyone" group and populating the buddy list
 
-Once the user has successfully logged in, the controller updates the user interface and instructs the `state` model to populate the buddy list. The `state` model uses the `client` object to join the "Everyone" group, and then retrieves all members from this group to populate the buddy list.
+Once the user has successfully logged in the controller updates the user interface and instructs the `state` model to populate the buddy list. The `state` model uses the `client` object to join the "Everyone" group, and then retrieves all members from this group to populate its buddies collection.
 
 ```javascript
 state.loadBuddies = function () {
@@ -143,11 +141,11 @@ state.loadBuddies = function () {
 };
 ```
 
-Once the "Everyone" group has been joined, the `state` model holds a reference to the `group` object returned by the respoke API, assigning this object to the `everyoneGroup` property. It then creates a `GroupBuddy` object which will be added to the `buddies` collection. This allows the `ui` controller to "see" the group as a buddy which will then be rendered in the user interface's buddy list.
+Once the "Everyone" group has been joined, the `state` model holds a reference to the `group` object returned by the respoke API, assigning this object to the `everyoneGroup` property. It then creates a `GroupBuddy` object which will be added to the `buddies` collection. This allows the `ui` controller to "see" the group as a buddy, rendering it in the user interface's buddy list when the view is refreshed.
 
-The `state` model then listens to the "Everyone" group's `join` and `leave` events which will be triggered when new members become or depart.
+The `state` model listens to the "Everyone" group's `join` and `leave` events which are each triggered when new members arrive or depart.
 
-It is possible that other users have joined the "Everyone" group already, so the `state` model iterates over the group's members, looking for any that need to be added to the buddy list. It purposely ignores the user who is currently logged in. (Most users don't want to send themselves messages!) 
+It is possible that other users have joined the "Everyone" group already, so the `state` model iterates over the group's members, looking for any that need to be added to the buddy list. It purposely ignores the user who is currently logged in (most users don't want to send themselves messages!).
 
 Once these steps are complete, the `state` model will raise events that tell the `ui` controller to refresh its buddy list so the user can see all available buddies.
 
@@ -155,9 +153,9 @@ Once these steps are complete, the `state` model will raise events that tell the
 
 In the example above, calling `everyoneGroup.getMembers()` created a collection of `respoke.Connection` objects. Connections represent a particular user on a particular device, whether a PC, phone, tablet, etc. Connections that belong to the same endpoint--the same user--have the same `endpointId` property value which identifies a particular user.
 
-When a user joins or leaves a group, the `join` and `leave` events are raised on the group object. Event objects will be passed to any handlers invoked for these events. These handlers are passed a single event argument which holds a reference to the connection from which the event originated. The `state` model tracks buddies by "username" (endpointId), and uses the event object to retrieve that bit of information.
+When a user joins or leaves a group, the `join` and `leave` events are raised on the group object. Event objects will be passed to any handlers assigned to these events with a reference to the connection from which the event originated. The `state` model tracks buddies by "username" (`endpointId`), and uses the event object to retrieve that bit of information.
 
-The join handler checks to make sure that the user isn't the currently logged in user, and that the user is not already being tracked in the buddies list. If both of these conditions are met, a new `UserBuddy` object is created for the new member, and it is added to the buddy list. This object will use the connection object to get an instance of the user's endpoint (`connection.getEndpoint()`) in order to track the individual buddy's presence (more on this later). The `state` model then fires an event and the `ui` controller updates the view with the altered buddies list. 
+The `join` handler checks to make sure that the user isn't the currently logged in user, and that the user is not already being tracked in the buddies list. If both of these conditions are met, a new `UserBuddy` object is created for the new member and it is added to the buddy list. This object will use the connection object to get an instance of the user's endpoint (`connection.getEndpoint()`) in order to track the individual buddy's presence (more on this later). The `state` model then fires an event and the `ui` controller updates the view with the altered buddies list. 
 
 ```javascript
 function onGroupJoin(e) {
@@ -182,7 +180,7 @@ function onGroupJoin(e) {
 }
 ```
 
-The leave handler is a bit more simplistic. It simply captures the `endpointId` from the event object created by the group, then attempts to remove a matching buddy from the buddies collection. If the removal succeeds, an event is fired and the `ui` controller updates the view.
+The `leave` handler is a bit more simplistic. It simply captures the `endpointId` from the event object created by the group, then attempts to remove a matching buddy from the buddies collection. If the removal succeeds an event is fired and the `ui` controller updates the view.
 
 ```javascript
 function onGroupLeave(e) {
@@ -196,7 +194,7 @@ function onGroupLeave(e) {
 
 #### When a buddy changes presence
 
-The `UserBuddy` constructor is used to store a reference to a buddy's endpoint, track that buddy's presence changes, and send messages (by way of the client) to that buddy (more on that later).
+The `UserBuddy` constructor is used to store a reference to a buddy's endpoint, track that buddy's presence changes, and send messages to that buddy (more on that later).
 
 ```javascript
 function Buddy(entity, isActive) {
@@ -230,12 +228,12 @@ function UserBuddy(connection, isActive) {
 }
 ```
 
-When a `UserBuddy` object is created, it sets up an event handler that listens for the `presence` event on the respoke endpoint. When this event fires the user object updates its own internal presence data, then fires its *own* `presence.changed` event. When the `state` model adds a user buddy to its buddies list, it listens for this event to know that a buddy's presence has changed, and in turn notifies the `ui` controller to refresh its buddy list (thereby showing the updated presence value). When a buddy is removed from the `state` model's buddy list, its dispose method is called and the presence event handler is removed from the endpoint object. The `state` model will also stop listening to the buddy object as well.
+When a `UserBuddy` object is created, it sets up an event handler that listens for the `presence` event on the respoke endpoint. When this event fires the user object updates its own internal presence data, then fires its *own* `presence.changed` event. When the `state` model adds a user buddy to its buddies list, it listens for this event to identify when a buddy's presence has changed. When it does, the `state` model notifies the `ui` controller to refresh its buddy list, thereby showing the updated presence value. When a buddy is removed from the `state` model's buddy list its dispose method is called and the presence event handler is removed from the endpoint object. The `state` model will also stop listening to the buddy object's `presence.changed` event as well.
 
 
 #### When the client sends a message
 
-Buddy objects do more than track state: they are also responsible for routing messages to the appropriate places. In the code below, a `sendMessage` method is added to each type of buddy object. In the case of users, the message is sent to the endpoint object; in the case of groups (the "Everyone" group), to the group object.
+Buddy objects do more than track state: they are also responsible for routing messages to the appropriate places. In the code below, a `sendMessage()` method is added to each type of buddy object. In the case of users, the message is sent to the endpoint object; in the case of groups (the "Everyone" group), to the group object.
 
 ```javascript
 function Buddy(entity, isActive) {
@@ -270,7 +268,7 @@ function GroupBuddy(group, isActive) {
 }
 ```
 
-At this point you might be asking: why introduce these levels of indirection between buddy objects and endpoints/groups? Why doesn't the `state` model listen to endpoints/groups directly? By encapsulating an endpoint behind a custom type (e.g., `UserBuddy`) application-specific functionality can be added to a buddy object without altering an endpoint directly, or introducing additional code into the `state` model itself.
+At this point you might be asking: why introduce a level of indirection between buddy objects and endpoints/groups? Why doesn't the `state` model send messages to endpoints/groups directly? By encapsulating an endpoint behind a custom type (e.g., `UserBuddy`) application-specific functionality can be added to a buddy object without altering an endpoint directly, or introducing additional code into the `state` model itself.
 
 Consider a use case in which a specific message has some side-effect for a particular user:
 
@@ -295,13 +293,13 @@ function UserBuddy(connection, isActive) {
 }
 ```
 
-In this example, if Luke sends his buddy Anikan the message: `/nick Vader`, Anikan will see the message: `> You are now known as Vader`. If Luke's buddy list template uses the `displayName` property instead of `username` in the view, Luke will now see Anikan represented as "Vader". By encapsulating the endpoint in buddy object it is possible to cleanly introduce additional application logic before actually interacting with the endpoint. 
+In this example, if Luke sends his buddy Anikan the message: `/nick Vader`, Anikan will see the message: `> You are now known as Vader`. If Luke's buddy list template uses the `displayName` property instead of `username` in the view, Luke will now see Anikan represented as "Vader". By encapsulating the endpoint in a buddy object it is possible to cleanly introduce additional application logic before actually interacting with the endpoint. 
 
 #### When the client receives a message
 
-Messages are received when the `client` object fires a `message` event. The handler for this event receives an event object with several properties containing details about the message. The `client` object receives messages from buddies sent directly to the logged in user, and any messages sent to groups of which the logged in user is a member ("Everyone"). If the event object contains a group message it will have a "recipient" property which identifies the group to which the message is addressed.
+Messages are received when the `client` object fires a `message` event. The handler for this event receives an event object with several properties containing details about the message. The `client` receives messages sent directly to the logged in user and any messages sent to groups for which the logged in user is a member. If the event object contains a group message, the message will have a "recipient" property which identifies the group to which the message is addressed.
 
-The `state` model's `onMessageReceived` handler makes use of the recipient property to determine if it should create a `UserMessage` or `GroupMessage` object.
+The `state` model's `onMessageReceived()` handler makes use of the recipient property to determine if it should create a `UserMessage` or `GroupMessage` object to add to the messages collection.
 
 ```javascript
 function UserMessage(to, from, content, timestamp) {
@@ -345,7 +343,7 @@ function onMessageReceived(e) {
 
 Like the `Buddy` objects discussed previously, these `Message` objects encapsulate some important behavior on which the `state` model relies, specifically: whether the message is from the logged in user to someone else, from someone else to the logged in user, or broadcast to the "Everyone" group. This information determines a message's "key", which is simply the name of the message collection to which a given message belongs.
 
-Imagine that you are chatting with Tom. From your perspective, a chat window called "Tom" contains messages from Tom to you, and from you to Tom. "Tom" is the message "key" here that ties all these messages together. From Tom's perspective, *your name* is the message key that ties them all together.
+Imagine that you are chatting with Tom. From your perspective, a chat window called "Tom" contains messages from Tom to you, and from you to Tom. "Tom" is the message "key" that ties all these messages together. From Tom's perspective, *your name* is the message key that ties them all together. (The tab that Tom sees has your name on it, after all.)
 
 In the case of a group chat, messages are from any number of people, but they are all sent to you (actually they are sent to everyone in the group, but from your perspective they are sent to you, to your chat instance). The "key" that ties all these messages together, though, is the name of the *group*, not the name of any specific user.
 
