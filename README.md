@@ -3,28 +3,17 @@
 These are a suite of example applications to show how to work with the
 [Respoke](https://docs.respoke.io/) API just using jQuery.
 
-### Getting Started
 
-You can run the `app` directory from the server of your choice, but if you want
-to be able to run the tests and build the JavaScript and CSS you will need to
-install Node.js, npm, the node modules, and the bower dependencies. To install
-the dependencies, just run this:
+### Requirements
 
-```bash
-npm install; bower install;
-```
+* Node.js
 
-### Development
+### Running the examples
 
-To build the CSS and JavaScript, start a server and continuously run tests,
-simply kick off the grunt server by running this:
-
-```bash
-grunt server
-```
-
-Once the server kicks off, you can see all of the apps by visiting
-`http://localhost:9876`
+1. Clone this repository: `git clone https://github.com/respoke/web-examples`
+1. Install node modules: `cd web-examples && npm install`
+1. Run the examples: `grunt server`
+1. View them by going to http://localhost:9876
 
 
 ### Group Messaging
