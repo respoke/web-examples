@@ -14,7 +14,7 @@ These are a suite of example applications to show how to work with the
 1. Clone this repository: `git clone https://github.com/respoke/web-examples`
 1. Install node modules: `cd web-examples && npm install`
 1. Run the examples: `grunt server`
-1. View them by going to http://localhost:9876
+1. View them by going to [http://localhost:9876](http://localhost:9876)
 
 
 ### Group Messaging
