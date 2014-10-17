@@ -19,3 +19,9 @@ grunt server
 ```
 
 Once the server kicks off, you can see all of the apps by visiting `http://localhost:9876`
+
+
+### Group Messaging
+
+For more details on how to setup and use the group messaging example please see
+the [README](app/modules/group-messaging/README.md) in that module.
