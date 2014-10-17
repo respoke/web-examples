@@ -6,7 +6,8 @@ These are a suite of example applications to show how to work with the
 
 ### Requirements
 
-* Node.js
+* [Node.js](http://nodejs.org)
+* [Grunt](http://gruntjs.com)
 
 ### Running the examples
 
