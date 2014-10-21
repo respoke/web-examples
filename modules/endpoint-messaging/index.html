@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, minimal-ui">
+    <title>Endpoint Messaging</title>
+    <link rel="stylesheet" href="../../css/endpoint-messaging.css">
+</head>
+<body>
+
+    <div id="endpoint-messaging"></div>
+
+    <script type="text/tmpl" id="endpoint-thread">
+        <div class="em-col">
+            <h1 class="em-avatar">
+                <img src="../../images/profile-<%= username %>.jpg" alt="<%= username %>"> <%= username %>
+            </h1>
+            <ul class="em-thread messages">
+            </ul>
+            <form class="em-message">
+                <input type="text" class="em-message__text" placeholder="Enter your message here">
+                <input type="submit" value="Send" class="em-message__submit">
+            </form>
+        </div>
+    </script>
+
+    <script type="text/tmpl" id="endpoint-thread-message">
+        <% if (username === 'alice') { %>
+            <li class="message--avatar-right">
+                <img class="message--avatar-right__avatar" src="../../images/profile-<%= username %>.jpg" alt="<%= username %>">
+                <div class="message--avatar-right__content">
+                    <%= message %>
+                </div>
+            </li>
+        <% } else { %>
+            <li class="message--avatar-right">
+                <img class="message--avatar-right__avatar" src="../../images/profile-<%= username %>.jpg" alt="<%= username %>">
+                <div class="message--avatar-right__content">
+                    <%= message %>
+                </div>
+            </li>
+        <% } %>
+    </script>
+
+    <script type="text/tmpl" id="endpoint-thread-reply">
+        <% if (username === 'alice') { %>
+            <li class="message--avatar-left">
+                <img class="message--avatar-left__avatar" src="../../images/profile-<%= username %>.jpg" alt="<%= username %>">
+                <div class="message--avatar-left__content">
+                    <%= message %>
+                </div>
+            </li>
+        <% } else { %>
+            <li class="message--avatar-left">
+                <img class="message--avatar-left__avatar" src="../../images/profile-<%= username %>.jpg" alt="<%= username %>">
+                <div class="message--avatar-left__content">
+                    <%= message %>
+                </div>
+            </li>
+        <% } %>
+    </script>
+
+    <script src="https://cdn.respoke.io/respoke.min.js"></script>
+    <script src="http://code.jquery.com/jquery-2.1.1.min.js"></script>
+
+    <!-- injector:js -->
+    <script src="../../js/app.js"></script>
+    <script src="../../js/lib/helpers.js"></script>
+    <script src="../../js/lib/md5.js"></script>
+    <script src="../../js/lib/tmpl.js"></script>
+    <script src="../../js/models/Client.js"></script>
+    <script src="../../js/models/Endpoint.js"></script>
+    <script src="../../js/models/StatusTypes.js"></script>
+    <script src="controllers/MainCtrl.js"></script>
+    <!-- endinjector -->
+
+    <script type="text/javascript">
+        App.controllers.messagingCtrl({
+            username: 'bob',
+            connectTo: 'alice'
+        });
+        App.controllers.messagingCtrl({
+            username: 'alice',
+            connectTo: 'bob'
+        });
+
+        if (~document.location.search.indexOf('mode=d')) { document.write("<script async src='//HOST:3000/browser-sync-client.1.3.6.js'><\/script>".replace(/HOST/g, location.hostname));}
+    </script>
+</body>
+</html>

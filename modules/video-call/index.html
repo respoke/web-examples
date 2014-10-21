@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, minimal-ui">
+    <title>Video Call</title>
+    <link rel="stylesheet" href="../../css/video-call.css">
+</head>
+<!-- <body class="popup-active"> -->
+<body>
+
+    <script type="text/tmpl" id="buddy-list-user">
+        <li class="buddy-list--mini__user" id="user-<%= $.helpers.getClassName(endpointId) %>">
+            <div class="buddy-list--mini__user__name" data-id="<%= endpointId %>"><%= endpointId %></div>
+        </li>
+    </script>
+
+    <script type="text/tmpl" id="prompt-call">
+        <div class="popup">
+            <div class="popup__wrapper">
+                <h2 class="popup__wrapper__title">Calling <%= endpointId %></h2>
+                <p>Place a call to <%= endpointId %>?</p>
+                <nav class="popup__wrapper__options">
+                    <button class="popup__wrapper__options__btn">Cancel</button>
+                    <button class="popup__wrapper__options__btn--success">Call</button>
+                </nav>
+            </div>
+        </div>
+    </script>
+
+    <script type="text/tmpl" id="call-warning">
+        <div class="popup">
+            <div class="popup__wrapper">
+                <% if (initiator) { %>
+                    <h2 class="popup__wrapper__title">Calling <%= endpointId %></h2>
+                <% } else { %>
+                    <h2 class="popup__wrapper__title"><%= endpointId %> is calling you</h2>
+                <% } %>
+                <p>Please allow access to your webcam in order to begin the video call.</p>
+                <nav class="popup__wrapper__options">
+                    <button class="popup__wrapper__options__btn">Got it</button>
+                    <% if (!initiator) { %>
+                        <button class="popup__wrapper__options__btn--error">Reject Call</button>
+                    <% } %>
+                </nav>
+            </div>
+        </div>
+    </script>
+
+    <script type="text/tmpl" id="call-preview">
+        <div class="popup">
+            <div class="popup__wrapper">
+                <h2 class="popup__wrapper__title">How does your hair look?</h2>
+                <div id="video-preview" class="video-preview-pane"></div>
+                <nav class="popup__wrapper__options">
+                    <button class="popup__wrapper__options__btn">Cancel</button>
+                    <button class="popup__wrapper__options__btn--success">Start Call</button>
+                </nav>
+            </div>
+        </div>
+    </script>
+
+    <script type="text/tmpl" id="user-authentication">
+        <div class="authentication">
+            <p class="cbl-instructions">
+                Enter your name to see a buddy list of all others on this page right now.
+            </p>
+            <form class="cbl-name">
+                <input class="cbl-name__text" type="text" placeholder="Enter a name" />
+                <input class="cbl-name__submit" type="submit" value="Send" />
+            </form>
+        </div>
+    </script>
+
+    <script type="text/tmpl" id="video-container">
+        <div class="video-contain">
+            <div class="video-buttons">
+                <button class="video-buttons__button--cancel" id="hangup">Hangup</button>
+                <button class="video-buttons__button" id="mute">Mute</button>
+                <button class="video-buttons__button" id="hide-video">Hide Video</button>
+            </div>
+            <div class="video-small"></div>
+            <div class="video-large"></div>
+        </div>
+    </script>
+
+    <script type="text/tmpl" id="video-chat">
+        <div class="video-chat">
+        </div>
+
+        <header class="group-chat__header">
+            <button class="group-list-open">View Buddies</button>
+            <div class="group-chat__header__me">
+                <a href="#">Log out</a> as John
+            </div>
+        </header>
+
+        <div class="chat-window">
+            <nav class="group-list">
+                <ul class="buddy-list--mini">
+                    <li class="buddy-list--mini__user active">
+                        <div class="buddy-list--mini__user__name">Users On This Page</div>
+                    </li>
+                </ul>
+            </nav>
+
+        </div>
+    </script>
+
+    <div id="content"></div>
+
+    <script src="https://cdn.respoke.io/respoke.min.js"></script>
+    <script src="http://code.jquery.com/jquery-2.1.1.min.js"></script>
+
+    <!-- injector:js -->
+    <script src="../../js/app.js"></script>
+    <script src="../../js/lib/helpers.js"></script>
+    <script src="../../js/lib/md5.js"></script>
+    <script src="../../js/lib/tmpl.js"></script>
+    <script src="../../js/models/Client.js"></script>
+    <script src="../../js/models/Endpoint.js"></script>
+    <script src="../../js/models/StatusTypes.js"></script>
+    <script src="controllers/AuthenticationCtrl.js"></script>
+    <script src="controllers/BuddylistCtrl.js"></script>
+    <script src="controllers/CallpreviewCtrl.js"></script>
+    <script src="controllers/CallpromptCtrl.js"></script>
+    <script src="controllers/CallwarningCtrl.js"></script>
+    <script src="controllers/MainCtrl.js"></script>
+    <script src="controllers/VideoCtrl.js"></script>
+    <!-- endinjector -->
+
+    <script type="text/javascript">
+        App.controllers.videoCallCtrl({
+            renderTo: '#content'
+        });
+    </script>
+</body>
+</html>
