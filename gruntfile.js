@@ -77,8 +77,8 @@ module.exports = function (grunt) {
                 ]
             },
             css: {
-              files: ['app/css/*.styl'],
-              tasks: ['stylus', 'autoprefixer']
+                files: ['app/css/*.styl'],
+                tasks: ['stylus', 'autoprefixer']
             }
         },
 
