@@ -95,7 +95,9 @@ module.exports = function (grunt) {
 
         injector: {
             options: {
-
+                relative: true,
+                addRootSlash: false,
+                ignorePath: 'app'
             },
             creatingABuddyList: {
                 template: 'app/modules/creating-a-buddy-list/index.html',
