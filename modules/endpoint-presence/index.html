@@ -10,7 +10,7 @@
 
     <script type="text/tmpl" id="user-buddy">
         <li class="buddy-list__user" id="user-<%= username %>">
-            <img src="../../images/profile-<%= username.substr(0, username.indexOf('-')) %>.jpg" alt="User" class="buddy-list__user__avatar">
+            <img src="../../images/profile-<%= username.substr(0, username.indexOf('-')).toLowerCase() %>.jpg" alt="User" class="buddy-list__user__avatar">
             <div class="buddy-list__user__name"><%= username.substr(0, username.indexOf('-')) %></div>
             <div class="buddy-list__user__status--<%= $.helpers.getPresenceClass(presence) %>"><%= presence %></div>
         </li>
