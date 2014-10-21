@@ -27,15 +27,19 @@ You will need to install [Node.js](http://nodejs.org),
 JavaScript and CSS. After installing npm and Bower install the node modules and
 the bower dependencies.
 
-To build the CSS and JavaScript, start a server and continuously run tests,
-simply kick off the grunt server using this command:
+```bash
+npm install; bower install;
+```
+
+To build the CSS and JavaScript, start a server, and run tests on file changes
+simply start the grunt server.
 
 ```bash
 grunt server
 ```
 
-Once the server kicks off, you can see all of the apps by visiting
-`http://localhost:9876`
+Once the server starts, you can see all of the apps by visiting
+`http://localhost:9876`.
 
 ### Testing
 
