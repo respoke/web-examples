@@ -18,7 +18,7 @@
 
     <script type="text/tmpl" id="user-display">
         <h1 class="user-handle">
-            <img src="../../images/profile-<%= username.substr(0, username.indexOf('-')) %>.jpg" alt="Avatar">
+            <img src="../../images/profile-<%= username.substr(0, username.indexOf('-')).toLowerCase() %>.jpg" alt="Avatar">
             <%= username.substr(0, username.indexOf('-')) %>
         </h1>
         <form class="user-status-dropdown">
