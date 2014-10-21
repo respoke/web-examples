@@ -6,9 +6,11 @@ These are a suite of example applications to show how to work with the
 
 ### Getting Started
 
-You can run the already built files from the web server of your choice as they
-are static HTML files. Point your web server to the `app` directory or copy
-the files there to an already publicly accessible location.
+The fastest way to try out the web-examples is to [view them live](https://respoke.github.com/web-examples)!
+
+Alternatively you can run the already built files from the web server of your
+choice as they are static HTML files. Point your web server to the `app`
+directory or copy the files there to an already publicly accessible location.
 
 See the Development section for details on how to use Node.js to run the
 examples.

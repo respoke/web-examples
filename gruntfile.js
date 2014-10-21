@@ -14,6 +14,13 @@ module.exports = function (grunt) {
 
     grunt.initConfig({
 
+        'gh-pages': {
+            options: {
+                base: 'app'
+            },
+            src: ['**']
+        },
+
         stylus: {
             compile: {
                 files: {
@@ -192,9 +199,12 @@ module.exports = function (grunt) {
     grunt.loadNpmTasks('grunt-jscs');
     grunt.loadNpmTasks('grunt-contrib-stylus');
     grunt.loadNpmTasks('grunt-autoprefixer');
+    grunt.loadNpmTasks('grunt-gh-pages');
 
     grunt.registerTask('server', ['jshint', 'injector', 'express', 'browserSync', 'watch']);
     grunt.registerTask('test', ['express', 'jshint', 'mocha']);
-    grunt.registerTask('default', ['jshint', 'injector']);
+    grunt.registerTask('build', ['stylus', 'autoprefixer', 'injector']);
+    grunt.registerTask('publish', ['jshint', 'build', 'gh-pages']);
+    grunt.registerTask('default', ['jshint', 'build']);
 
 };
