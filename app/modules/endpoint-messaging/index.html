@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, minimal-ui">
     <title>Endpoint Messaging</title>
-    <link rel="stylesheet" href="/css/endpoint-messaging.css">
+    <link rel="stylesheet" href="../../css/endpoint-messaging.css">
 </head>
 <body>
 
@@ -13,7 +13,7 @@
     <script type="text/tmpl" id="endpoint-thread">
         <div class="em-col">
             <h1 class="em-avatar">
-                <img src="/images/profile-<%= username %>.jpg" alt="<%= username %>"> <%= username %>
+                <img src="../../images/profile-<%= username.toLowerCase() %>.jpg" alt="<%= username %>"> <%= username %>
             </h1>
             <ul class="em-thread messages">
             </ul>
@@ -27,14 +27,14 @@
     <script type="text/tmpl" id="endpoint-thread-message">
         <% if (username === 'alice') { %>
             <li class="message--avatar-right">
-                <img class="message--avatar-right__avatar" src="/images/profile-<%= username %>.jpg" alt="<%= username %>">
+                <img class="message--avatar-right__avatar" src="../../images/profile-<%= username.toLowerCase() %>.jpg" alt="<%= username %>">
                 <div class="message--avatar-right__content">
                     <%= message %>
                 </div>
             </li>
         <% } else { %>
             <li class="message--avatar-right">
-                <img class="message--avatar-right__avatar" src="/images/profile-<%= username %>.jpg" alt="<%= username %>">
+                <img class="message--avatar-right__avatar" src="../../images/profile-<%= username.toLowerCase() %>.jpg" alt="<%= username %>">
                 <div class="message--avatar-right__content">
                     <%= message %>
                 </div>
@@ -45,14 +45,14 @@
     <script type="text/tmpl" id="endpoint-thread-reply">
         <% if (username === 'alice') { %>
             <li class="message--avatar-left">
-                <img class="message--avatar-left__avatar" src="/images/profile-<%= username %>.jpg" alt="<%= username %>">
+                <img class="message--avatar-left__avatar" src="../../images/profile-<%= username.toLowerCase() %>.jpg" alt="<%= username %>">
                 <div class="message--avatar-left__content">
                     <%= message %>
                 </div>
             </li>
         <% } else { %>
             <li class="message--avatar-left">
-                <img class="message--avatar-left__avatar" src="/images/profile-<%= username %>.jpg" alt="<%= username %>">
+                <img class="message--avatar-left__avatar" src="../../images/profile-<%= username.toLowerCase() %>.jpg" alt="<%= username %>">
                 <div class="message--avatar-left__content">
                     <%= message %>
                 </div>
@@ -64,14 +64,14 @@
     <script src="http://code.jquery.com/jquery-2.1.1.min.js"></script>
 
     <!-- injector:js -->
-    <script src="/app/js/app.js"></script>
-    <script src="/app/js/lib/helpers.js"></script>
-    <script src="/app/js/lib/md5.js"></script>
-    <script src="/app/js/lib/tmpl.js"></script>
-    <script src="/app/js/models/Client.js"></script>
-    <script src="/app/js/models/Endpoint.js"></script>
-    <script src="/app/js/models/StatusTypes.js"></script>
-    <script src="/app/modules/endpoint-messaging/controllers/MainCtrl.js"></script>
+    <script src="../../js/app.js"></script>
+    <script src="../../js/lib/helpers.js"></script>
+    <script src="../../js/lib/md5.js"></script>
+    <script src="../../js/lib/tmpl.js"></script>
+    <script src="../../js/models/Client.js"></script>
+    <script src="../../js/models/Endpoint.js"></script>
+    <script src="../../js/models/StatusTypes.js"></script>
+    <script src="controllers/MainCtrl.js"></script>
     <!-- endinjector -->
 
     <script type="text/javascript">
