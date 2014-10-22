@@ -6,7 +6,7 @@ These are a suite of example applications to show how to work with the
 
 ### Getting Started
 
-The fastest way to try out the web-examples is to [view them live](examples)!
+The fastest way to try out the web-examples is to [view them live][examples]!
 
 [examples]: https://respoke.github.com/web-examples "view examples"
 
@@ -48,7 +48,7 @@ Once the server starts, you can see all of the apps by visiting
 `http://localhost:9876`.
 
 If you have push access to the respoke/web-examples repo you can update the
-[live examples](examples) with:
+[live examples][examples] with:
 
 ```bash
 grunt publish
