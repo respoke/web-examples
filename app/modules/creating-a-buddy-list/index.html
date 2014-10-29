@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, minimal-ui">
+    <title>Creating a Buddy List</title>
+    <link rel="stylesheet" href="/css/creating-a-buddy-list.css">
+</head>
+<body>
+
+    <script type="text/tmpl" id="user-status">
+        <h1 class="user-handle">
+            <img src="<%= photo %>" alt="Avatar">
+            <%= endpointId %>
+        </h1>
+        <form class="user-status-dropdown">
+            <div class="user-status-dropdown__status--<%= presenceCls %>"><%= presence %></div>
+            <select class="user-status-dropdown__status__select">
+                <% for (var i = 0; i < statusTypes.length; i++) { %>
+                    <option <% if (statusTypes[i] === presence) { %>selected<% } %>><%= statusTypes[i] %></option>
+                <% } %>
+            </select>
+        </form>
+
+        <br>
+        <br>
+        <br>
+
+        <ul class="buddy-list">
+            <li class="buddy-list__title">
+                Buddy List
+            </li>
+        </ul>
+    </script>
+
+    <script type="text/tmpl" id="user-buddy">
+        <li class="buddy-list__user" id="user-<%= endpointCls %>">
+            <img src="<%= photo %>" alt="User" class="buddy-list__user__avatar">
+            <div class="buddy-list__user__name"><%= id %></div>
+            <div class="presence">
+                <div class="buddy-list__user__status--<%= presenceCls %>"><%= presence %></div>
+            </div>
+        </li>
+    </script>
+
+    <script type="text/tmpl" id="user-authentication">
+        <div class="authentication">
+            <p class="cbl-instructions">
+                Enter your name to see a buddy list of all others on this page right now.
+            </p>
+            <form class="cbl-name">
+                <input class="cbl-name__text" type="text" placeholder="Enter a name">
+                <input class="cbl-name__submit" type="submit" value="Send">
+            </form>
+        </div>
+    </script>
+
+    <div class="buddy-list" id="buddy-list-1">
+    </div>
+
+    <script src="https://cdn.respoke.io/respoke.min.js"></script>
+    <script src="http://code.jquery.com/jquery-2.1.1.min.js"></script>
+
+    <!-- injector:js -->
+    <script src="/app/js/app.js"></script>
+    <script src="/app/js/lib/helpers.js"></script>
+    <script src="/app/js/lib/md5.js"></script>
+    <script src="/app/js/lib/tmpl.js"></script>
+    <script src="/app/js/models/Client.js"></script>
+    <script src="/app/js/models/Endpoint.js"></script>
+    <script src="/app/js/models/StatusTypes.js"></script>
+    <script src="/app/modules/creating-a-buddy-list/controllers/AuthenticationCtrl.js"></script>
+    <script src="/app/modules/creating-a-buddy-list/controllers/BuddyCtrl.js"></script>
+    <script src="/app/modules/creating-a-buddy-list/controllers/MainCtrl.js"></script>
+    <script src="/app/modules/creating-a-buddy-list/controllers/UserPresenceCtrl.js"></script>
+    <!-- endinjector -->
+
+    <script type="text/javascript">
+        App.controllers.buddylistCtrl({
+            renderTo: '#buddy-list-1'
+        });
+
+        if (~document.location.search.indexOf('mode=d')) { document.write("<script async src='//HOST:3000/browser-sync-client.1.3.6.js'><\/script>".replace(/HOST/g, location.hostname));}
+    </script>
+</body>
+</html>

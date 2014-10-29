@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, minimal-ui">
+    <title>Group Messaging</title>
+    <link rel="stylesheet" href="/css/group-messaging.css">
+    <link rel="stylesheet" href="/css/fontello.css">
+</head>
+<body>
+
+    <script type="text/x-handlebars-template" id="auth-form-template">
+        <div class="authentication">
+            <p class="cbl-instructions">
+                Enter your name (or email) to see a buddy list of all others on this page right now.<br /><br />
+                Hint: use an email address associated with a <a href="https://en.gravatar.com/" target="_blank">gravatar</a>!
+            </p>
+            <form class="cbl-name">
+                <input class="cbl-name__text" type="text" placeholder="Enter a name">
+                <input class="cbl-name__submit" type="submit" value="Send">
+            </form>
+        </div>
+    </script>
+
+    <script type="text/x-handlebars-template" id="group-message-template">
+        <header class="group-chat__header">
+            <button class="group-list-open">View Buddies</button>
+            <div class="group-chat__header__me">
+                <a href="#" class="logout">Log out</a> as {{username}}
+            </div>
+            <nav class="group-chat__header__tabs"><!-- #chat-tabs-template --></nav>
+        </header>
+
+        <div class="chat-window">
+            <nav class="group-list">
+                <ul class="buddy-list--mini"><!-- #buddies-template --></ul>
+            </nav>
+
+            <form class="group-chat__form group-chat__form--disabled">
+                <input type="text" class="group-chat__form__text" placeholder="Enter your message here" disabled="disabled">
+                <input type="submit" value="Send" class="group-chat__form__submit" disabled="disabled">
+            </form>
+
+            <section class="group-chat"><!-- #chat-messages-template --></section>
+        </div>
+    </script>
+
+    <script type="text/x-handlebars-template" id="chat-tabs-template">
+        {{#each tabs}}
+        <a href="#" id="{{#elid}}{{label}}{{/elid}}" class="tab{{#if isActive}} active{{/if}}">
+            <i class="icon-cancel-squared close"></i>{{label}}
+        </a>
+        {{/each}}
+    </script>
+
+    <script type="text/x-handlebars-template" id="buddies-template">
+        {{#each buddies}}
+        <li id="{{#elid}}{{username}}{{/elid}}" class="buddy-list--mini__user{{#if isActive}} active{{/if}}">
+            <img src="{{#gravatar}}{{username}}{{/gravatar}}" alt="{{username}}" class="buddy-list--mini__user__avatar">
+            <div class="buddy-list__user__name">{{username}}</div>
+            <div class="presence">
+                <div class="buddy-list__user__status--{{#presenceClass}}{{presence}}{{/presenceClass}}">{{presence}}</div>
+            </div>
+        </li>
+        {{/each}}
+    </script>
+
+    <script type="text/x-handlebars-template" id="chat-messages-template">
+        <ol class="messages">
+            {{#each messages}}
+            <li class="message--full-{{#if isMyMessage}}left{{else}}right{{/if}}">
+                <img class="message--full-{{#if isMyMessage}}left{{else}}right{{/if}}__avatar" src="{{#gravatar}}{{from}}{{/gravatar}}" alt="{{username}}">
+                <div class="message--full-{{#if isMyMessage}}left{{else}}right{{/if}}__container">
+                    <div class="message--full-{{#if isMyMessage}}left{{else}}right{{/if}}__container__content">
+                        {{content}}
+                    </div>
+                    <div class="message--full-{{#if isMyMessage}}left{{else}}right{{/if}}__meta">
+                        {{from}} at <time>{{#friendlyTime}}{{timestamp}}{{/friendlyTime}}</time>
+                    </div>
+                </div>
+            </li>
+            {{/each}}
+        </ol>
+    </script>
+
+    <div id="ui"><!-- root element --></div>
+
+    <script src="https://cdn.respoke.io/respoke.min.js"></script>
+    <script src="http://code.jquery.com/jquery-2.1.1.min.js"></script>
+    <script src="http://cdnjs.cloudflare.com/ajax/libs/moment.js/2.8.3/moment.min.js"></script>
+    <script src="http://cdnjs.cloudflare.com/ajax/libs/handlebars.js/2.0.0/handlebars.min.js"></script>
+
+    <!-- injector:js -->
+    <script src="/app/js/app.js"></script>
+    <script src="/app/js/lib/helpers.js"></script>
+    <script src="/app/js/lib/md5.js"></script>
+    <script src="/app/js/lib/tmpl.js"></script>
+    <script src="/app/js/models/Client.js"></script>
+    <script src="/app/js/models/Endpoint.js"></script>
+    <script src="/app/js/models/StatusTypes.js"></script>
+    <script src="/app/modules/group-messaging/state.js"></script>
+    <script src="/app/modules/group-messaging/ui.js"></script>
+    <!-- endinjector -->
+
+    <script type="text/javascript">
+        (function () {
+            App.state.init('7c15ec35-71a9-457f-8b73-97caf4eb43ca');
+        }());
+    </script>
+</body>
+</html>
