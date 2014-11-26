@@ -39,7 +39,7 @@
     "grunt-contrib-cssmin": "~0.10.0",
     "grunt-contrib-stylus": "^0.19.0",
     "grunt-gh-pages": "^0.9.1",
-    "grunt-injector": "pho3nixf1re/grunt-injector#c298df9a03f7c575bb7d0e7e0b773b0a16aaa209",
+    "grunt-injector": "^0.6.0",
     "grunt-jscs": "~0.7.1"
   }
 }
