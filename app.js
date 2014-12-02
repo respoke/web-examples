@@ -1,4 +1,4 @@
-var app = require('server/server');
+var app = require('./server/server');
 
 app.listen(9876);
 

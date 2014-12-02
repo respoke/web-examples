@@ -11,15 +11,15 @@
 
     <script type="text/tmpl" id="buddy-list-user">
         <li class="buddy-list--mini__user" id="user-<%= $.helpers.getClassName(endpointId) %>">
-            <div class="buddy-list--mini__user__name" data-id="<%= endpointId %>"><%= endpointId %></div>
+            <div class="buddy-list--mini__user__name" data-id="<%= endpointId %>" data-name="<%= connectionName %>"><%= connectionName || endpointId %></div>
         </li>
     </script>
 
     <script type="text/tmpl" id="prompt-call">
         <div class="popup">
             <div class="popup__wrapper">
-                <h2 class="popup__wrapper__title">Calling <%= endpointId %></h2>
-                <p>Place a call to <%= endpointId %>?</p>
+                <h2 class="popup__wrapper__title">Calling <%= connectionName %></h2>
+                <p>Place a call to <%= connectionName || endpointId %>?</p>
                 <nav class="popup__wrapper__options">
                     <button class="popup__wrapper__options__btn">Cancel</button>
                     <button class="popup__wrapper__options__btn--success">Call</button>
@@ -32,9 +32,9 @@
         <div class="popup">
             <div class="popup__wrapper">
                 <% if (initiator) { %>
-                    <h2 class="popup__wrapper__title">Calling <%= endpointId %></h2>
+                    <h2 class="popup__wrapper__title">Calling <%= connectionName %></h2>
                 <% } else { %>
-                    <h2 class="popup__wrapper__title"><%= endpointId %> is calling you</h2>
+                    <h2 class="popup__wrapper__title"><%= connectionName || endpointId %> is calling you</h2>
                 <% } %>
                 <p>Please allow access to your webcam in order to begin the video call.</p>
                 <nav class="popup__wrapper__options">
@@ -109,7 +109,7 @@
 
     <div id="content"></div>
 
-    <script src="https://cdn.respoke.io/respoke.min.js"></script>
+    <script src="/js/transporter/respoke.min.js"></script>
     <script src="http://code.jquery.com/jquery-2.1.1.min.js"></script>
 
     <!-- injector:js -->
@@ -130,6 +130,7 @@
     <!-- endinjector -->
 
     <script type="text/javascript">
+        respoke.log.setLevel('trace');
         App.controllers.videoCallCtrl({
             renderTo: '#content'
         });

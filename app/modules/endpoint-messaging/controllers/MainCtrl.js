@@ -48,7 +48,8 @@ App.controllers.messagingCtrl = (function ($, App) {
                 renderTo: $el.find('.messages'),
                 data: {
                     username: options.connectTo,
-                    message: evt.message.message
+                    message: evt.message.body,
+                    sender: evt.message.sender
                 }
             });
 
@@ -103,7 +104,7 @@ App.controllers.messagingCtrl = (function ($, App) {
         // Kick off the application
         (function () {
             renderMainTemplate();
-            App.models.client(options.username, onConnection);
+            App.models.client(options.username, options.name, onConnection);
         }());
 
         // Public API

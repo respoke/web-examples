@@ -45,18 +45,20 @@ App.controllers.videoCallCtrl = (function ($, App) {
         }
 
         // When the member is clicked, we need to prompt the client about the call
-        function memberClick (endpointId) {
+        function memberClick (endpointId, connectionName) {
 
             // Establish a connection
             connection = client.getEndpoint({
                 id: endpointId
             });
+            console.log('connection is', connection);
 
             // Render the modal window
             App.controllers.callpromptCtrl({
                 el: $el,
                 makeCall: makeCall,
-                endpointId: endpointId
+                endpointId: endpointId,
+                connectionName: connectionName
             });
         }
 
@@ -116,7 +118,6 @@ App.controllers.videoCallCtrl = (function ($, App) {
 
         // A callback when an endpoint leaves the group
         function onGroupLeave (e) {
-
             // If the client is currently having a call with the endpoint, we need to hang that up
             if (call && call.remoteEndpoint.id === e.connection.endpointId) {
                 call.hangup();
@@ -124,11 +125,12 @@ App.controllers.videoCallCtrl = (function ($, App) {
 
             // Remove the endpoint from the buddy list
             ctrl.buddyList.removeMember(e.connection.endpointId);
-            
+
         }
 
         // A callback when a member joins the group
         function onGroupJoin (e) {
+            console.log('member joined group!', e.connection);
             ctrl.buddyList.renderGroupMember(null, e.connection);
         }
 
@@ -162,6 +164,7 @@ App.controllers.videoCallCtrl = (function ($, App) {
             // Render the call warning modal to the DOM
             ctrl.callWarning= App.controllers.callWarningCtrl({
                 el: $el,
+                name: e.target.remoteParty ? e.target.remoteParty.name : null,//its only there for the remote end
                 endpointId: e.target.remoteEndpoint.id,
                 initiator: e.target.caller
             });

@@ -7,15 +7,21 @@
      * @param {Function} cb
      * @returns {Promise}
      */
-    App.models.client = function (endpointId, cb) {
+    App.models.client = function (endpointId, name, cb) {
 
         var client = respoke.createClient({
-            appId: '7c15ec35-71a9-457f-8b73-97caf4eb43ca',
-            developmentMode: true
+            appId: '9e1657b2-6880-42b1-9b7e-f79579efc052',
+            developmentMode: true,
+            baseURL: 'http://localhost:2000'
         });
+
+        if (typeof name === 'function') {
+            cb = name;
+        }
 
         client.connect({
             endpointId: endpointId,
+            connectionName: name,
             presence: 'available'
         }).done(function () {
             cb(client);

@@ -21,7 +21,7 @@ App.controllers.buddyListCtrl = (function ($, App) {
         function hideMenu (e) {
             var $openedMenu = $(e.target).closest('.group-list--is-open');
 
-            // Make sure the open menu is empty and the target is not the open button itself 
+            // Make sure the open menu is empty and the target is not the open button itself
             if ( (!$openedMenu.length) && ($(e.target)[0] !== $openBtn[0]) ) {
                 closeMenu();
             }
@@ -50,9 +50,10 @@ App.controllers.buddyListCtrl = (function ($, App) {
 
             // Get the endpointId from the data on the DOM element
             var endpointId = $(e.target).data('id');
+            var connectionName = $(e.target).data('name');
 
-            // 
-            return (options.memberClick) ? options.memberClick(endpointId) : null;
+            //
+            return (options.memberClick) ? options.memberClick(endpointId, connectionName) : null;
         }
 
         // Renders the group member that is passed in
@@ -60,7 +61,7 @@ App.controllers.buddyListCtrl = (function ($, App) {
 
             // Only add the group member if it is not the authenticated endpoint
             if (endpoint.endpointId !== options.endpointId) {
-
+                console.log('Render Group Member', endpoint);
                 // Render the template
                 $.helpers.insertTemplate({
                     template: 'buddy-list-user',

@@ -14,13 +14,15 @@ App.controllers.authenticationCtrl = (function ($, App) {
             e.preventDefault();
 
             // Get the username from the form
-            var username = $el.find('.cbl-name__text').val();
+            var name = $el.find('.cbl-name__text').val();
+            var username = respoke.makeGUID();
+
 
             // Disable the form
             $(e.target).find('input').attr('disabled', 'disabled');
 
             // Connect the client
-            App.models.client(username, options.onConnection);
+            App.models.client(username, name, options.onConnection);
 
         }
 
