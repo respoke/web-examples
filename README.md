@@ -1,4 +1,5 @@
 # Digium Respoke Example Apps
+[![Gitter](https://badges.gitter.im/Join Chat.svg)](https://gitter.im/respoke/web-examples?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 
 These are a suite of example applications to show how to work with the
 [Respoke](https://docs.respoke.io/) API just using jQuery.
