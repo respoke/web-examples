@@ -8,11 +8,20 @@
     <link rel="stylesheet" href="../../css/fontello.css">
 </head>
 <body>
+    <div class="app-description">
+        <h1>Group Messaging</h1>
+        <p>
+            The example below shows a simple instant messaging application. To test it out, input a username and hit "send" to sign in. You will then be able to see any other users who are currenty signed in, and send messages to individual users or the entire group. You can also change your status and see the status of other users. If you're working solo, you can open this page in multiples tabs/windows and sign in with different usernames to see the full functionality in action. <em>For a bit more excitement, try entering an email address associated with a <a href="https://gravatar.com" target="_blank">Gravatar</a> account!</em>
+        </p>
+        <p>
+            For a full write-up on the architecture of this application, check out the <a href="https://github.com/respoke/web-examples/tree/master/app/modules/group-messaging" target="_blank">README</a>.
+        </p>        
+    </div>
+    <hr/>
     <script type="text/x-handlebars-template" id="auth-form-template">
         <div class="authentication">
             <p class="cbl-instructions">
-                Enter your name (or email) to see a buddy list of all others on this page right now.<br /><br />
-                Hint: use an email address associated with a <a href="https://en.gravatar.com/" target="_blank">gravatar</a>!
+                
             </p>
             <form class="cbl-name">
                 <input class="cbl-name__text" type="text" placeholder="Enter a name">
