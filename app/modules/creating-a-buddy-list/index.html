@@ -8,13 +8,16 @@
 </head>
 <body>
     <div class="app-description">
-        <h1>Endpoint Messaging</h1>
-        <p>The simple instant messaging application below illustrates the use of the Respoke messaging API's. In this instance, Bob and Alice (two users) can send and receive messages to one another. Normally, each user would only see their individual chat window, but for the sake of the example we display both users below.</p>
-
-        <p>Sending messages between endpoints requires that you first establish a connection between the endpoints using the <a href="https://docs.respoke.io/js-library/respoke.Client.html#connect" target="_blank">connect</a> method of the <a href="https://docs.respoke.io/js-library/respoke.Client.html" target="_blank">Client</a>  object. Once the connection is established, sending a message is a simple matter of calling the <a href="https://docs.respoke.io/js-library/respoke.Client.html#sendMessage" target="_blank">sendMessage</a> method of the Client object and passing in an object containing the endpoint ID of the recipient, and the message you wish to send. In order to receive incoming messages from other users, you will also need to add a listener for the <a href="https://docs.respoke.io/js-library/respoke.Client.html#event-respoke-Client-message" target="_blank">message</a> event on your Client object.</p>        
+        <h1>Creating a Buddy List</h1>
+        <p>
+            The example below shows a simple "buddy list". To test it out, input a username and hit "send" to sign in. You will then be able to see any other users who are currenty signed in, and they will be able to see you. You can also change your status and see the status of other users. If you're working solo, you can open this page in multiples tabs/windows and sign in with different usernames to see the full functionality in action. <em>For a bit more excitement, try entering an email address associated with a <a href="https://gravatar.com" target="_blank">Gravatar</a> account!</em>
+        </p>
+        <p>
+            This example illustrates the use of two key elements of Respoke: <a href="https://docs.respoke.io/js-library/respoke.Group.html" target="_blank">Groups</a>, and <a href="https://docs.respoke.io/js-library/respoke.Client.html#connect" target="_blank">Presence</a>. Groups give you the ability to send a single message to a group of recipients, as well as receiving notifications when someone joins or leaves the group. Using these events you can then add listeners to each endpoint for the <a href="https://docs.respoke.io/js-library/respoke.Client.html#getEndpoint" target="_blank">onPresence</a> event. This allows you to receive notifications when another user in the group changes their status and update your app accordingly.
+        </p>        
     </div>
     <hr/>
-    
+
     <script type="text/tmpl" id="user-status">
         <h1 class="user-handle">
             <img src="<%= photo %>" alt="Avatar">
