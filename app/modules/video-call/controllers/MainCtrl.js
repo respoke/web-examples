@@ -80,6 +80,11 @@ App.controllers.videoCallCtrl = (function ($, App) {
                 id: 'video-group-chat',
                 onSuccess: getGroup
             });
+
+            // hide the the description text
+            var desc = $('.app-description');
+            desc.css('display','none');
+            desc = null;
         }
 
         // Starts a call with the connection we've already established

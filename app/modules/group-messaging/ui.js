@@ -103,7 +103,6 @@
                     $el = null;
                     $username = null;
 
-
                     // hide the the description text
                     var desc = $('.app-description');
                     desc.css('display','none');
