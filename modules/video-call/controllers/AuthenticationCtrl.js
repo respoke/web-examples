@@ -22,6 +22,10 @@ App.controllers.authenticationCtrl = (function ($, App) {
             // Connect the client
             App.models.client(username, options.onConnection);
 
+            // hide the the description text
+            var desc = $('.app-description');
+            desc.css('display','none');
+            desc = null;
         }
 
         // Renders the authentication form
