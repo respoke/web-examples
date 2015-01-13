@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, minimal-ui">
+    <title>Screen Sharing</title>
+    <link rel="stylesheet" href="../../css/video-call.css">
+</head>
+<!-- <body class="popup-active"> -->
+<body>
+    <script type="text/tmpl" id="buddy-list-user">
+        <li class="buddy-list--mini__user" id="user-<%= $.helpers.getClassName(endpointId) %>">
+            <div class="buddy-list--mini__user__name" data-id="<%= endpointId %>"><%= endpointId %></div>
+        </li>
+    </script>
+
+    <script type="text/tmpl" id="prompt-call">
+        <div class="popup">
+            <div class="popup__wrapper">
+                <h2 class="popup__wrapper__title">Calling <%= endpointId %></h2>
+                <p>Place a call to <%= endpointId %>?</p>
+                <nav class="popup__wrapper__options">
+                    <button class="popup__wrapper__options__btn">Cancel</button>
+                    <button class="popup__wrapper__options__btn--success">Call</button>
+                </nav>
+            </div>
+        </div>
+    </script>
+
+    <script type="text/tmpl" id="call-warning">
+        <div class="popup">
+            <div class="popup__wrapper">
+                <% if (initiator) { %>
+                    <h2 class="popup__wrapper__title">Calling <%= endpointId %></h2>
+                <% } else { %>
+                    <h2 class="popup__wrapper__title"><%= endpointId %> is calling you</h2>
+                <% } %>
+                <p>Please allow access to your screen in order to begin sharing.</p>
+                <nav class="popup__wrapper__options">
+                    <button class="popup__wrapper__options__btn">Got it</button>
+                    <% if (!initiator) { %>
+                        <button class="popup__wrapper__options__btn--error">Reject Call</button>
+                    <% } %>
+                </nav>
+            </div>
+        </div>
+    </script>
+
+    <script type="text/tmpl" id="call-preview">
+        <div class="popup">
+            <div class="popup__wrapper">
+                <h2 class="popup__wrapper__title">How does your hair look?</h2>
+                <div id="video-preview" class="video-preview-pane"></div>
+                <nav class="popup__wrapper__options">
+                    <button class="popup__wrapper__options__btn">Cancel</button>
+                    <button class="popup__wrapper__options__btn--success">Start Call</button>
+                </nav>
+            </div>
+        </div>
+    </script>
+
+    <script type="text/tmpl" id="user-authentication">
+        <div class="authentication">
+        <h1>Screen Sharing</h1>
+            <p>
+            The example below shows a simple screen sharing application. To test it out, input a username and hit "send" to sign in. You will then be able to see any other users who are currently signed in and establish a dual screen sharing session with them. To start sharing, simply click the name of the user you want to call in the list on the left. If you're working solo, you can open this page in multiples tabs/windows and sign in with different usernames to see the full functionality in action.
+            </p>
+            <p>
+            This example illustrates the use of the <a href="https://docs.respoke.io/js-library/respoke.Endpoint.html#startScreenShare" target="_blank">startScreenShare</a> method of the <a href="https://docs.respoke.io/js-library/respoke.Endpoint.html" target="_blank">Endpoint</a> object. This method returns a <a href="https://docs.respoke.io/js-library/respoke.Call.html" target="_blank">Call</a> object which acts as your interface into the WebRTC call and gives you events to notify you about call actions such as when audio is muted or the connection is terminated.
+            </p> 
+            <hr/>
+
+            <p class="cbl-instructions">
+                Enter your name to see a list of all others on this page right now.
+            </p>
+            <form class="cbl-name">
+                <input class="cbl-name__text" type="text" placeholder="Enter a name" />
+                <input class="cbl-name__submit" type="submit" value="Send" />
+            </form>
+        </div>
+    </script>
+
+    <script type="text/tmpl" id="video-container">
+        <div class="video-contain">
+            <div class="video-buttons">
+                <button class="video-buttons__button--cancel" id="hangup">Hangup</button>
+                <button class="video-buttons__button" id="mute">Mute</button>
+                <button class="video-buttons__button" id="hide-video">Hide Video</button>
+            </div>
+            <div class="video-small"></div>
+            <div class="video-large"></div>
+        </div>
+    </script>
+
+    <script type="text/tmpl" id="video-chat">
+        <div class="video-chat">
+        </div>
+
+        <header class="group-chat__header">
+            <button class="group-list-open">View Buddies</button>
+            <div class="group-chat__header__me">
+                
+            </div>
+        </header>
+
+        <div class="chat-window">
+            <nav class="group-list">
+                <ul class="buddy-list--mini">
+                    <li class="buddy-list--mini__user active">
+                        <div class="buddy-list--mini__user__name">Users On This Page</div>
+                    </li>
+                </ul>
+            </nav>
+
+        </div>
+    </script>
+
+    <div id="content"></div>
+
+    <script src="https://cdn.respoke.io/respoke.min.js"></script>
+    <script src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
+
+    <!-- injector:js -->
+    <script src="../../js/app.js"></script>
+    <script src="../../js/lib/helpers.js"></script>
+    <script src="../../js/lib/md5.js"></script>
+    <script src="../../js/lib/tmpl.js"></script>
+    <script src="../../js/models/Client.js"></script>
+    <script src="../../js/models/Endpoint.js"></script>
+    <script src="../../js/models/StatusTypes.js"></script>
+    <script src="controllers/AuthenticationCtrl.js"></script>
+    <script src="controllers/BuddylistCtrl.js"></script>
+    <script src="controllers/CallpreviewCtrl.js"></script>
+    <script src="controllers/CallpromptCtrl.js"></script>
+    <script src="controllers/CallwarningCtrl.js"></script>
+    <script src="controllers/MainCtrl.js"></script>
+    <script src="controllers/VideoCtrl.js"></script>
+    <!-- endinjector -->
+
+    <script type="text/javascript">
+        App.controllers.screenShareCtrl({
+            renderTo: '#content'
+        });
+    </script>
+</body>
+</html>
