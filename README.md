@@ -22,6 +22,14 @@ examples.
 For more details on how to setup and use the group messaging example please see
 the [README](app/modules/group-messaging/README.md) in that module.
 
+### Screen Sharing
+
+Initial screen sharing support included on Chrome support. Support for other browsers will be added
+as it is completed. Please check the
+[screen sharing documentation](https://docs.respoke.io/js-library/respoke.Endpoint.html#startScreenShare)
+for browser support details
+or [live examples](http://respoke.github.io/web-examples/modules/screen-sharing/index.html) to test it out.
+
 ### Development
 
 You will need to install [Node.js](http://nodejs.org),
