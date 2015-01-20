@@ -17,11 +17,11 @@
     <script type="text/tmpl" id="prompt-call">
         <div class="popup">
             <div class="popup__wrapper">
-                <h2 class="popup__wrapper__title">Calling <%= endpointId %></h2>
-                <p>Place a call to <%= endpointId %>?</p>
+                <h2 class="popup__wrapper__title">Screen sharing to <%= endpointId %></h2>
+                <p>Share your screen with <%= endpointId %>?</p>
                 <nav class="popup__wrapper__options">
                     <button class="popup__wrapper__options__btn">Cancel</button>
-                    <button class="popup__wrapper__options__btn--success">Call</button>
+                    <button class="popup__wrapper__options__btn--success">Share</button>
                 </nav>
             </div>
         </div>
@@ -31,15 +31,15 @@
         <div class="popup">
             <div class="popup__wrapper">
                 <% if (initiator) { %>
-                    <h2 class="popup__wrapper__title">Calling <%= endpointId %></h2>
+                    <h2 class="popup__wrapper__title">Sharing your screen with<%= endpointId %></h2>
                 <% } else { %>
-                    <h2 class="popup__wrapper__title"><%= endpointId %> is calling you</h2>
+                    <h2 class="popup__wrapper__title"><%= endpointId %> is sharing their screen with you</h2>
                 <% } %>
                 <p>Please allow access to your screen in order to begin sharing.</p>
                 <nav class="popup__wrapper__options">
                     <button class="popup__wrapper__options__btn">Got it</button>
                     <% if (!initiator) { %>
-                        <button class="popup__wrapper__options__btn--error">Reject Call</button>
+                        <button class="popup__wrapper__options__btn--error">Reject</button>
                     <% } %>
                 </nav>
             </div>
@@ -49,11 +49,11 @@
     <script type="text/tmpl" id="call-preview">
         <div class="popup">
             <div class="popup__wrapper">
-                <h2 class="popup__wrapper__title">How does your hair look?</h2>
+                <h2 class="popup__wrapper__title">Confirm your screen share.</h2>
                 <div id="video-preview" class="video-preview-pane"></div>
                 <nav class="popup__wrapper__options">
                     <button class="popup__wrapper__options__btn">Cancel</button>
-                    <button class="popup__wrapper__options__btn--success">Start Call</button>
+                    <button class="popup__wrapper__options__btn--success">Start Screenshare</button>
                 </nav>
             </div>
         </div>
@@ -84,8 +84,6 @@
         <div class="video-contain">
             <div class="video-buttons">
                 <button class="video-buttons__button--cancel" id="hangup">Hangup</button>
-                <button class="video-buttons__button" id="mute">Mute</button>
-                <button class="video-buttons__button" id="hide-video">Hide Video</button>
             </div>
             <div class="video-small"></div>
             <div class="video-large"></div>
