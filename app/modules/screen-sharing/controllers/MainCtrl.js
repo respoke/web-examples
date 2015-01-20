@@ -147,8 +147,10 @@ App.controllers.screenShareCtrl = (function ($, App) {
         // Hangs up a video call
         function hangup () {
 
-            // Hang up the call
-            call.hangup();
+            if (call) {
+                // Hang up the call
+                call.hangup();
+            }
 
             // Remove the video template if there is one
             if (ctrl.video) {
