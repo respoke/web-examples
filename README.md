@@ -24,8 +24,8 @@ the [README](app/modules/group-messaging/README.md) in that module.
 
 ### Screen Sharing
 
-Initial screen sharing support included on Chrome support. Support for other browsers will be added
-as it is completed. Please check the
+At this time, screen sharing is only available in Chrome. Support for other browsers will be added
+in the future. Please check the
 [screen sharing documentation](https://docs.respoke.io/js-library/respoke.Endpoint.html#startScreenShare)
 for browser support details
 or [live examples](http://respoke.github.io/web-examples/modules/screen-sharing/index.html) to test it out.
