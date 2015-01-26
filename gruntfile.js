@@ -48,7 +48,7 @@ module.exports = function (grunt) {
             options: {
                 force: true,
                 jshintrc: './.jshintrc',
-                ignores: ['app/js/lib/md5.js']
+                ignores: ['app/js/lib/md5.js', 'app/js/transporter/**/*.js']
             }
         },
 
@@ -76,7 +76,7 @@ module.exports = function (grunt) {
                     'test/**/*.js',
                     'app/modules/**/*.js'
                 ],
-                tasks: ['jshint', 'test', 'injector', 'jscs']
+                tasks: ['injector']
             },
             templates: {
                 files: [
@@ -155,18 +155,6 @@ module.exports = function (grunt) {
                         return arr;
                     }())
                 }
-            },
-            test: {
-                template: 'test/index.html',
-                files: {
-                    'test/index.html': (function () {
-                        var arr = _.clone(files);
-                        arr.push('app/modules/video-call/**/*.js');
-                        arr.push('app/modules/**/*.js');
-                        arr.push('test/specs/**/*.js');
-                        return arr;
-                    }())
-                }
             }
 
         },
@@ -201,7 +189,7 @@ module.exports = function (grunt) {
     grunt.loadNpmTasks('grunt-autoprefixer');
     grunt.loadNpmTasks('grunt-gh-pages');
 
-    grunt.registerTask('server', ['jshint', 'injector', 'express', 'browserSync', 'watch']);
+    grunt.registerTask('server', ['injector', 'express', 'browserSync', 'watch']);
     grunt.registerTask('test', ['express', 'jshint', 'mocha']);
     grunt.registerTask('build', ['stylus', 'autoprefixer', 'injector']);
     grunt.registerTask('publish', ['jshint', 'build', 'gh-pages']);

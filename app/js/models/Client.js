@@ -9,6 +9,8 @@
      */
     App.models.client = function (endpointId, cb) {
 
+        //respoke.log.enableAll();
+
         var client = respoke.createClient({
             appId: '7c15ec35-71a9-457f-8b73-97caf4eb43ca',
             developmentMode: true

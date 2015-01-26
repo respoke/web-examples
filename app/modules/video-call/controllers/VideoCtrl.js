@@ -15,6 +15,7 @@ App.controllers.videoCtrl = (function ($, App) {
         // Renders the remote video
         function renderRemoteMedia (video) {
             $el.find('.video-large').html(video);
+            video.play();
         }
 
         // Renders the local video
@@ -62,7 +63,7 @@ App.controllers.videoCtrl = (function ($, App) {
                 // Hide the local video
                 $el.find('.video-small').hide();
 
-                // Calls the onMuteVideo method from the options so that 
+                // Calls the onMuteVideo method from the options so that
                 // the connected endpoint will no longer see our video
                 options.onMuteVideo();
 
