@@ -131,7 +131,7 @@ App.controllers.screenShareCtrl = (function ($, App) {
 
             // Remove the endpoint from the buddy list
             ctrl.buddyList.removeMember(e.connection.endpointId);
-            
+
         }
 
         // A callback when a member joins the group

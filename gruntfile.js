@@ -48,7 +48,7 @@ module.exports = function (grunt) {
             options: {
                 force: true,
                 jshintrc: './.jshintrc',
-                ignores: ['app/js/lib/md5.js']
+                ignores: ['app/js/lib/md5.js', 'app/js/transporter/**/*.js']
             }
         },
 
@@ -74,7 +74,8 @@ module.exports = function (grunt) {
                 files: [
                     'app/js/**/*.js',
                     'test/**/*.js',
-                    'app/modules/**/*.js'
+                    'app/modules/**/*.js',
+                    '!app/js/transporter/**/*.js'
                 ],
                 tasks: ['jshint', 'test', 'injector', 'jscs']
             },

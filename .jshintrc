@@ -71,7 +71,8 @@
         "$"         : true,
         "respoke"   : true,
         "App"       : true,
-        "sinon"     : true
+        "sinon"     : true,
+        "chrome"    : true
     }
 }
 
