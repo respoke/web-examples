@@ -1,0 +1,91 @@
+.hljs,
+.hljs-tag {
+    color: $text;
+}
+.hljs-comment,.hljs-template_comment,.hljs-javadoc,.hljs-comment * {
+    color: $textDullest;
+}
+.hljs-keyword,.hljs-literal,.nginx .hljs-title {
+    color: $primary;
+}
+.method,.hljs-list .hljs-title,.hljs-tag .hljs-title,.setting .hljs-value,.hljs-winutils,.tex .hljs-command,.http .hljs-title,.hljs-request,.hljs-status {
+    color: $compliment;
+}
+.hljs-envvar,.tex .hljs-special {
+    color: $textDull;
+}
+.hljs-string {
+    color: $contrastMuted;
+}
+.hljs-tag .hljs-value,.hljs-cdata,.hljs-filter .hljs-argument,.hljs-attr_selector,.apache .hljs-cbracket,.hljs-date,.hljs-regexp {
+    color: $contrastMuted;
+}
+.hljs-sub .hljs-identifier,.hljs-pi,.hljs-tag .hljs-keyword,.hljs-decorator,.ini .hljs-title,.hljs-shebang,.hljs-prompt,.hljs-hexcolor,.hljs-rules .hljs-value,.css .hljs-value .hljs-number,.hljs-symbol,.hljs-symbol .hljs-string,.hljs-number,.css .hljs-function,.clojure .hljs-title,.clojure .hljs-built_in,.hljs-function .hljs-title,.coffeescript .hljs-attribute {
+    color: $contrast;
+}
+.hljs-class .hljs-title,
+.hljs-javadoctag,
+.hljs-yardoctag,
+.hljs-phpdoc,
+.hljs-typename,
+.hljs-tag .hljs-attribute,
+.hljs-doctype,
+.hljs-class .hljs-id,
+.hljs-built_in,
+.setting,
+.hljs-params,
+.clojure .hljs-attribute {
+    color: $primary;
+}
+.hljs-variable {
+    color: $contrast;
+}
+.hljs-rules .hljs-property,
+.hljs-pseudo,
+.hljs-subst,
+.css .hljs-attribute {
+    color: $primary;
+}
+.css .hljs-tag,
+.css .hljs-id,
+.css .hljs-class {
+    color: $textBrightest;
+    font-weight: bold;
+}
+.hljs-value .hljs-important {
+    color: #f70;
+    font-weight: bold;
+}
+.hljs-rules .hljs-keyword {
+    color: $contrast;
+}
+.hljs-annotation,.apache .hljs-sqbracket,.nginx .hljs-built_in {
+    color: #9b859d;
+}
+.hljs-preprocessor,.hljs-preprocessor *,.hljs-pragma {
+    color: #643820;
+}
+.tex .hljs-formula {
+    background-color: #EEE;
+    font-style: italic;
+}
+.diff .hljs-header,.hljs-chunk {
+    color: #808080;
+}
+.diff .hljs-change {
+    background-color: #bccff9;
+}
+.hljs-addition {
+    background-color: $primary;
+    color: $textInverse;
+}
+.hljs-deletion {
+    background-color: #ffc8bd;
+}
+.hljs-comment .hljs-yardoctag {
+    font-weight: bold;
+}
+.method .hljs-id {
+    color: $textBright;
+    font-weight: bold;
+}

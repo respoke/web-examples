@@ -1,0 +1,246 @@
+.capitalize {
+    text-transform: capitalize;
+}
+.uppercase {
+    text-transform: uppercase;
+}
+.left {
+    text-align: left!important;
+}
+.right {
+    text-align: right!important;
+}
+.center {
+    text-align: center!important;
+}
+.monospace, .monospace a {
+    font-family: 'Source Code Pro', Consolas, Menlo, Monaco, monospace !important;
+}
+.bold { font-weight: 600!important; }
+
+.row.param {
+    font-size: 12px;
+    border-bottom: 1px solid #eee;
+    margin-bottom: 4px;
+    margin-top: 4px;
+}
+.row.param, .rwo.param code{
+    word-wrap: break-word;
+}
+
+h2 {
+    margin-top: 16px;
+    margin-bottom: 16px;
+    font-weight: bold;
+}
+
+img[alt="Brokered Auth Workflow"] {
+    max-height:686px;
+    max-width:650px;
+}
+
+.top-margin-mlady { padding-top: 120px; }
+
+/* Sidebar */
+#main-sidebar-wrap {
+    width: 100%;
+    text-align: right;
+    z-index: 200;
+    max-height: 68%;
+    overflow-y: auto;
+}
+#main-sidebar-wrap #main-sidebar {
+    position: relative;
+    right: 0;
+}
+ul.nav li {
+    color: #aaa;
+}
+ul.nav li,
+ul.nav li a {
+    font-size: 14px;
+}
+ul.nav>li{
+    margin-top: 8px;
+}
+ul.nav>li>ul{
+    margin-bottom: 8px;
+}
+#main-sidebar > li {
+    text-align: right;
+}
+
+/* Main content */
+@media screen and (max-width: 990px) {
+    .affix {
+        position: static;
+    }
+    #main-sidebar-wrap #main-sidebar {
+        position: fixed;
+        display: none;
+        right: 0;
+        left: 0;
+        top: 0;
+        bottom: 0;
+        padding: 20px 30px;
+        background: #eee;
+        z-index: 1000;
+        opacity: .94;
+        text-align: left;
+    }
+    #main-sidebar-wrap #main-sidebar > li {
+        float: right;
+        margin-left: 21px;
+        width: 105px;
+        padding: 0;
+    }
+}
+#sidebar-toggle-button {
+    bottom: 0;
+    left: 0;
+    position: fixed;
+    border-radius: 0;
+    border: none;
+    z-index: 1000;
+}
+@media screen and (min-width: 992px) {
+    #sidebar-toggle-button{ display: none; }
+}
+@media screen and (max-width: 768px) {
+
+    ul#main-sidebar{
+        position: fixed;
+        display: none;
+        right: 0;
+        left: 0;
+        top: 0;
+        bottom: 0;
+        padding: 20px 30px;
+        background: #eee;
+        z-index: 1000;
+        opacity: .94;
+        text-align: left;
+    }
+    #content{
+        /*margin-left: 20px;*/
+    }
+
+}
+ul.nav li.active a{
+    font-weight: bold;
+}
+
+/* Header effects */
+.nav-container:after {
+    content: "";
+    position: absolute;
+    bottom: -50px;
+    width: 100%;
+    height: 50px;
+    right: 0;
+
+    background: -moz-linear-gradient(top,  rgba(255,255,255,1) 0%, rgba(255,255,255,0) 100%); /* FF3.6+ */
+    background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,rgba(255,255,255,1)), color-stop(100%,rgba(255,255,255,0))); /* Chrome,Safari4+ */
+    background: -webkit-linear-gradient(top,  rgba(255,255,255,1) 0%,rgba(255,255,255,0) 100%); /* Chrome10+,Safari5.1+ */
+    background: -o-linear-gradient(top,  rgba(255,255,255,1) 0%,rgba(255,255,255,0) 100%); /* Opera 11.10+ */
+    background: -ms-linear-gradient(top,  rgba(255,255,255,1) 0%,rgba(255,255,255,0) 100%); /* IE10+ */
+    background: linear-gradient(to bottom,  rgba(255,255,255,1) 0%,rgba(255,255,255,0) 100%); /* W3C */
+    filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ffffff', endColorstr='#00ffffff',GradientType=0 ); /* IE6-9 */
+}
+ul.nav-items{
+    z-index: 1000;
+}
+
+
+/* Overriding www.respoke.io styles */
+.how-it-works {
+    min-height: 1000px;
+
+    div.how-it-works-container {
+        width: 100%;
+        padding-right: 5%;
+        padding-left: 5%;
+        max-width: 100%;
+        @media screen and (max-width: 1024px) {
+            padding-top: 90px;
+        }
+        @media screen and (max-width: 600px) {
+            padding-left: 10px;
+        }
+
+        h1 {
+            font-weight: 100;
+            text-align: left;
+            &:first-child{
+                text-align: center;
+                margin-bottom: 20px;
+                font-size: 36px;
+            }
+            a {
+                font-size: 20px;
+                margin-top: 18px;
+                font-weight: 600;
+            }
+            code {
+                font-size: 16px;
+            }
+        }
+        h3 {
+            color: #6e7c8a;
+            font-weight: 400;
+        }
+        h5 {
+            color: #8F8F8F;
+            font-weight: 600;
+            font-size: 13px;
+        }
+        img {
+            width: 100%;
+        }
+        .ctx {
+            h2 {
+                margin-bottom: 16px;
+            }
+        }
+        pre {
+            margin: 10px 0 20px 0;
+        }
+        p {
+            margin: 10px auto;
+            padding: 0 auto 10px auto;
+        }
+    }
+
+}
+
+
+/**
+* To use Bootstrap CSS and make it look ok with the www.respoke.io styling, we'll need to do some overriding of bootstrap.
+*/
+
+html,body{
+    font-family: 'Open Sans', Helvetica, sans-serif;
+}
+/* required for scrollspy */
+body{ position: relative; height: auto; }
+
+ul li { font-size: .9em; margin-left: 8px; }
+#content-wrap ul li, ol li{ margin-left: 10px; font-size: .9em; }
+ol{ margin-left: 10px; }
+ol>li{ list-style-type: decimal; }
+blockquote{ font-size: .9em; }
+
+li>a:hover, .nav>li>a:hover{ text-decoration: none !important; background: none; }
+.nav>li>a{
+    display:inline;
+    padding: 0;
+}
+ul.nav>li{
+    margin: 0;
+}
+.row{
+    margin-left: 5px;
+}
+.footer {
+    z-index: 200;
+}
