@@ -28,6 +28,16 @@ App.controllers.authenticationCtrl = (function ($, App) {
             desc = null;
         }
 
+        function clickExtension(e){
+            e.preventDefault();
+            chrome.webstore.install('https://chrome.google.com/webstore/detail/jlpojfookfonjolaeofpibngfpnnflne', function(){
+                console.log('Successfully installed Chrome Extension, reloading page');
+                window.location.reload();
+            }, function(err){
+                console.log('Error installing extension in chrome', err);
+            });
+        }
+
         // Renders the authentication form
         function renderForm () {
             $el = $.helpers.insertTemplate({
@@ -37,9 +47,15 @@ App.controllers.authenticationCtrl = (function ($, App) {
                 bind: {
                     '.cbl-name': {
                         'submit': submitName
+                    },
+                    '.screen-share-instructions button': {
+                        'click': clickExtension
                     }
                 }
             });
+            if (!respoke.needsChromeExtension) {
+                $el.find('.screen-share-instructions').remove();
+            }
         }
 
         // Initializes the controller
