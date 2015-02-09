@@ -53,7 +53,7 @@ App.controllers.authenticationCtrl = (function ($, App) {
                     }
                 }
             });
-            if (!respoke.needsChromeExtension) {
+            if (!respoke.needsChromeExtension || (respoke.needsChromeExtension && respoke.hasChromeExtension)) {
                 $el.find('.screen-share-instructions').remove();
             }
         }
