@@ -31,7 +31,8 @@ App.controllers.authenticationCtrl = (function ($, App) {
         function clickExtension(e){
             e.preventDefault();
             chrome.webstore.install('https://chrome.google.com/webstore/detail/jlpojfookfonjolaeofpibngfpnnflne', function(){
-                console.log('Successfully installed Chrome Extension');
+                console.log('Successfully installed Chrome Extension, reloading page');
+                window.location.reload();
             }, function(err){
                 console.log('Error installing extension in chrome', err);
             });
