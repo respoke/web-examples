@@ -1,0 +1,33 @@
+{
+  "name": "digium-respoke",
+  "version": "0.0.1",
+  "authors": [
+    "Tyson Cadenhead <tcadenhead@appendto.com>",
+    "Nicholas Cloud <ncloud@appendto.com>"
+  ],
+  "moduleType": [
+    "amd"
+  ],
+  "license": "MIT",
+  "private": true,
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "app/vendor",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "jquery": "~2.1.1"
+  },
+  "devDependencies": {
+    "chai": "~1.9.1",
+    "grunt-blanket-mocha": "~0.4.1",
+    "blanket": "~1.1.5",
+    "mocha": "~1.21.4",
+    "sinon": "~1.10.3",
+    "sinonjs": "~1.10.2",
+    "sinon-chai": "~2.5.0"
+  }
+}
