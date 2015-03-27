@@ -55,6 +55,16 @@ grunt server
 Once the server starts, you can see all of the apps by visiting
 `http://localhost:9876`.
 
+It will also fire up an `ngrok` tunnel for doing HTTPS, which
+is useful during a screenshare. Look for the following terminal output:
+
+```bash
+Visit the following url to run the examples over HTTPS.
+https://423e076.ngrok.com
+They are also running locally.
+http://localhost:9876
+```
+
 If you have push access to the respoke/web-examples repo you can update the
 [live examples][examples] with:
 

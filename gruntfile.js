@@ -1,6 +1,8 @@
 'use strict';
 var path = require('path'),
-    _ = require('underscore');
+    _ = require('underscore'),
+    ngrok = require('ngrok'),
+    expressPort = 9876;
 
 module.exports = function (grunt) {
 
@@ -94,7 +96,7 @@ module.exports = function (grunt) {
             server: {
                 options: {
                     hostname: 'localhost',
-                    port: 9876,
+                    port: expressPort,
                     server: path.resolve('./server/server'),
                     debug: false
                 }
@@ -201,8 +203,16 @@ module.exports = function (grunt) {
     grunt.loadNpmTasks('grunt-contrib-stylus');
     grunt.loadNpmTasks('grunt-autoprefixer');
     grunt.loadNpmTasks('grunt-gh-pages');
+    
+    grunt.registerTask('grok', 'Fire up ngrok so icanhaz https.', function () {
+        ngrok.connect(expressPort, function (err, url) {
+            if (err) { throw err; }
+            grunt.log.writeln('Visit the following url to run the examples over HTTPS.\n ', url);
+            grunt.log.writeln('They are also running locally.\n  http://localhost:' + expressPort);
+        });
+    });
 
-    grunt.registerTask('server', ['jshint', 'injector', 'express', 'browserSync', 'watch']);
+    grunt.registerTask('server', ['jshint', 'injector', 'express', 'browserSync', 'grok', 'watch']);
     grunt.registerTask('test', ['express', 'jshint', 'mocha']);
     grunt.registerTask('build', ['stylus', 'autoprefixer', 'injector']);
     grunt.registerTask('publish', ['jshint', 'build', 'gh-pages']);
