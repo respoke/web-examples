@@ -4,6 +4,22 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, minimal-ui">
     <title>Screen Sharing</title>
+    <script>
+    (function () {
+        // Force https for screensharing
+        var isInsecure = location.protocol !== 'https:';
+        var isLocal = location.hostname === 'localhost';
+        var onlyShowMessage = function () {
+            alert('Screensharing only works over HTTPS.');
+            document.removeChild(document.getElementsByTagName('html')[0]);
+        };
+        var forceHttps = function () {
+            location.href = "https:" + location.href.substring(location.protocol.length);
+        };
+        if (isInsecure && isLocal) return onlyShowMessage();
+        if (isInsecure) return forceHttps();
+    })();
+    </script>
     <link rel="stylesheet" href="../../css/video-call.css">
     <link rel="chrome-webstore-item" href="https://chrome.google.com/webstore/detail/jlpojfookfonjolaeofpibngfpnnflne">
 </head>
