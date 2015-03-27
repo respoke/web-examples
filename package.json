@@ -39,6 +39,7 @@
     "grunt-injector": "^0.6.0",
     "grunt-jscs": "~0.7.1",
     "grunt-mocha": "~0.4.11",
+    "ngrok": "^0.1.99",
     "underscore": "~1.7.0"
   }
 }
