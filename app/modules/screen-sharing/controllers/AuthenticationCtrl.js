@@ -56,7 +56,8 @@ App.controllers.authenticationCtrl = (function ($, App) {
 
             respoke.listen('extension-loaded', function(data){
                 console.log('extension loaded', data);
-                if (!respoke.needsChromeExtension || (respoke.needsChromeExtension && respoke.hasChromeExtension)) {
+                //change to use respoke.hasScreenShare() when it's available
+                if (!respoke.needsChromeExtension || respoke.hasChromeExtension) {
                     $el.find('.screen-share-instructions').remove();
                 }
             })
