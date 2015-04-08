@@ -55,7 +55,6 @@ App.controllers.authenticationCtrl = (function ($, App) {
                     }
                 });
             }
-
         }
 
         // Renders the authentication form
@@ -77,17 +76,7 @@ App.controllers.authenticationCtrl = (function ($, App) {
             function removeInstructions(){
                 if (respoke.hasScreenShare()) {
                     $el.find('.screen-share-instructions').remove();
-                    return;
                 }
-
-                if (!respoke.needsChromeExtension || !respoke.hasChromeExtension) {
-                    $el.find('#installChromeExtension').remove();
-                }
-
-                if (!respoke.needsFirefoxExtension || respoke.hasFirefoxExtension) {
-                    $el.find('#installFirefoxExtension').remove();
-                }
-
             }
 
             respoke.listen('extension-loaded', removeInstructions);
