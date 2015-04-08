@@ -48,7 +48,7 @@ App.controllers.authenticationCtrl = (function ($, App) {
                     Foo: {
                         URL: '/web-examples-respoke.xpi',
                         IconURL: '/images/firefox-extension-icon.png',
-                        Hash: 'sha1:497e58f0ae0b9df8037c9925173f664a58de2580',
+                        Hash: 'sha1:b4bca99f68ab8d821caf59f1f735e622b6fec9ae',
                         toString: function () {
                             return this.URL;
                         }
