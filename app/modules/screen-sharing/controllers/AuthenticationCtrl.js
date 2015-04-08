@@ -28,7 +28,7 @@ App.controllers.authenticationCtrl = (function ($, App) {
             desc = null;
         }
 
-        function clickExtension(e){
+        function clickChromeExtension(e) {
             e.preventDefault();
             chrome.webstore.install(chromeUrl, function(){
                 console.log('Successfully installed Chrome Extension, reloading page');
@@ -37,6 +37,21 @@ App.controllers.authenticationCtrl = (function ($, App) {
                 console.error('Error installing extension in chrome', err);
                 console.error('Chrome webstore URL is', chromeUrl);
             });
+        }
+
+        function clickFirefoxExtension(e) {
+            e.preventDefault();
+            var params = {
+                Foo: {
+                    URL: '/web-examples-respoke.xpi',
+                    //IconURL: aEvent.target.getAttribute("iconURL"),
+                    Hash: 'sha1:497e58f0ae0b9df8037c9925173f664a58de2580',
+                    toString: function () {
+                        return this.URL;
+                    }
+                }
+            };
+            InstallTrigger.install(params);
         }
 
         // Renders the authentication form
@@ -49,14 +64,28 @@ App.controllers.authenticationCtrl = (function ($, App) {
                     '.cbl-name': {
                         'submit': submitName
                     },
-                    '.screen-share-instructions button': {
-                        'click': clickExtension
+                    '.chrome-screen-share-instructions button': {
+                        'click': clickChromeExtension
+                    },
+                    '#installFirefoxExtension': {
+                        'click': clickFirefoxExtension
                     }
                 }
             });
-            if (!respoke.needsChromeExtension || (respoke.needsChromeExtension && respoke.hasChromeExtension)) {
-                $el.find('.screen-share-instructions').remove();
+
+            function removeInstructions(){
+                if (!respoke.needsChromeExtension || respoke.hasChromeExtension) {
+                    $el.find('.chrome-screen-share-instructions').remove();
+                }
+
+                if (!respoke.needsFirefoxExtension || respoke.hasFirefoxExtension) {
+                    $el.find('.firefox-screen-share-instructions').remove();
+                }
             }
+
+            respoke.listen('extension-ready', removeInstructions);
+
+            removeInstructions();
         }
 
         // Initializes the controller

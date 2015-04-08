@@ -72,7 +72,8 @@
         "respoke"   : true,
         "App"       : true,
         "sinon"     : true,
-        "chrome"    : true
+        "chrome"    : true,
+        "InstallTrigger": true
     }
 }
 
