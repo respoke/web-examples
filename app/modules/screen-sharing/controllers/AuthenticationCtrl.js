@@ -47,7 +47,7 @@ App.controllers.authenticationCtrl = (function ($, App) {
                 InstallTrigger.install({
                     Foo: {
                         URL: '/web-examples-respoke.xpi',
-                        //IconURL: aEvent.target.getAttribute("iconURL"),
+                        IconURL: '/images/firefox-extension-icon.png',
                         Hash: 'sha1:497e58f0ae0b9df8037c9925173f664a58de2580',
                         toString: function () {
                             return this.URL;
