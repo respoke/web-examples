@@ -28,30 +28,34 @@ App.controllers.authenticationCtrl = (function ($, App) {
             desc = null;
         }
 
-        function clickChromeExtension(e) {
+        function clickInstallExtension(e) {
             e.preventDefault();
-            chrome.webstore.install(chromeUrl, function(){
-                console.log('Successfully installed Chrome Extension, reloading page');
-                window.location.reload();
-            }, function(err){
-                console.error('Error installing extension in chrome', err);
-                console.error('Chrome webstore URL is', chromeUrl);
-            });
-        }
 
-        function clickFirefoxExtension(e) {
-            e.preventDefault();
-            var params = {
-                Foo: {
-                    URL: '/web-examples-respoke.xpi',
-                    //IconURL: aEvent.target.getAttribute("iconURL"),
-                    Hash: 'sha1:497e58f0ae0b9df8037c9925173f664a58de2580',
-                    toString: function () {
-                        return this.URL;
+            if (respoke.needsChromeExtension && !respoke.hasChromeExtension) {
+                console.log('attempting to install chrome extension');
+                chrome.webstore.install(chromeUrl, function(){
+                    console.log('Successfully installed Chrome Extension, reloading page');
+                    window.location.reload();
+                }, function(err){
+                    console.error('Error installing extension in chrome', err);
+                    console.error('Chrome webstore URL is', chromeUrl);
+                });
+            }
+
+            if(respoke.needsFirefoxExtension && !respoke.hasFirefoxExtension) {
+                console.log('attempting to install firefox extension');
+                InstallTrigger.install({
+                    Foo: {
+                        URL: '/web-examples-respoke.xpi',
+                        //IconURL: aEvent.target.getAttribute("iconURL"),
+                        Hash: 'sha1:497e58f0ae0b9df8037c9925173f664a58de2580',
+                        toString: function () {
+                            return this.URL;
+                        }
                     }
-                }
-            };
-            InstallTrigger.install(params);
+                });
+            }
+
         }
 
         // Renders the authentication form
@@ -64,26 +68,29 @@ App.controllers.authenticationCtrl = (function ($, App) {
                     '.cbl-name': {
                         'submit': submitName
                     },
-                    '.chrome-screen-share-instructions button': {
-                        'click': clickChromeExtension
+                    '#installExtension': {
+                        'click': clickInstallExtension
                     },
-                    '#installFirefoxExtension': {
-                        'click': clickFirefoxExtension
-                    }
                 }
             });
 
             function removeInstructions(){
-                if (!respoke.needsChromeExtension || respoke.hasChromeExtension) {
-                    $el.find('.chrome-screen-share-instructions').remove();
+                if (respoke.hasScreenShare()) {
+                    $el.find('.screen-share-instructions').remove();
+                    return;
+                }
+
+                if (!respoke.needsChromeExtension || !respoke.hasChromeExtension) {
+                    $el.find('#installChromeExtension').remove();
                 }
 
                 if (!respoke.needsFirefoxExtension || respoke.hasFirefoxExtension) {
-                    $el.find('.firefox-screen-share-instructions').remove();
+                    $el.find('#installFirefoxExtension').remove();
                 }
+
             }
 
-            respoke.listen('extension-ready', removeInstructions);
+            respoke.listen('extension-loaded', removeInstructions);
 
             removeInstructions();
         }
