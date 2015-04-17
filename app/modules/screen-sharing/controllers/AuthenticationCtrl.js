@@ -47,7 +47,7 @@ App.controllers.authenticationCtrl = (function ($, App) {
                 InstallTrigger.install({
                     Foo: {
                         URL: '/web-examples/web-examples-respoke.xpi',
-                        Hash: 'sha1:b4bca99f68ab8d821caf59f1f735e622b6fec9ae',
+                        Hash: 'sha1:c7bfbfa8c3bf2e021fb00ab33a8c23fc296cb399',
                         toString: function () {
                             return this.URL;
                         }
