@@ -6,7 +6,7 @@ App.controllers.authenticationCtrl = (function ($, App) {
     return function (options) {
 
         var $el;
-
+        var chromeUrl = 'https://chrome.google.com/webstore/detail/jlpojfookfonjolaeofpibngfpnnflne';
         // A callback when the name is submitted
         function submitName (e) {
 
@@ -28,14 +28,32 @@ App.controllers.authenticationCtrl = (function ($, App) {
             desc = null;
         }
 
-        function clickExtension(e){
+        function clickInstallExtension(e) {
             e.preventDefault();
-            chrome.webstore.install('https://chrome.google.com/webstore/detail/jlpojfookfonjolaeofpibngfpnnflne', function(){
-                console.log('Successfully installed Chrome Extension, reloading page');
-                window.location.reload();
-            }, function(err){
-                console.log('Error installing extension in chrome', err);
-            });
+
+            if (respoke.needsChromeExtension && !respoke.hasChromeExtension) {
+                console.log('attempting to install chrome extension');
+                chrome.webstore.install(chromeUrl, function(){
+                    console.log('Successfully installed Chrome Extension, reloading page');
+                    window.location.reload();
+                }, function(err){
+                    console.error('Error installing extension in chrome', err);
+                    console.error('Chrome webstore URL is', chromeUrl);
+                });
+            }
+
+            if(respoke.needsFirefoxExtension && !respoke.hasFirefoxExtension) {
+                console.log('attempting to install firefox extension');
+                InstallTrigger.install({
+                    Foo: {
+                        URL: '/web-examples-respoke.xpi',
+                        Hash: 'sha1:b4bca99f68ab8d821caf59f1f735e622b6fec9ae',
+                        toString: function () {
+                            return this.URL;
+                        }
+                    }
+                });
+            }
         }
 
         // Renders the authentication form
@@ -48,14 +66,21 @@ App.controllers.authenticationCtrl = (function ($, App) {
                     '.cbl-name': {
                         'submit': submitName
                     },
-                    '.screen-share-instructions button': {
-                        'click': clickExtension
-                    }
+                    '#installExtension': {
+                        'click': clickInstallExtension
+                    },
                 }
             });
-            if (!respoke.needsChromeExtension || (respoke.needsChromeExtension && respoke.hasChromeExtension)) {
-                $el.find('.screen-share-instructions').remove();
+
+            function removeInstructions(){
+                if (respoke.hasScreenShare()) {
+                    $el.find('.screen-share-instructions').remove();
+                }
             }
+
+            respoke.listen('extension-loaded', removeInstructions);
+
+            removeInstructions();
         }
 
         // Initializes the controller
