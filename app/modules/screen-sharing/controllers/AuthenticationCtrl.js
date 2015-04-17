@@ -54,9 +54,14 @@ App.controllers.authenticationCtrl = (function ($, App) {
                     }
                 }
             });
-            if (!respoke.needsChromeExtension || (respoke.needsChromeExtension && respoke.hasChromeExtension)) {
-                $el.find('.screen-share-instructions').remove();
-            }
+
+            respoke.listen('extension-loaded', function(data){
+                console.log('extension loaded', data);
+                //change to use respoke.hasScreenShare() when it's available
+                if (!respoke.needsChromeExtension || respoke.hasChromeExtension) {
+                    $el.find('.screen-share-instructions').remove();
+                }
+            })
         }
 
         // Initializes the controller
