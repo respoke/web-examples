@@ -75,7 +75,7 @@ When the `index.html` page is loaded, it instructs the `state` model to initiali
 ```html
 <script type="text/javascript">
     (function () {
-        App.state.init('7c15ec35-71a9-457f-8b73-97caf4eb43ca');
+        App.state.init('540f4c90-da4d-468f-845f-4133ce7e6dc4');
     }());
 </script>
 ```
