@@ -8,7 +8,7 @@ These are a suite of example applications to show how to work with the
 
 The fastest way to try out the web-examples is to [view them live][examples]!
 
-[examples]: https://respoke.github.com/web-examples "view examples"
+[examples]: https://respoke.github.io/web-examples "view examples"
 
 Alternatively you can run the already built files from the web server of your
 choice as they are static HTML files. Point your web server to the `app`
@@ -28,7 +28,7 @@ At this time, screen sharing is only available in Chrome. Support for other brow
 in the future. Please check the
 [screen sharing documentation](https://docs.respoke.io/js-library/respoke.Endpoint.html#startScreenShare)
 for browser support details
-or [live examples](http://respoke.github.io/web-examples/modules/screen-sharing/index.html) to test it out.
+or [live examples](https://respoke.github.io/web-examples/modules/screen-sharing/index.html) to test it out.
 
 ### Development
 
